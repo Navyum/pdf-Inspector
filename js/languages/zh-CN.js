@@ -267,7 +267,7 @@ const zhCN = {
         yes: "是",
         no: "否",
         ok: "确定",
-        back: "返回",
+        back: "返回首页",
         next: "下一步",
         previous: "上一步",
         finish: "完成"
@@ -279,6 +279,106 @@ const zhCN = {
         fileLoadFailed: "文件加载失败",
         parsingFailed: "解析失败",
         validationFailed: "验证失败"
+    },
+
+    // 帮助页面
+    help: {
+        title: "使用帮助",
+        uploadTitle: "如何上传文件",
+        uploadDesc: "拖拽PDF文件到上传区域，或点击选择文件按钮上传。支持最大50MB的PDF文件。",
+        analysisTitle: "查看分析结果",
+        analysisDesc: "上传后系统会自动分析PDF结构，显示文件信息、安全状态和验证结果。",
+        exportTitle: "导出结果",
+        exportDesc: "点击导出按钮可以下载分析报告，包含详细的PDF结构信息。",
+        faqTitle: "常见问题",
+        faqItems: [
+            "文件过大：请确保PDF文件小于50MB",
+            "格式不支持：仅支持标准PDF格式",
+            "分析失败：请检查文件是否损坏",
+            "浏览器兼容：建议使用Chrome、Firefox、Safari等现代浏览器",
+            "网络问题：确保网络连接稳定"
+        ],
+        tipsTitle: "使用技巧",
+        tipsItems: [
+            "拖拽上传：直接将PDF文件拖拽到上传区域",
+            "批量处理：一次只能处理一个文件，但可以连续处理多个",
+            "结果导出：分析完成后可导出详细报告",
+            "安全检测：系统会自动检测PDF中的安全风险"
+        ]
+    },
+
+    // 关于页面
+    about: {
+        title: "关于我们",
+        introTitle: "项目介绍",
+        introDesc: "PDF Inspector Pro 是一款专业的PDF格式校验工具，基于PDF 1.7标准开发，提供全面的PDF文件分析和验证功能。",
+        featuresTitle: "核心功能",
+        featuresItems: [
+            "PDF结构解析和可视化",
+            "格式标准验证",
+            "安全风险评估",
+            "问题检测和报告",
+            "拖拽上传支持"
+        ],
+        techTitle: "技术特点",
+        techItems: [
+            "基于PDF 1.7标准",
+            "纯前端实现，保护隐私",
+            "实时分析处理",
+            "响应式设计"
+        ],
+        stackTitle: "技术栈",
+        stackDesc: "HTML5, CSS3, JavaScript, D3.js, Font Awesome",
+        teamTitle: "开发团队",
+        teamDesc: "PDF Inspector Pro 由专业的PDF格式验证团队开发，致力于为用户提供高质量的PDF分析工具。",
+        contributeTitle: "开源贡献",
+        contributeDesc: "我们欢迎社区贡献，如果您发现bug或有改进建议，欢迎联系我们。"
+    },
+
+    // 隐私政策页面
+    privacy: {
+        title: "隐私政策",
+        collectionTitle: "信息收集",
+        collectionDesc: "PDF Inspector Pro 不会收集或存储您的个人信息。所有文件处理都在您的浏览器本地进行，不会上传到服务器。",
+        securityTitle: "数据安全",
+        securityDesc: "您的PDF文件仅在本地处理，不会传输到任何外部服务器。我们采用纯前端技术，确保您的文件安全。",
+        cookieTitle: "Cookie使用",
+        cookieDesc: "本网站可能使用必要的Cookie来改善用户体验，但不会用于跟踪或收集个人信息。",
+        linksTitle: "外部链接",
+        linksDesc: "本网站可能包含指向外部网站的链接，我们不对这些网站的隐私政策负责。",
+        updateTitle: "政策更新",
+        updateDesc: "本隐私政策可能会更新，更新后的政策将在此页面发布。",
+        protectionTitle: "数据保护",
+        protectionDesc: "我们采用行业标准的安全措施保护您的数据，包括加密传输和安全的存储实践。",
+        thirdPartyTitle: "第三方服务",
+        thirdPartyDesc: "我们不会与第三方分享您的个人信息，除非法律要求或获得您的明确同意。"
+    },
+
+    // 服务条款页面
+    terms: {
+        title: "服务条款",
+        serviceTitle: "服务说明",
+        serviceDesc: "PDF Inspector Pro 提供免费的PDF格式校验服务，基于PDF 1.7标准进行文件分析和验证。",
+        userTitle: "用户责任",
+        userItems: [
+            "确保上传的文件为合法拥有的PDF文件",
+            "遵守相关法律法规",
+            "不滥用服务资源"
+        ],
+        disclaimerTitle: "免责声明",
+        disclaimerDesc: "本服务按"现状"提供，不保证结果的准确性。用户应自行承担使用风险。",
+        prohibitedTitle: "禁止行为",
+        prohibitedItems: [
+            "上传恶意文件或病毒",
+            "进行恶意攻击或破坏服务",
+            "侵犯他人知识产权"
+        ],
+        updateTitle: "条款更新",
+        updateDesc: "本服务条款可能会更新，更新后的条款将在此页面发布。",
+        legalTitle: "法律条款",
+        legalDesc: "使用本服务即表示您同意遵守所有适用的法律法规，并承担相应的法律责任。",
+        disputeTitle: "争议解决",
+        disputeDesc: "如发生争议，我们将优先通过友好协商解决。如协商不成，将按照相关法律程序处理。"
     }
 };
 

@@ -2788,4 +2788,439 @@ body {
     .footer-section {
         text-align: center;
     }
+}
+
+/* 页面特定样式 */
+.help-container,
+.about-container,
+.privacy-container,
+.terms-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.help-container h2,
+.about-container h2,
+.privacy-container h2,
+.terms-container h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.help-section,
+.about-section,
+.privacy-section,
+.terms-section {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--background-white);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.help-section:hover,
+.about-section:hover,
+.privacy-section:hover,
+.terms-section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.help-section h3,
+.about-section h3,
+.privacy-section h3,
+.terms-section h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.help-section h3 i,
+.about-section h3 i,
+.privacy-section h3 i,
+.terms-section h3 i {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.help-section p,
+.about-section p,
+.privacy-section p,
+.terms-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+}
+
+.help-section ul,
+.about-section ul,
+.privacy-section ul,
+.terms-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.help-section li,
+.about-section li,
+.privacy-section li,
+.terms-section li {
+    color: var(--text-secondary);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    padding-left: var(--spacing-lg);
+}
+
+.help-section li:before,
+.about-section li:before,
+.privacy-section li:before,
+.terms-section li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.help-section li:last-child,
+.about-section li:last-child,
+.privacy-section li:last-child,
+.terms-section li:last-child {
+    border-bottom: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .help-container,
+    .about-container,
+    .privacy-container,
+    .terms-container {
+        margin: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+    
+    .help-container h2,
+    .about-container h2,
+    .privacy-container h2,
+    .terms-container h2 {
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .help-section,
+    .about-section,
+    .privacy-section,
+    .terms-section {
+        padding: var(--spacing-md);
+    }
+    
+    .help-section h3,
+    .about-section h3,
+    .privacy-section h3,
+    .terms-section h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-container,
+    .about-container,
+    .privacy-container,
+    .terms-container {
+        margin: var(--spacing-sm);
+        padding: var(--spacing-md);
+    }
+    
+    .help-container h2,
+    .about-container h2,
+    .privacy-container h2,
+    .terms-container h2 {
+        font-size: 1.25rem;
+    }
+    
+    .help-section,
+    .about-section,
+    .privacy-section,
+    .terms-section {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* 页面动效 */
+@keyframes slideInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 页面容器动效 */
+.help-container,
+.about-container,
+.privacy-container,
+.terms-container {
+    animation: slideInFromTop 0.8s ease-out;
+}
+
+/* 页面标题动效 */
+.help-container h2,
+.about-container h2,
+.privacy-container h2,
+.terms-container h2 {
+    animation: slideInFromLeft 0.6s ease-out 0.2s both;
+}
+
+/* 页面section动效 */
+.help-section,
+.about-section,
+.privacy-section,
+.terms-section {
+    animation: slideInFromRight 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+/* 为每个section设置不同的延迟时间 */
+.help-section:nth-child(1),
+.about-section:nth-child(1),
+.privacy-section:nth-child(1),
+.terms-section:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.help-section:nth-child(2),
+.about-section:nth-child(2),
+.privacy-section:nth-child(2),
+.privacy-section:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.help-section:nth-child(3),
+.about-section:nth-child(3),
+.privacy-section:nth-child(3),
+.terms-section:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.help-section:nth-child(4),
+.about-section:nth-child(4),
+.privacy-section:nth-child(4),
+.terms-section:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.help-section:nth-child(5),
+.about-section:nth-child(5),
+.privacy-section:nth-child(5),
+.terms-section:nth-child(5) {
+    animation-delay: 0.7s;
+}
+
+.help-section:nth-child(6),
+.about-section:nth-child(6),
+.privacy-section:nth-child(6),
+.terms-section:nth-child(6) {
+    animation-delay: 0.8s;
+}
+
+/* 悬停动效增强 */
+.help-section:hover,
+.about-section:hover,
+.privacy-section:hover,
+.terms-section:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 图标动效 */
+.help-section h3 i,
+.about-section h3 i,
+.privacy-section h3 i,
+.terms-section h3 i {
+    animation: bounceIn 0.6s ease-out 0.4s both;
+}
+
+/* 列表项动效 */
+.help-section li,
+.about-section li,
+.privacy-section li,
+.terms-section li {
+    animation: slideInFromLeft 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.help-section li:nth-child(1),
+.about-section li:nth-child(1),
+.privacy-section li:nth-child(1),
+.terms-section li:nth-child(1) {
+    animation-delay: 0.9s;
+}
+
+.help-section li:nth-child(2),
+.about-section li:nth-child(2),
+.privacy-section li:nth-child(2),
+.terms-section li:nth-child(2) {
+    animation-delay: 1.0s;
+}
+
+.help-section li:nth-child(3),
+.about-section li:nth-child(3),
+.privacy-section li:nth-child(3),
+.terms-section li:nth-child(3) {
+    animation-delay: 1.1s;
+}
+
+.help-section li:nth-child(4),
+.about-section li:nth-child(4),
+.privacy-section li:nth-child(4),
+.terms-section li:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.help-section li:nth-child(5),
+.about-section li:nth-child(5),
+.privacy-section li:nth-child(5),
+.terms-section li:nth-child(5) {
+    animation-delay: 1.3s;
+}
+
+/* 语言切换器动效 */
+.language-switcher {
+    animation: scaleIn 0.5s ease-out 0.3s both;
+}
+
+/* 按钮动效 */
+.btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* 页面加载时的整体动效 */
+@keyframes pageLoad {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-container {
+    animation: pageLoad 0.8s ease-out;
+}
+
+/* 响应式动效调整 */
+@media (max-width: 768px) {
+    .help-section,
+    .about-section,
+    .privacy-section,
+    .terms-section {
+        animation-delay: 0.2s !important;
+    }
+    
+    .help-section li,
+    .about-section li,
+    .privacy-section li,
+    .terms-section li {
+        animation-delay: 0.3s !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-container,
+    .about-container,
+    .privacy-container,
+    .terms-container {
+        animation: slideInFromTop 0.6s ease-out;
+    }
+    
+    .help-section,
+    .about-section,
+    .privacy-section,
+    .terms-section {
+        animation: scaleIn 0.5s ease-out;
+        animation-delay: 0.2s !important;
+    }
 } 

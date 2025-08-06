@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>帮助 - PDF Inspector Pro</title>
-    <meta name="description" content="PDF Inspector Pro 使用帮助和常见问题解答">
+    <title>关于我们 - PDF Inspector Pro</title>
+    <meta name="description" content="PDF Inspector Pro 项目介绍和团队信息">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -26,36 +26,41 @@
         </header>
 
         <main class="main-content">
-            <div class="help-container">
-                <h2><i class="fas fa-question-circle"></i> <span data-i18n="help.title">使用帮助</span></h2>
+            <div class="about-container">
+                <h2><i class="fas fa-info-circle"></i> <span data-i18n="about.title">关于我们</span></h2>
                 
-                <section class="help-section">
-                    <h3><i class="fas fa-upload"></i> <span data-i18n="help.uploadTitle">如何上传文件</span></h3>
-                    <p data-i18n="help.uploadDesc">拖拽PDF文件到上传区域，或点击选择文件按钮上传。支持最大50MB的PDF文件。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-rocket"></i> <span data-i18n="about.introTitle">项目介绍</span></h3>
+                    <p data-i18n="about.introDesc">PDF Inspector Pro 是一款专业的PDF格式校验工具，基于PDF 1.7标准开发，提供全面的PDF文件分析和验证功能。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-chart-bar"></i> <span data-i18n="help.analysisTitle">查看分析结果</span></h3>
-                    <p data-i18n="help.analysisDesc">上传后系统会自动分析PDF结构，显示文件信息、安全状态和验证结果。</p>
-                </section>
-
-                <section class="help-section">
-                    <h3><i class="fas fa-download"></i> <span data-i18n="help.exportTitle">导出结果</span></h3>
-                    <p data-i18n="help.exportDesc">点击导出按钮可以下载分析报告，包含详细的PDF结构信息。</p>
-                </section>
-
-                <section class="help-section">
-                    <h3><i class="fas fa-exclamation-triangle"></i> <span data-i18n="help.faqTitle">常见问题</span></h3>
-                    <ul id="faq-list">
-                        <!-- FAQ items will be populated by JavaScript -->
+                <section class="about-section">
+                    <h3><i class="fas fa-cogs"></i> <span data-i18n="about.featuresTitle">核心功能</span></h3>
+                    <ul id="features-list">
+                        <!-- Features items will be populated by JavaScript -->
                     </ul>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-lightbulb"></i> <span data-i18n="help.tipsTitle">使用技巧</span></h3>
-                    <ul id="tips-list">
-                        <!-- Tips items will be populated by JavaScript -->
+                <section class="about-section">
+                    <h3><i class="fas fa-shield-alt"></i> <span data-i18n="about.techTitle">技术特点</span></h3>
+                    <ul id="tech-list">
+                        <!-- Tech items will be populated by JavaScript -->
                     </ul>
+                </section>
+
+                <section class="about-section">
+                    <h3><i class="fas fa-code"></i> <span data-i18n="about.stackTitle">技术栈</span></h3>
+                    <p data-i18n="about.stackDesc">HTML5, CSS3, JavaScript, D3.js, Font Awesome</p>
+                </section>
+
+                <section class="about-section">
+                    <h3><i class="fas fa-users"></i> <span data-i18n="about.teamTitle">开发团队</span></h3>
+                    <p data-i18n="about.teamDesc">PDF Inspector Pro 由专业的PDF格式验证团队开发，致力于为用户提供高质量的PDF分析工具。</p>
+                </section>
+
+                <section class="about-section">
+                    <h3><i class="fas fa-heart"></i> <span data-i18n="about.contributeTitle">开源贡献</span></h3>
+                    <p data-i18n="about.contributeDesc">我们欢迎社区贡献，如果您发现bug或有改进建议，欢迎联系我们。</p>
                 </section>
             </div>
         </main>
@@ -135,28 +140,28 @@
                 }
             });
 
-            // 更新FAQ列表
-            updateFAQList();
+            // 更新功能列表
+            updateFeaturesList();
             
-            // 更新Tips列表
-            updateTipsList();
+            // 更新技术特点列表
+            updateTechList();
         }
 
-        // 更新FAQ列表
-        function updateFAQList() {
-            const faqList = document.getElementById('faq-list');
-            if (faqList) {
-                const faqItems = window.languageManager.get('help.faqItems') || [];
-                faqList.innerHTML = faqItems.map(item => `<li>${item}</li>`).join('');
+        // 更新功能列表
+        function updateFeaturesList() {
+            const featuresList = document.getElementById('features-list');
+            if (featuresList) {
+                const featuresItems = window.languageManager.get('about.featuresItems') || [];
+                featuresList.innerHTML = featuresItems.map(item => `<li>${item}</li>`).join('');
             }
         }
 
-        // 更新Tips列表
-        function updateTipsList() {
-            const tipsList = document.getElementById('tips-list');
-            if (tipsList) {
-                const tipsItems = window.languageManager.get('help.tipsItems') || [];
-                tipsList.innerHTML = tipsItems.map(item => `<li>${item}</li>`).join('');
+        // 更新技术特点列表
+        function updateTechList() {
+            const techList = document.getElementById('tech-list');
+            if (techList) {
+                const techItems = window.languageManager.get('about.techItems') || [];
+                techList.innerHTML = techItems.map(item => `<li>${item}</li>`).join('');
             }
         }
 

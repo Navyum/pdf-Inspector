@@ -7,25 +7,25 @@
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://pdf.camscanner.top/help</loc>
+        <loc>https://pdf.camscanner.top/help.html</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://pdf.camscanner.top/about</loc>
+        <loc>https://pdf.camscanner.top/about.html</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://pdf.camscanner.top/privacy</loc>
+        <loc>https://pdf.camscanner.top/privacy.html</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://pdf.camscanner.top/terms</loc>
+        <loc>https://pdf.camscanner.top/terms.html</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>

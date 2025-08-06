@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>帮助 - PDF Inspector Pro</title>
-    <meta name="description" content="PDF Inspector Pro 使用帮助和常见问题解答">
+    <title>服务条款 - PDF Inspector Pro</title>
+    <meta name="description" content="PDF Inspector Pro 服务条款">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -26,36 +26,46 @@
         </header>
 
         <main class="main-content">
-            <div class="help-container">
-                <h2><i class="fas fa-question-circle"></i> <span data-i18n="help.title">使用帮助</span></h2>
+            <div class="terms-container">
+                <h2><i class="fas fa-gavel"></i> <span data-i18n="terms.title">服务条款</span></h2>
                 
-                <section class="help-section">
-                    <h3><i class="fas fa-upload"></i> <span data-i18n="help.uploadTitle">如何上传文件</span></h3>
-                    <p data-i18n="help.uploadDesc">拖拽PDF文件到上传区域，或点击选择文件按钮上传。支持最大50MB的PDF文件。</p>
+                <section class="terms-section">
+                    <h3><i class="fas fa-check-circle"></i> <span data-i18n="terms.serviceTitle">服务说明</span></h3>
+                    <p data-i18n="terms.serviceDesc">PDF Inspector Pro 提供免费的PDF格式校验服务，基于PDF 1.7标准进行文件分析和验证。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-chart-bar"></i> <span data-i18n="help.analysisTitle">查看分析结果</span></h3>
-                    <p data-i18n="help.analysisDesc">上传后系统会自动分析PDF结构，显示文件信息、安全状态和验证结果。</p>
-                </section>
-
-                <section class="help-section">
-                    <h3><i class="fas fa-download"></i> <span data-i18n="help.exportTitle">导出结果</span></h3>
-                    <p data-i18n="help.exportDesc">点击导出按钮可以下载分析报告，包含详细的PDF结构信息。</p>
-                </section>
-
-                <section class="help-section">
-                    <h3><i class="fas fa-exclamation-triangle"></i> <span data-i18n="help.faqTitle">常见问题</span></h3>
-                    <ul id="faq-list">
-                        <!-- FAQ items will be populated by JavaScript -->
+                <section class="terms-section">
+                    <h3><i class="fas fa-user"></i> <span data-i18n="terms.userTitle">用户责任</span></h3>
+                    <ul id="user-items-list">
+                        <!-- User items will be populated by JavaScript -->
                     </ul>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-lightbulb"></i> <span data-i18n="help.tipsTitle">使用技巧</span></h3>
-                    <ul id="tips-list">
-                        <!-- Tips items will be populated by JavaScript -->
+                <section class="terms-section">
+                    <h3><i class="fas fa-shield-alt"></i> <span data-i18n="terms.disclaimerTitle">免责声明</span></h3>
+                    <p data-i18n="terms.disclaimerDesc">本服务按"现状"提供，不保证结果的准确性。用户应自行承担使用风险。</p>
+                </section>
+
+                <section class="terms-section">
+                    <h3><i class="fas fa-ban"></i> <span data-i18n="terms.prohibitedTitle">禁止行为</span></h3>
+                    <ul id="prohibited-items-list">
+                        <!-- Prohibited items will be populated by JavaScript -->
                     </ul>
+                </section>
+
+                <section class="terms-section">
+                    <h3><i class="fas fa-calendar-alt"></i> <span data-i18n="terms.updateTitle">条款更新</span></h3>
+                    <p data-i18n="terms.updateDesc">本服务条款可能会更新，更新后的条款将在此页面发布。</p>
+                </section>
+
+                <section class="terms-section">
+                    <h3><i class="fas fa-gavel"></i> <span data-i18n="terms.legalTitle">法律条款</span></h3>
+                    <p data-i18n="terms.legalDesc">使用本服务即表示您同意遵守所有适用的法律法规，并承担相应的法律责任。</p>
+                </section>
+
+                <section class="terms-section">
+                    <h3><i class="fas fa-balance-scale"></i> <span data-i18n="terms.disputeTitle">争议解决</span></h3>
+                    <p data-i18n="terms.disputeDesc">如发生争议，我们将优先通过友好协商解决。如协商不成，将按照相关法律程序处理。</p>
                 </section>
             </div>
         </main>
@@ -135,28 +145,28 @@
                 }
             });
 
-            // 更新FAQ列表
-            updateFAQList();
+            // 更新用户责任列表
+            updateUserItemsList();
             
-            // 更新Tips列表
-            updateTipsList();
+            // 更新禁止行为列表
+            updateProhibitedItemsList();
         }
 
-        // 更新FAQ列表
-        function updateFAQList() {
-            const faqList = document.getElementById('faq-list');
-            if (faqList) {
-                const faqItems = window.languageManager.get('help.faqItems') || [];
-                faqList.innerHTML = faqItems.map(item => `<li>${item}</li>`).join('');
+        // 更新用户责任列表
+        function updateUserItemsList() {
+            const userItemsList = document.getElementById('user-items-list');
+            if (userItemsList) {
+                const userItems = window.languageManager.get('terms.userItems') || [];
+                userItemsList.innerHTML = userItems.map(item => `<li>${item}</li>`).join('');
             }
         }
 
-        // 更新Tips列表
-        function updateTipsList() {
-            const tipsList = document.getElementById('tips-list');
-            if (tipsList) {
-                const tipsItems = window.languageManager.get('help.tipsItems') || [];
-                tipsList.innerHTML = tipsItems.map(item => `<li>${item}</li>`).join('');
+        // 更新禁止行为列表
+        function updateProhibitedItemsList() {
+            const prohibitedItemsList = document.getElementById('prohibited-items-list');
+            if (prohibitedItemsList) {
+                const prohibitedItems = window.languageManager.get('terms.prohibitedItems') || [];
+                prohibitedItemsList.innerHTML = prohibitedItems.map(item => `<li>${item}</li>`).join('');
             }
         }
 

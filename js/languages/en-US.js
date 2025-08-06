@@ -266,7 +266,7 @@ const enUS = {
         yes: "Yes",
         no: "No",
         ok: "OK",
-        back: "Back",
+        back: "Home",
         next: "Next",
         previous: "Previous",
         finish: "Finish"
@@ -290,6 +290,106 @@ const enUS = {
         fitToScreen: "Fit to Screen",
         showLabels: "Show Labels",
         hideLabels: "Hide Labels"
+    },
+
+    // Help page
+    help: {
+        title: "Help",
+        uploadTitle: "How to Upload Files",
+        uploadDesc: "Drag and drop PDF files to the upload area, or click the select file button to upload. Supports PDF files up to 50MB.",
+        analysisTitle: "View Analysis Results",
+        analysisDesc: "After uploading, the system will automatically analyze the PDF structure, display file information, security status, and validation results.",
+        exportTitle: "Export Results",
+        exportDesc: "Click the export button to download the analysis report, including detailed PDF structure information.",
+        faqTitle: "FAQ",
+        faqItems: [
+            "File too large: Please ensure PDF files are less than 50MB",
+            "Unsupported format: Only standard PDF format is supported",
+            "Analysis failed: Please check if the file is corrupted",
+            "Browser compatibility: Recommended to use modern browsers like Chrome, Firefox, Safari",
+            "Network issues: Ensure stable network connection"
+        ],
+        tipsTitle: "Usage Tips",
+        tipsItems: [
+            "Drag and drop: Directly drag PDF files to the upload area",
+            "Batch processing: Can only process one file at a time, but can process multiple files consecutively",
+            "Result export: Can export detailed reports after analysis is complete",
+            "Security detection: System will automatically detect security risks in PDFs"
+        ]
+    },
+
+    // About page
+    about: {
+        title: "About Us",
+        introTitle: "Project Introduction",
+        introDesc: "PDF Inspector Pro is a professional PDF format validation tool developed based on PDF 1.7 standard, providing comprehensive PDF file analysis and validation functions.",
+        featuresTitle: "Core Features",
+        featuresItems: [
+            "PDF structure parsing and visualization",
+            "Format standard validation",
+            "Security risk assessment",
+            "Issue detection and reporting",
+            "Drag and drop upload support"
+        ],
+        techTitle: "Technical Features",
+        techItems: [
+            "Based on PDF 1.7 standard",
+            "Pure frontend implementation, protecting privacy",
+            "Real-time analysis processing",
+            "Responsive design"
+        ],
+        stackTitle: "Technology Stack",
+        stackDesc: "HTML5, CSS3, JavaScript, D3.js, Font Awesome",
+        teamTitle: "Development Team",
+        teamDesc: "PDF Inspector Pro is developed by a professional PDF format validation team, committed to providing users with high-quality PDF analysis tools.",
+        contributeTitle: "Open Source Contribution",
+        contributeDesc: "We welcome community contributions. If you find bugs or have improvement suggestions, please contact us."
+    },
+
+    // Privacy policy page
+    privacy: {
+        title: "Privacy Policy",
+        collectionTitle: "Information Collection",
+        collectionDesc: "PDF Inspector Pro does not collect or store your personal information. All file processing is done locally in your browser and will not be uploaded to any server.",
+        securityTitle: "Data Security",
+        securityDesc: "Your PDF files are processed locally only and will not be transmitted to any external servers. We use pure frontend technology to ensure your file security.",
+        cookieTitle: "Cookie Usage",
+        cookieDesc: "This website may use necessary cookies to improve user experience, but will not be used for tracking or collecting personal information.",
+        linksTitle: "External Links",
+        linksDesc: "This website may contain links to external websites. We are not responsible for the privacy policies of these websites.",
+        updateTitle: "Policy Updates",
+        updateDesc: "This privacy policy may be updated, and updated policies will be published on this page.",
+        protectionTitle: "Data Protection",
+        protectionDesc: "We adopt industry-standard security measures to protect your data, including encrypted transmission and secure storage practices.",
+        thirdPartyTitle: "Third-party Services",
+        thirdPartyDesc: "We will not share your personal information with third parties unless required by law or with your explicit consent."
+    },
+
+    // Terms of service page
+    terms: {
+        title: "Terms of Service",
+        serviceTitle: "Service Description",
+        serviceDesc: "PDF Inspector Pro provides free PDF format validation services, conducting file analysis and validation based on PDF 1.7 standard.",
+        userTitle: "User Responsibilities",
+        userItems: [
+            "Ensure uploaded files are legally owned PDF files",
+            "Comply with relevant laws and regulations",
+            "Do not abuse service resources"
+        ],
+        disclaimerTitle: "Disclaimer",
+        disclaimerDesc: "This service is provided 'as is' and does not guarantee the accuracy of results. Users should bear the risks of use themselves.",
+        prohibitedTitle: "Prohibited Actions",
+        prohibitedItems: [
+            "Upload malicious files or viruses",
+            "Conduct malicious attacks or damage services",
+            "Infringe on others' intellectual property rights"
+        ],
+        updateTitle: "Terms Updates",
+        updateDesc: "These terms of service may be updated, and updated terms will be published on this page.",
+        legalTitle: "Legal Terms",
+        legalDesc: "Using this service indicates your agreement to comply with all applicable laws and regulations and bear corresponding legal responsibilities.",
+        disputeTitle: "Dispute Resolution",
+        disputeDesc: "If disputes arise, we will prioritize resolution through friendly negotiation. If negotiation fails, we will handle it according to relevant legal procedures."
     }
 };
 

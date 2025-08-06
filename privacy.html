@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>帮助 - PDF Inspector Pro</title>
-    <meta name="description" content="PDF Inspector Pro 使用帮助和常见问题解答">
+    <title>隐私政策 - PDF Inspector Pro</title>
+    <meta name="description" content="PDF Inspector Pro 隐私政策">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -26,36 +26,42 @@
         </header>
 
         <main class="main-content">
-            <div class="help-container">
-                <h2><i class="fas fa-question-circle"></i> <span data-i18n="help.title">使用帮助</span></h2>
+            <div class="privacy-container">
+                <h2><i class="fas fa-user-shield"></i> <span data-i18n="privacy.title">隐私政策</span></h2>
                 
-                <section class="help-section">
-                    <h3><i class="fas fa-upload"></i> <span data-i18n="help.uploadTitle">如何上传文件</span></h3>
-                    <p data-i18n="help.uploadDesc">拖拽PDF文件到上传区域，或点击选择文件按钮上传。支持最大50MB的PDF文件。</p>
+                <section class="privacy-section">
+                    <h3><i class="fas fa-info-circle"></i> <span data-i18n="privacy.collectionTitle">信息收集</span></h3>
+                    <p data-i18n="privacy.collectionDesc">PDF Inspector Pro 不会收集或存储您的个人信息。所有文件处理都在您的浏览器本地进行，不会上传到服务器。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-chart-bar"></i> <span data-i18n="help.analysisTitle">查看分析结果</span></h3>
-                    <p data-i18n="help.analysisDesc">上传后系统会自动分析PDF结构，显示文件信息、安全状态和验证结果。</p>
+                <section class="privacy-section">
+                    <h3><i class="fas fa-lock"></i> <span data-i18n="privacy.securityTitle">数据安全</span></h3>
+                    <p data-i18n="privacy.securityDesc">您的PDF文件仅在本地处理，不会传输到任何外部服务器。我们采用纯前端技术，确保您的文件安全。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-download"></i> <span data-i18n="help.exportTitle">导出结果</span></h3>
-                    <p data-i18n="help.exportDesc">点击导出按钮可以下载分析报告，包含详细的PDF结构信息。</p>
+                <section class="privacy-section">
+                    <h3><i class="fas fa-cookie-bite"></i> <span data-i18n="privacy.cookieTitle">Cookie使用</span></h3>
+                    <p data-i18n="privacy.cookieDesc">本网站可能使用必要的Cookie来改善用户体验，但不会用于跟踪或收集个人信息。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-exclamation-triangle"></i> <span data-i18n="help.faqTitle">常见问题</span></h3>
-                    <ul id="faq-list">
-                        <!-- FAQ items will be populated by JavaScript -->
-                    </ul>
+                <section class="privacy-section">
+                    <h3><i class="fas fa-external-link-alt"></i> <span data-i18n="privacy.linksTitle">外部链接</span></h3>
+                    <p data-i18n="privacy.linksDesc">本网站可能包含指向外部网站的链接，我们不对这些网站的隐私政策负责。</p>
                 </section>
 
-                <section class="help-section">
-                    <h3><i class="fas fa-lightbulb"></i> <span data-i18n="help.tipsTitle">使用技巧</span></h3>
-                    <ul id="tips-list">
-                        <!-- Tips items will be populated by JavaScript -->
-                    </ul>
+                <section class="privacy-section">
+                    <h3><i class="fas fa-calendar-alt"></i> <span data-i18n="privacy.updateTitle">政策更新</span></h3>
+                    <p data-i18n="privacy.updateDesc">本隐私政策可能会更新，更新后的政策将在此页面发布。</p>
+                </section>
+
+                <section class="privacy-section">
+                    <h3><i class="fas fa-shield-virus"></i> <span data-i18n="privacy.protectionTitle">数据保护</span></h3>
+                    <p data-i18n="privacy.protectionDesc">我们采用行业标准的安全措施保护您的数据，包括加密传输和安全的存储实践。</p>
+                </section>
+
+                <section class="privacy-section">
+                    <h3><i class="fas fa-handshake"></i> <span data-i18n="privacy.thirdPartyTitle">第三方服务</span></h3>
+                    <p data-i18n="privacy.thirdPartyDesc">我们不会与第三方分享您的个人信息，除非法律要求或获得您的明确同意。</p>
                 </section>
             </div>
         </main>
@@ -134,30 +140,6 @@
                     element.textContent = translation;
                 }
             });
-
-            // 更新FAQ列表
-            updateFAQList();
-            
-            // 更新Tips列表
-            updateTipsList();
-        }
-
-        // 更新FAQ列表
-        function updateFAQList() {
-            const faqList = document.getElementById('faq-list');
-            if (faqList) {
-                const faqItems = window.languageManager.get('help.faqItems') || [];
-                faqList.innerHTML = faqItems.map(item => `<li>${item}</li>`).join('');
-            }
-        }
-
-        // 更新Tips列表
-        function updateTipsList() {
-            const tipsList = document.getElementById('tips-list');
-            if (tipsList) {
-                const tipsItems = window.languageManager.get('help.tipsItems') || [];
-                tipsList.innerHTML = tipsItems.map(item => `<li>${item}</li>`).join('');
-            }
         }
 
         // 设置语言切换器
