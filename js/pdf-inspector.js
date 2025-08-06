@@ -343,9 +343,22 @@ class PDFInspector {
      * 显示进度
      */
     showProgress() {
-        document.getElementById('uploadSection').style.display = 'none';
-        document.getElementById('progressSection').style.display = 'block';
-        document.getElementById('resultsSection').style.display = 'none';
+        const uploadSection = document.getElementById('uploadSection');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // 添加上传区域隐藏动画
+        uploadSection.classList.add('hiding');
+        
+        // 显示进度区域
+        progressSection.style.display = 'block';
+        resultsSection.style.display = 'none';
+        
+        // 移除动画类
+        setTimeout(() => {
+            uploadSection.style.display = 'none';
+            uploadSection.classList.remove('hiding');
+        }, 500);
     }
     
     /**
@@ -370,9 +383,26 @@ class PDFInspector {
      * 显示结果
      */
     showResults() {
-        document.getElementById('uploadSection').style.display = 'none';
-        document.getElementById('progressSection').style.display = 'none';
-        document.getElementById('resultsSection').style.display = 'grid';
+        const uploadSection = document.getElementById('uploadSection');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // 添加上传区域隐藏动画
+        uploadSection.classList.add('hiding');
+        
+        // 隐藏进度区域
+        progressSection.style.display = 'none';
+        
+        // 显示结果区域并添加动画
+        resultsSection.style.display = 'grid';
+        resultsSection.classList.add('showing');
+        
+        // 移除动画类
+        setTimeout(() => {
+            uploadSection.style.display = 'none';
+            uploadSection.classList.remove('hiding');
+            resultsSection.classList.remove('showing');
+        }, 500);
     }
     
     /**

@@ -488,6 +488,12 @@ class UIController {
      * 清空结果
      */
     clearResults() {
+        const uploadSection = document.getElementById('uploadSection');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // 添加结果区域隐藏动画
+        resultsSection.classList.add('hiding');
+        
         // 重置文件信息
         document.getElementById('fileName').textContent = '-';
         document.getElementById('fileSize').textContent = '-';
@@ -496,17 +502,11 @@ class UIController {
         document.getElementById('pageCount').textContent = '-';
         document.getElementById('isEncrypted').textContent = '-';
         
-
-        
         // 清空各个标签页内容
         document.getElementById('structureTree').innerHTML = '';
         document.getElementById('relationshipGraph').innerHTML = '';
         document.getElementById('issuesList').innerHTML = '';
         document.getElementById('rawData').textContent = '';
-        
-        // 显示上传区域
-        document.getElementById('uploadSection').style.display = 'block';
-        document.getElementById('resultsSection').style.display = 'none';
         
         // 清空文件输入框，确保重新选择同一个文件时能触发change事件
         document.getElementById('fileInput').value = '';
@@ -520,6 +520,13 @@ class UIController {
         this.pdfInspector.currentFile = null;
         this.pdfInspector.pdfStructure = null;
         this.pdfInspector.validationResults = null;
+        
+        // 显示上传区域并移除动画类
+        setTimeout(() => {
+            uploadSection.style.display = 'block';
+            resultsSection.style.display = 'none';
+            resultsSection.classList.remove('hiding');
+        }, 500);
         
         this.showToast('结果已清空', 'success');
     }
@@ -1035,9 +1042,22 @@ class UIController {
      * 显示进度区域
      */
     showProgress() {
-        document.getElementById('uploadSection').style.display = 'none';
-        document.getElementById('progressSection').style.display = 'block';
-        document.getElementById('resultsSection').style.display = 'none';
+        const uploadSection = document.getElementById('uploadSection');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // 添加上传区域隐藏动画
+        uploadSection.classList.add('hiding');
+        
+        // 显示进度区域
+        progressSection.style.display = 'block';
+        resultsSection.style.display = 'none';
+        
+        // 移除动画类
+        setTimeout(() => {
+            uploadSection.style.display = 'none';
+            uploadSection.classList.remove('hiding');
+        }, 500);
     }
     
     /**
@@ -1051,9 +1071,26 @@ class UIController {
      * 显示结果区域
      */
     showResults() {
-        document.getElementById('uploadSection').style.display = 'none';
-        document.getElementById('progressSection').style.display = 'none';
-        document.getElementById('resultsSection').style.display = 'grid';
+        const uploadSection = document.getElementById('uploadSection');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // 添加上传区域隐藏动画
+        uploadSection.classList.add('hiding');
+        
+        // 隐藏进度区域
+        progressSection.style.display = 'none';
+        
+        // 显示结果区域并添加动画
+        resultsSection.style.display = 'grid';
+        resultsSection.classList.add('showing');
+        
+        // 移除动画类
+        setTimeout(() => {
+            uploadSection.style.display = 'none';
+            uploadSection.classList.remove('hiding');
+            resultsSection.classList.remove('showing');
+        }, 500);
     }
     
     /**
