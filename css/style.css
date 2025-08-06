@@ -1131,35 +1131,42 @@ body {
     overflow: hidden;
 }
 
-.graph-viewport svg {
-    width: 100%;
-    height: 100%;
+/* Vis.js 网络图样式 */
+.graph-viewport canvas {
     cursor: grab;
 }
 
-.graph-viewport svg:active {
+.graph-viewport canvas:active {
     cursor: grabbing;
 }
 
-/* 关系图节点样式 */
-.graph-viewport circle {
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* 对象详情样式 */
+.object-detail-info {
+    padding: var(--spacing-md);
 }
 
-.graph-viewport circle:hover {
-    stroke-width: 2px;
-    stroke: #333;
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.graph-viewport text {
-    pointer-events: none;
-    user-select: none;
+.detail-row:last-child {
+    border-bottom: none;
 }
 
-/* 关系图连接线样式 */
-.graph-viewport line {
-    pointer-events: none;
+.detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 100px;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+    text-align: right;
+    flex: 1;
 }
 
 /* 问题列表 */

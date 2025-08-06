@@ -601,47 +601,33 @@ class PDFVisualizer {
         
         container.innerHTML = '';
         
-        // 检查D3.js是否可用
-        if (typeof d3 === 'undefined') {
-            container.innerHTML = '<div class="no-data">D3.js库加载失败，无法显示关系图</div>';
+        // 检查Vis.js是否可用
+        if (typeof vis === 'undefined') {
+            container.innerHTML = '<div class="no-data">Vis.js库加载失败，无法显示关系图</div>';
             return;
         }
         
-        // 获取容器尺寸
-        const containerRect = container.getBoundingClientRect();
-        const width = Math.max(containerRect.width || 1200, 1200);
-        const height = Math.max(containerRect.height || 800, 800);
-        
-        // 创建SVG容器，使用更大的viewBox
-        const svg = d3.select(container)
-            .append('svg')
-            .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('viewBox', `0 0 ${width} ${height}`)
-            .attr('preserveAspectRatio', 'xMidYMid meet')
-            .style('overflow', 'visible');
-        
         // 生成关系数据
-        const graphData = this.generateRelationshipData(pdfStructure);
+        const graphData = this.generateVisRelationshipData(pdfStructure);
         
         if (graphData.nodes.length === 0) {
             container.innerHTML = '<div class="no-data">没有找到对象关系</div>';
             return;
         }
         
-        // 创建力导向图
-        this.createForceDirectedGraph(svg, graphData, width, height);
+        // 创建Vis.js网络图
+        this.createVisNetworkGraph(container, graphData);
     }
     
     /**
-     * 生成关系数据
+     * 生成Vis.js关系数据
      */
-    generateRelationshipData(pdfStructure) {
+    generateVisRelationshipData(pdfStructure) {
         const nodes = [];
-        const links = [];
+        const edges = [];
         const nodeMap = new Map();
         
-        if (!pdfStructure.physical?.objects) return { nodes, links };
+        if (!pdfStructure.physical?.objects) return { nodes, edges };
         
         // 找到ROOT/CATALOG对象
         let rootObject = null;
@@ -672,26 +658,58 @@ class PDFVisualizer {
             nodeMap.set(nodeId, nodes.length);
             
             const isRoot = obj === rootObject;
+            const nodeType = obj.type || 'Unknown';
+            
             nodes.push({
                 id: nodeId,
                 label: `${obj.objectNumber} ${obj.generation} R`,
-                type: obj.type || 'Unknown',
+                title: `${nodeType}: ${obj.objectNumber} ${obj.generation} R`,
+                group: nodeType,
+                isRoot: isRoot,
                 objectNumber: obj.objectNumber,
                 generation: obj.generation,
-                group: obj.type || 'Unknown',
-                isRoot: isRoot,
-                level: isRoot ? 0 : 1 // 根节点为0级，其他为1级
+                type: nodeType,
+                level: isRoot ? 0 : 1
             });
         });
         
         // 添加连接
         pdfStructure.physical.objects.forEach(obj => {
             if (obj.properties) {
-                this.findReferences(obj, nodeMap, links);
+                this.findVisReferences(obj, nodeMap, edges);
             }
         });
         
-        return { nodes, links };
+        return { nodes, edges };
+    }
+    
+    /**
+     * 查找Vis.js引用
+     */
+    findVisReferences(obj, nodeMap, edges) {
+        const objId = `${obj.objectNumber}_${obj.generation}`;
+        
+        Object.entries(obj.properties).forEach(([key, value]) => {
+            if (typeof value === 'string' && value.includes('Indirect Reference')) {
+                const match = value.match(/Indirect Reference \((\d+) (\d+) R\)/);
+                if (match) {
+                    const targetId = `${match[1]}_${match[2]}`;
+                    if (nodeMap.has(targetId)) {
+                        edges.push({
+                            from: objId,
+                            to: targetId,
+                            label: key,
+                            title: key,
+                            arrows: 'to',
+                            smooth: {
+                                type: 'curvedCW',
+                                roundness: 0.2
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
     
     /**
@@ -719,188 +737,229 @@ class PDFVisualizer {
     }
     
     /**
-     * 创建力导向图
+     * 创建Vis.js网络图
      */
-    createForceDirectedGraph(svg, graphData, width, height) {
-        // 再次检查D3.js是否可用
-        if (typeof d3 === 'undefined') {
-            console.error('D3.js未加载');
+    createVisNetworkGraph(container, graphData) {
+        // 检查Vis.js是否可用
+        if (typeof vis === 'undefined') {
+            console.error('Vis.js未加载');
             return;
         }
         
-        // 找到根节点
-        const rootNode = graphData.nodes.find(node => node.isRoot);
-        
-        // 根据节点数量调整参数
-        const nodeCount = graphData.nodes.length;
-        const linkCount = graphData.links.length;
-        
-        // 动态调整参数
-        const chargeStrength = Math.max(-300, -150 - nodeCount * 2);
-        const linkDistance = Math.max(80, 60 + nodeCount / 10);
-        const collisionRadius = nodeCount > 100 ? 8 : 15;
-        const rootCollisionRadius = nodeCount > 100 ? 20 : 25;
-        
-        // 创建缩放行为
-        const zoom = d3.zoom()
-            .scaleExtent([0.1, 4])
-            .on('zoom', (event) => {
-                svg.selectAll('g').attr('transform', event.transform);
-            });
-        
-        // 应用缩放行为到SVG
-        svg.call(zoom);
-        
-        // 创建主图形组
-        const g = svg.append('g');
-        
-        // 创建力导向布局
-        const simulation = d3.forceSimulation(graphData.nodes)
-            .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(linkDistance))
-            .force('charge', d3.forceManyBody().strength(chargeStrength))
-            .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collision', d3.forceCollide().radius(d => d.isRoot ? rootCollisionRadius : collisionRadius))
-            .force('x', d3.forceX().x(d => d.isRoot ? width / 2 : null).strength(0.1))
-            .force('y', d3.forceY().y(d => d.isRoot ? height / 2 : null).strength(0.1));
-        
-        // 创建连接线
-        const link = g.append('g')
-            .selectAll('line')
-            .data(graphData.links)
-            .enter().append('line')
-            .attr('stroke', '#999')
-            .attr('stroke-opacity', 0.4)
-            .attr('stroke-width', 0.5);
-        
-        // 创建节点
-        const node = g.append('g')
-            .selectAll('circle')
-            .data(graphData.nodes)
-            .enter().append('circle')
-            .attr('r', d => d.isRoot ? 12 : 4)
-            .attr('fill', d => this.getNodeColor(d.type))
-            .attr('stroke', d => d.isRoot ? '#FF5722' : 'none')
-            .attr('stroke-width', d => d.isRoot ? 2 : 0)
-            .call(d3.drag()
-                .on('start', (event, d) => this.dragstarted(event, d))
-                .on('drag', (event, d) => this.dragged(event, d))
-                .on('end', (event, d) => this.dragended(event, d)));
-        
-        // 添加节点标签，只显示重要节点的标签
-        const label = g.append('g')
-            .selectAll('text')
-            .data(graphData.nodes.filter(d => d.isRoot || d.type === 'Catalog' || d.type === 'Pages' || d.type === 'Page'))
-            .enter().append('text')
-            .text(d => d.label)
-            .attr('font-size', d => d.isRoot ? '12px' : '8px')
-            .attr('font-weight', d => d.isRoot ? 'bold' : 'normal')
-            .attr('dx', d => d.isRoot ? 15 : 8)
-            .attr('dy', 3)
-            .attr('fill', d => d.isRoot ? '#FF5722' : '#333')
-            .style('pointer-events', 'none');
-        
-        // 更新位置
-        simulation.on('tick', () => {
-            link
-                .attr('x1', d => d.source.x)
-                .attr('y1', d => d.source.y)
-                .attr('x2', d => d.target.x)
-                .attr('y2', d => d.target.y);
-            
-            node
-                .attr('cx', d => d.x)
-                .attr('cy', d => d.y);
-            
-            label
-                .attr('x', d => d.x)
-                .attr('y', d => d.y);
-        });
-        
-        // 保存引用
-        this.relationshipGraph = { simulation, node, link, label, zoom };
-        
-        // 自动调整视图以适应所有节点
-        setTimeout(() => {
-            this.fitGraphToView(svg, graphData.nodes, width, height);
-        }, 1000);
-    }
-    
-    /**
-     * 调整视图以适应所有节点
-     */
-    fitGraphToView(svg, nodes, width, height) {
-        if (!nodes || nodes.length === 0) return;
-        
-        // 计算节点的边界
-        const xExtent = d3.extent(nodes, d => d.x);
-        const yExtent = d3.extent(nodes, d => d.y);
-        
-        const graphWidth = xExtent[1] - xExtent[0];
-        const graphHeight = yExtent[1] - yExtent[0];
-        
-        // 计算缩放比例
-        const scaleX = (width * 0.8) / graphWidth;
-        const scaleY = (height * 0.8) / graphHeight;
-        const scale = Math.min(scaleX, scaleY, 1);
-        
-        // 计算平移
-        const translateX = (width - graphWidth * scale) / 2 - xExtent[0] * scale;
-        const translateY = (height - graphHeight * scale) / 2 - yExtent[0] * scale;
-        
-        // 应用变换
-        const transform = d3.zoomIdentity
-            .translate(translateX, translateY)
-            .scale(scale);
-        
-        svg.transition()
-            .duration(750)
-            .call(this.relationshipGraph.zoom.transform, transform);
-    }
-    
-    /**
-     * 获取节点颜色
-     */
-    getNodeColor(type) {
-        const colorMap = {
-            'Catalog': '#4CAF50',
-            'Pages': '#2196F3',
-            'Page': '#FF9800',
-            'Font': '#9C27B0',
-            'Stream': '#F44336',
-            'XObject': '#00BCD4',
-            'Annot': '#795548',
-            'Form': '#607D8B',
-            'Metadata': '#E91E63',
-            'Info': '#3F51B5',
-            'Encrypt': '#FF5722'
+        // 创建网络图数据
+        const data = {
+            nodes: new vis.DataSet(graphData.nodes),
+            edges: new vis.DataSet(graphData.edges)
         };
         
-        return colorMap[type] || '#999';
+        // 配置选项
+        const options = {
+            nodes: {
+                shape: 'dot',
+                size: 8,
+                font: {
+                    size: 10,
+                    face: 'Arial'
+                },
+                borderWidth: 1,
+                shadow: true,
+                color: {
+                    border: '#2B7CE9',
+                    background: '#97C2FC',
+                    highlight: {
+                        border: '#2B7CE9',
+                        background: '#D2E5FF'
+                    },
+                    hover: {
+                        border: '#2B7CE9',
+                        background: '#D2E5FF'
+                    }
+                }
+            },
+            edges: {
+                width: 1,
+                color: {
+                    color: '#848484',
+                    highlight: '#848484',
+                    hover: '#848484'
+                },
+                smooth: {
+                    type: 'curvedCW',
+                    roundness: 0.2
+                }
+            },
+            groups: {
+                'Catalog': {
+                    color: { background: '#4CAF50', border: '#2E7D32' },
+                    font: { color: '#ffffff' }
+                },
+                'Pages': {
+                    color: { background: '#2196F3', border: '#1565C0' },
+                    font: { color: '#ffffff' }
+                },
+                'Page': {
+                    color: { background: '#FF9800', border: '#E65100' },
+                    font: { color: '#ffffff' }
+                },
+                'Font': {
+                    color: { background: '#9C27B0', border: '#6A1B9A' },
+                    font: { color: '#ffffff' }
+                },
+                'Stream': {
+                    color: { background: '#F44336', border: '#C62828' },
+                    font: { color: '#ffffff' }
+                },
+                'XObject': {
+                    color: { background: '#00BCD4', border: '#00838F' },
+                    font: { color: '#ffffff' }
+                },
+                'Annot': {
+                    color: { background: '#795548', border: '#4E342E' },
+                    font: { color: '#ffffff' }
+                },
+                'Form': {
+                    color: { background: '#607D8B', border: '#37474F' },
+                    font: { color: '#ffffff' }
+                },
+                'Metadata': {
+                    color: { background: '#E91E63', border: '#AD1457' },
+                    font: { color: '#ffffff' }
+                },
+                'Info': {
+                    color: { background: '#3F51B5', border: '#1A237E' },
+                    font: { color: '#ffffff' }
+                },
+                'Encrypt': {
+                    color: { background: '#FF5722', border: '#BF360C' },
+                    font: { color: '#ffffff' }
+                },
+                'Unknown': {
+                    color: { background: '#9E9E9E', border: '#424242' },
+                    font: { color: '#ffffff' }
+                }
+            },
+            physics: {
+                enabled: true,
+                solver: 'forceAtlas2Based',
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 100,
+                    springConstant: 0.08,
+                    damping: 0.4,
+                    avoidOverlap: 0.5
+                },
+                stabilization: {
+                    enabled: true,
+                    iterations: 1000,
+                    updateInterval: 100,
+                    fit: true
+                }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200,
+                zoomView: true,
+                dragView: true
+            },
+            layout: {
+                improvedLayout: true,
+                hierarchical: {
+                    enabled: false,
+                    direction: 'UD',
+                    sortMethod: 'directed'
+                }
+            }
+        };
+        
+        // 创建网络图
+        const network = new vis.Network(container, data, options);
+        
+        // 保存引用
+        this.relationshipGraph = { network, data };
+        
+        // 添加事件监听
+        network.on('click', (params) => {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const node = data.nodes.get(nodeId);
+                this.showNodeDetails(node);
+            }
+        });
+        
+        network.on('stabilizationProgress', (params) => {
+            // 可以在这里显示稳定化进度
+            console.log('Stabilization progress:', params.iterations, '/', params.total);
+        });
+        
+        network.on('stabilizationIterationsDone', () => {
+            console.log('Network stabilized');
+        });
+        
+        // 自动适应视图
+        network.fit();
     }
     
     /**
-     * 拖拽事件
+     * 显示节点详情
      */
-    dragstarted(event, d) {
-        if (!event.active && this.relationshipGraph?.simulation) {
-            this.relationshipGraph.simulation.alphaTarget(0.3).restart();
+    showNodeDetails(node) {
+        const modal = document.getElementById('objectDetailModal');
+        const title = document.getElementById('objectDetailTitle');
+        const content = document.getElementById('objectDetailContent');
+        const closeBtn = document.getElementById('closeObjectModal');
+        
+        if (!modal || !title || !content) return;
+        
+        title.textContent = `对象详情: ${node.label}`;
+        
+        content.innerHTML = `
+            <div class="object-detail-info">
+                <div class="detail-row">
+                    <span class="detail-label">对象编号:</span>
+                    <span class="detail-value">${node.objectNumber}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">生成号:</span>
+                    <span class="detail-value">${node.generation}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">类型:</span>
+                    <span class="detail-value">${node.type}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">层级:</span>
+                    <span class="detail-value">${node.level}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">是否根节点:</span>
+                    <span class="detail-value">${node.isRoot ? '是' : '否'}</span>
+                </div>
+            </div>
+        `;
+        
+        modal.style.display = 'block';
+        
+        // 绑定关闭按钮事件
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                modal.style.display = 'none';
+            };
         }
-        d.fx = d.x;
-        d.fy = d.y;
+        
+        // 点击模态框外部关闭
+        modal.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
     }
     
-    dragged(event, d) {
-        d.fx = event.x;
-        d.fy = event.y;
-    }
+
     
-    dragended(event, d) {
-        if (!event.active && this.relationshipGraph?.simulation) {
-            this.relationshipGraph.simulation.alphaTarget(0);
-        }
-        d.fx = null;
-        d.fy = null;
-    }
+
+    
+
     
     /**
      * 渲染问题列表
@@ -1128,30 +1187,30 @@ class PDFVisualizer {
      * 导出关系图
      */
     exportGraph() {
-        const container = document.getElementById('relationshipGraph');
-        if (!container) return;
+        if (!this.relationshipGraph?.network) {
+            this.showToast('没有可导出的关系图');
+            return;
+        }
         
-        const svg = container.querySelector('svg');
-        if (!svg) return;
-        
-        // 创建SVG的副本
-        const clonedSvg = svg.cloneNode(true);
-        
-        // 设置尺寸
-        clonedSvg.setAttribute('width', '800');
-        clonedSvg.setAttribute('height', '600');
-        
-        // 转换为字符串
-        const svgData = new XMLSerializer().serializeToString(clonedSvg);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        
-        // 下载文件
-        const url = URL.createObjectURL(svgBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'pdf-relationship-graph.svg';
-        link.click();
-        URL.revokeObjectURL(url);
+        try {
+            // 获取网络图的Canvas
+            const canvas = this.relationshipGraph.network.canvas.frame.canvas;
+            if (!canvas) {
+                this.showToast('无法获取关系图数据');
+                return;
+            }
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.download = 'pdf-relationship-graph.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            this.showToast('关系图导出成功');
+        } catch (error) {
+            console.error('导出关系图失败:', error);
+            this.showToast('导出失败，请重试');
+        }
     }
     
     /**

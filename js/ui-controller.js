@@ -259,30 +259,25 @@ class UIController {
      * 缩放关系图
      */
     zoomGraph(factor) {
-        const container = document.getElementById('relationshipGraph');
-        if (!container) return;
+        if (!this.pdfInspector?.visualizer?.relationshipGraph?.network) return;
         
-        const svg = container.querySelector('svg');
-        if (!svg) return;
-        
-        const currentTransform = svg.style.transform || 'scale(1)';
-        const currentScale = parseFloat(currentTransform.match(/scale\(([^)]+)\)/)?.[1] || 1);
+        const network = this.pdfInspector.visualizer.relationshipGraph.network;
+        const currentScale = network.getScale();
         const newScale = Math.max(0.1, Math.min(3, currentScale * factor));
         
-        svg.style.transform = `scale(${newScale})`;
+        network.moveTo({
+            scale: newScale
+        });
     }
     
     /**
      * 重置关系图缩放
      */
     resetGraphZoom() {
-        const container = document.getElementById('relationshipGraph');
-        if (!container) return;
+        if (!this.pdfInspector?.visualizer?.relationshipGraph?.network) return;
         
-        const svg = container.querySelector('svg');
-        if (svg) {
-            svg.style.transform = 'scale(1)';
-        }
+        const network = this.pdfInspector.visualizer.relationshipGraph.network;
+        network.fit();
     }
     
     /**
