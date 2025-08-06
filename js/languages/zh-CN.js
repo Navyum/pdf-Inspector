@@ -366,7 +366,7 @@ const zhCN = {
             "不滥用服务资源"
         ],
         disclaimerTitle: "免责声明",
-        disclaimerDesc: "本服务按"现状"提供，不保证结果的准确性。用户应自行承担使用风险。",
+        disclaimerDesc: "本服务按现状提供，不保证结果的准确性。用户应自行承担使用风险。",
         prohibitedTitle: "禁止行为",
         prohibitedItems: [
             "上传恶意文件或病毒",
