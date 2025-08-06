@@ -215,13 +215,16 @@ class PDFValidatorUI {
         
         // 更新加密信息，使用图标和颜色区分
         const encryptedElement = document.getElementById('isEncrypted');
-        if (fileInfo.isEncrypted) {
-            const encryptionType = fileInfo.encryptionType || 'Standard Encryption';
-            encryptedElement.innerHTML = `<i class="fas fa-lock" style="color: #dc3545;"></i> 是 (${encryptionType})`;
-            encryptedElement.style.color = '#dc3545';
+        const isEncrypted = fileInfo.isEncrypted;
+        const encryptionType = fileInfo.encryptionType || 'Standard Encryption';
+        if (isEncrypted) {
+            encryptedElement.innerHTML = window.languageManager ? 
+                `<i class="fas fa-lock" style="color: #dc3545;"></i> ${window.languageManager.get('common.yes')} (${encryptionType})` :
+                `<i class="fas fa-lock" style="color: #dc3545;"></i> 是 (${encryptionType})`;
         } else {
-            encryptedElement.innerHTML = '<i class="fas fa-unlock" style="color: #28a745;"></i> 否';
-            encryptedElement.style.color = '#28a745';
+            encryptedElement.innerHTML = window.languageManager ? 
+                `<i class="fas fa-unlock" style="color: #28a745;"></i> ${window.languageManager.get('common.no')}` :
+                '<i class="fas fa-unlock" style="color: #28a745;"></i> 否';
         }
     }
 

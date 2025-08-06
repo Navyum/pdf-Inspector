@@ -102,7 +102,14 @@ class UIController {
      * 初始化问题列表工具栏
      */
     initIssuesToolbar() {
+        const filterIssuesBtn = document.getElementById('filterIssuesBtn');
         const exportIssuesBtn = document.getElementById('exportIssuesBtn');
+        
+        if (filterIssuesBtn) {
+            filterIssuesBtn.addEventListener('click', () => {
+                this.showIssuesFilter();
+            });
+        }
         
         if (exportIssuesBtn) {
             exportIssuesBtn.addEventListener('click', () => {
@@ -160,6 +167,133 @@ class UIController {
             });
         }
     }
+    
+    /**
+     * 显示问题筛选选项
+     */
+    showIssuesFilter() {
+        // 移除现有的筛选面板
+        document.querySelectorAll('.filter-panel').forEach(el => el.remove());
+        
+        // 创建筛选面板
+        const filterPanel = document.createElement('div');
+        filterPanel.className = 'filter-panel';
+        filterPanel.innerHTML = `
+            <div class="filter-header">
+                <span class="filter-title">筛选问题</span>
+                <button class="filter-close" onclick="this.closest('.filter-panel').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="filter-options">
+                <div class="filter-option" data-value="all">
+                    <div class="filter-option-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <span class="filter-option-text">全部问题</span>
+                    <div class="filter-option-check">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="filter-option" data-value="error">
+                    <div class="filter-option-icon error">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <span class="filter-option-text">错误</span>
+                    <div class="filter-option-check">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="filter-option" data-value="warning">
+                    <div class="filter-option-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <span class="filter-option-text">警告</span>
+                    <div class="filter-option-check">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="filter-option" data-value="info">
+                    <div class="filter-option-icon info">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <span class="filter-option-text">信息</span>
+                    <div class="filter-option-check">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // 设置面板样式和位置
+        filterPanel.style.position = 'absolute';
+        filterPanel.style.top = '60px';
+        filterPanel.style.left = '10px';
+        filterPanel.style.zIndex = '1000';
+        
+        // 设置默认选中"全部问题"
+        filterPanel.querySelector('.filter-option[data-value="all"]').classList.add('selected');
+        
+        // 绑定筛选事件
+        filterPanel.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const value = e.currentTarget.dataset.value;
+                this.filterIssues(value);
+                
+                // 更新选中状态
+                filterPanel.querySelectorAll('.filter-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                e.currentTarget.classList.add('selected');
+                
+                // 延迟关闭面板
+                setTimeout(() => filterPanel.remove(), 300);
+            });
+        });
+        
+        // 点击外部区域关闭面板
+        const closePanel = (e) => {
+            if (!filterPanel.contains(e.target)) {
+                filterPanel.remove();
+                document.removeEventListener('click', closePanel);
+            }
+        };
+        
+        // 延迟添加事件监听
+        setTimeout(() => {
+            document.addEventListener('click', closePanel);
+        }, 100);
+        
+        // 添加到容器
+        const issuesContainer = document.querySelector('.issues-container');
+        issuesContainer.appendChild(filterPanel);
+    }
+    
+
+    
+    /**
+     * 筛选问题
+     */
+    filterIssues(filterType) {
+        const issuesList = document.getElementById('issuesList');
+        const issues = issuesList.querySelectorAll('.issue-item');
+        
+        issues.forEach(issue => {
+            const severity = issue.classList.contains('error') ? 'error' :
+                           issue.classList.contains('warning') ? 'warning' :
+                           issue.classList.contains('info') ? 'info' : 'success';
+            
+            if (filterType === 'all' || severity === filterType) {
+                issue.style.display = 'block';
+            } else {
+                issue.style.display = 'none';
+            }
+        });
+        
+        this.showToast(`已筛选${filterType === 'all' ? '全部' : filterType}问题`);
+    }
+    
+
     
     /**
      * 初始化键盘快捷键
@@ -259,25 +393,30 @@ class UIController {
      * 缩放关系图
      */
     zoomGraph(factor) {
-        if (!this.pdfInspector?.visualizer?.relationshipGraph?.network) return;
+        const container = document.getElementById('relationshipGraph');
+        if (!container) return;
         
-        const network = this.pdfInspector.visualizer.relationshipGraph.network;
-        const currentScale = network.getScale();
+        const svg = container.querySelector('svg');
+        if (!svg) return;
+        
+        const currentTransform = svg.style.transform || 'scale(1)';
+        const currentScale = parseFloat(currentTransform.match(/scale\(([^)]+)\)/)?.[1] || 1);
         const newScale = Math.max(0.1, Math.min(3, currentScale * factor));
         
-        network.moveTo({
-            scale: newScale
-        });
+        svg.style.transform = `scale(${newScale})`;
     }
     
     /**
      * 重置关系图缩放
      */
     resetGraphZoom() {
-        if (!this.pdfInspector?.visualizer?.relationshipGraph?.network) return;
+        const container = document.getElementById('relationshipGraph');
+        if (!container) return;
         
-        const network = this.pdfInspector.visualizer.relationshipGraph.network;
-        network.fit();
+        const svg = container.querySelector('svg');
+        if (svg) {
+            svg.style.transform = 'scale(1)';
+        }
     }
     
     /**
@@ -365,10 +504,6 @@ class UIController {
         document.getElementById('issuesList').innerHTML = '';
         document.getElementById('rawData').textContent = '';
         
-        // 重置底部状态栏
-        document.getElementById('currentFile').textContent = '未选择文件';
-        document.getElementById('processingStatus').textContent = '就绪';
-        
         // 显示上传区域
         document.getElementById('uploadSection').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
@@ -395,7 +530,8 @@ class UIController {
     updateFileInfo(file) {
         document.getElementById('fileName').textContent = file.name;
         document.getElementById('fileSize').textContent = this.formatFileSize(file.size);
-        document.getElementById('currentFile').textContent = file.name;
+        // 不设置状态栏的currentFile文本
+        // document.getElementById('currentFile').textContent = file.name;
     }
     
     /**
@@ -416,10 +552,13 @@ class UIController {
         document.getElementById('pageCount').textContent = pageCount;
         
         // 加密状态
-        const isEncrypted = this.isEncrypted(pdfStructure);
         const encryptedElement = document.getElementById('isEncrypted');
         if (encryptedElement) {
-            encryptedElement.textContent = isEncrypted ? '是' : '否';
+            const isEncrypted = this.isEncrypted(pdfStructure);
+            const encryptedText = isEncrypted ? 
+                (window.languageManager ? window.languageManager.get('common.yes') : '是') :
+                (window.languageManager ? window.languageManager.get('common.no') : '否');
+            encryptedElement.textContent = encryptedText;
             encryptedElement.className = isEncrypted ? 'encrypted' : 'not-encrypted';
         }
         
@@ -433,18 +572,24 @@ class UIController {
         const filesElement = document.getElementById('hasEmbeddedFiles');
         
         if (jsElement) {
-            jsElement.textContent = hasJavaScript ? '是' : '否';
-            jsElement.className = hasJavaScript ? 'warning' : 'success';
+            const jsText = hasJavaScript ? 
+                (window.languageManager ? window.languageManager.get('common.yes') : '是') :
+                (window.languageManager ? window.languageManager.get('common.no') : '否');
+            jsElement.textContent = jsText;
         }
         
         if (linksElement) {
-            linksElement.textContent = hasExternalLinks ? '是' : '否';
-            linksElement.className = hasExternalLinks ? 'warning' : 'success';
+            const linksText = hasExternalLinks ? 
+                (window.languageManager ? window.languageManager.get('common.yes') : '是') :
+                (window.languageManager ? window.languageManager.get('common.no') : '否');
+            linksElement.textContent = linksText;
         }
         
         if (filesElement) {
-            filesElement.textContent = hasEmbeddedFiles ? '是' : '否';
-            filesElement.className = hasEmbeddedFiles ? 'info' : 'success';
+            const filesText = hasEmbeddedFiles ? 
+                (window.languageManager ? window.languageManager.get('common.yes') : '是') :
+                (window.languageManager ? window.languageManager.get('common.no') : '否');
+            filesElement.textContent = filesText;
         }
         
         // 验证结果
@@ -470,7 +615,7 @@ class UIController {
                 panelIcon.className = 'fas fa-clipboard-check';
             }
             
-            document.getElementById('validationStatus').textContent = '未验证';
+            document.getElementById('validationStatus').textContent = window.languageManager ? window.languageManager.get('validation.notVerified') : '未验证';
             document.getElementById('validationStatus').className = 'info';
             document.getElementById('errorCount').textContent = '0';
             document.getElementById('errorCount').className = 'no-errors';
@@ -500,7 +645,10 @@ class UIController {
         // 更新验证状态
         const statusElement = document.getElementById('validationStatus');
         if (statusElement) {
-            statusElement.textContent = isPassed ? '通过' : '失败';
+            const statusText = isPassed ? 
+                (window.languageManager ? window.languageManager.get('validation.passed') : '通过') :
+                (window.languageManager ? window.languageManager.get('validation.failed') : '失败');
+            statusElement.textContent = statusText;
             statusElement.className = isPassed ? 'validation-passed' : 'validation-failed';
         }
         
@@ -818,7 +966,8 @@ class UIController {
      * 更新处理状态
      */
     updateProcessingStatus(status) {
-        document.getElementById('processingStatus').textContent = status;
+        // 不设置状态文本，保持状态栏为空
+        // document.getElementById('processingStatus').textContent = status;
     }
     
     /**

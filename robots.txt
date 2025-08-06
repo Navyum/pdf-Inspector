@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pdf.camscanner.top/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow specific paths
+Disallow: /js/
+Disallow: /css/
+Disallow: /test/
+Disallow: /testpdf/
+Disallow: /node_modules/
+
+# Allow important files
+Allow: /index.html
+Allow: /README.md
+Allow: /package.json 

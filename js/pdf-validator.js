@@ -1,6 +1,75 @@
 /**
  * PDF 验证器
  * 基于 PDF 1.7 标准 (ISO 32000-1) 验证 PDF 结构
+ * 
+ * 检测规则说明：
+ * 
+ * 1. PDF 头部验证 (Header Validation)
+ *    - 检查 %PDF 标识符是否存在
+ *    - 验证版本号格式 (1.0-1.7)
+ *    - 检查文件类型标识
+ * 
+ * 2. Catalog 对象验证 (Catalog Object Validation)
+ *    - 验证 Type 属性必须为 "Catalog"
+ *    - 检查必需条目：Pages
+ *    - 验证对象引用有效性
+ * 
+ * 3. Pages 对象验证 (Pages Object Validation)
+ *    - 验证 Type 属性必须为 "Pages"
+ *    - 检查必需条目：Kids, Count
+ *    - 验证页面树结构完整性
+ * 
+ * 4. Page 对象验证 (Page Object Validation)
+ *    - 验证 Type 属性必须为 "Page"
+ *    - 检查必需条目：Parent, MediaBox
+ *    - 验证页面边界框有效性
+ *    - 检查页面资源引用
+ * 
+ * 5. Font 对象验证 (Font Object Validation)
+ *    - 验证 Type 属性必须为 "Font"
+ *    - 检查必需条目：Subtype, BaseFont
+ *    - 验证字体类型和编码
+ * 
+ * 6. XObject 对象验证 (XObject Object Validation)
+ *    - 验证 Type 属性必须为 "XObject"
+ *    - 检查必需条目：Subtype
+ *    - 验证图像或表单对象属性
+ * 
+ * 7. Stream 对象验证 (Stream Object Validation)
+ *    - 检查 Length 属性
+ *    - 验证 Filter 属性有效性
+ *    - 检查压缩数据完整性
+ *    - 验证 Stream 内容可读性
+ * 
+ * 8. XRef 表验证 (Cross-Reference Table Validation)
+ *    - 检查 XRef 表完整性
+ *    - 验证对象偏移量正确性
+ *    - 检查生成号有效性
+ *    - 验证 Free Entry 链表
+ * 
+ * 9. Trailer 验证 (Trailer Validation)
+ *    - 检查必需属性：Root, Size
+ *    - 验证 Root 引用有效性
+ *    - 检查加密状态信息
+ *    - 验证文件完整性
+ * 
+ * 10. 引用关系验证 (Reference Validation)
+ *     - 检查间接引用有效性
+ *     - 验证对象编号范围
+ *     - 检测循环引用关系
+ *     - 验证引用链完整性
+ * 
+ * 11. 安全验证 (Security Validation)
+ *     - 检查加密状态
+ *     - 验证权限设置
+ *     - 检测安全风险
+ *     - 验证数字签名
+ * 
+ * 12. 性能验证 (Performance Validation)
+ *     - 检查对象数量合理性
+ *     - 验证文件大小
+ *     - 检测内存使用
+ *     - 验证处理效率
  */
 class PDFValidator {
     constructor() {
@@ -10,7 +79,7 @@ class PDFValidator {
 
     /**
      * 初始化验证规则
-     * @returns {Object}
+     * @returns {Object} 验证规则配置
      */
     initializeValidationRules() {
         return {
@@ -19,7 +88,14 @@ class PDFValidator {
                 version: {
                     required: true,
                     pattern: /^1\.[0-7]$/,
-                    message: 'PDF 版本必须是 1.0 到 1.7 之间的有效版本'
+                    message: 'PDF 版本必须是 1.0 到 1.7 之间的有效版本',
+                    description: '检查PDF文件头部版本号格式，确保符合PDF标准规范'
+                },
+                pdfIdentifier: {
+                    required: true,
+                    pattern: /%PDF/,
+                    message: 'PDF文件必须以 %PDF 标识符开头',
+                    description: '验证PDF文件头部包含标准PDF标识符'
                 }
             },
 
@@ -28,11 +104,33 @@ class PDFValidator {
                 Type: {
                     required: true,
                     value: 'Catalog',
-                    message: 'Catalog 对象的 Type 必须是 "Catalog"'
+                    message: 'Catalog 对象的 Type 必须是 "Catalog"',
+                    description: '验证文档目录对象的类型标识'
                 },
                 Pages: {
                     required: true,
-                    message: 'Catalog 对象必须包含 Pages 条目'
+                    message: 'Catalog 对象必须包含 Pages 条目',
+                    description: '检查文档页面树的根对象引用'
+                }
+            },
+
+            // Pages 对象验证规则
+            pages: {
+                Type: {
+                    required: true,
+                    value: 'Pages',
+                    message: 'Pages 对象的 Type 必须是 "Pages"',
+                    description: '验证页面树对象的类型标识'
+                },
+                Kids: {
+                    required: true,
+                    message: 'Pages 对象必须包含 Kids 条目',
+                    description: '检查页面树子对象列表'
+                },
+                Count: {
+                    required: true,
+                    message: 'Pages 对象必须包含 Count 条目',
+                    description: '验证页面数量统计信息'
                 }
             },
 
@@ -41,15 +139,100 @@ class PDFValidator {
                 Type: {
                     required: true,
                     value: 'Page',
-                    message: 'Page 对象的 Type 必须是 "Page"'
+                    message: 'Page 对象的 Type 必须是 "Page"',
+                    description: '验证页面对象的类型标识'
                 },
                 Parent: {
                     required: true,
-                    message: 'Page 对象必须包含 Parent 条目'
+                    message: 'Page 对象必须包含 Parent 条目',
+                    description: '检查页面在页面树中的父对象引用'
                 },
                 MediaBox: {
                     required: true,
-                    message: 'Page 对象必须包含 MediaBox 条目'
+                    message: 'Page 对象必须包含 MediaBox 条目',
+                    description: '验证页面边界框定义'
+                }
+            },
+
+            // Font 对象验证规则
+            font: {
+                Type: {
+                    required: true,
+                    value: 'Font',
+                    message: 'Font 对象的 Type 必须是 "Font"',
+                    description: '验证字体对象的类型标识'
+                },
+                Subtype: {
+                    required: true,
+                    message: 'Font 对象必须包含 Subtype 条目',
+                    description: '检查字体子类型定义'
+                },
+                BaseFont: {
+                    required: true,
+                    message: 'Font 对象必须包含 BaseFont 条目',
+                    description: '验证字体名称定义'
+                }
+            },
+
+            // XObject 对象验证规则
+            xobject: {
+                Type: {
+                    required: true,
+                    value: 'XObject',
+                    message: 'XObject 对象的 Type 必须是 "XObject"',
+                    description: '验证外部对象的类型标识'
+                },
+                Subtype: {
+                    required: true,
+                    message: 'XObject 对象必须包含 Subtype 条目',
+                    description: '检查外部对象子类型定义'
+                }
+            },
+
+            // Stream 对象验证规则
+            stream: {
+                Length: {
+                    required: true,
+                    message: 'Stream 对象必须包含 Length 条目',
+                    description: '验证流数据长度定义'
+                },
+                Filter: {
+                    required: false,
+                    message: 'Stream 对象应包含 Filter 条目',
+                    description: '检查流数据压缩过滤器'
+                }
+            },
+
+            // XRef 表验证规则
+            xref: {
+                entries: {
+                    required: true,
+                    message: 'XRef 表必须包含有效的条目',
+                    description: '验证交叉引用表完整性'
+                },
+                objectNumbers: {
+                    required: true,
+                    message: 'XRef 条目必须包含有效的对象编号',
+                    description: '检查对象编号的有效性'
+                },
+                offsets: {
+                    required: true,
+                    message: 'XRef 条目必须包含有效的偏移量',
+                    description: '验证对象在文件中的位置'
+                }
+            },
+
+            // Trailer 验证规则
+            trailer: {
+                Root: {
+                    required: true,
+                    message: 'Trailer 必须包含 Root 条目',
+                    description: '检查文档目录对象引用'
+                },
+                Size: {
+                    required: true,
+                    message: 'Trailer 必须包含 Size 条目',
+                    description: '验证PDF文件中的对象总数'
                 }
             },
 

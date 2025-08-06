@@ -3,13 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Inspector Pro - 专业PDF格式校验工具</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>PDF Inspector Pro - 专业PDF格式校验工具 | PDF结构分析 | 文件验证</title>
+    <meta name="description" content="PDF Inspector Pro 是一款专业的PDF格式校验工具，基于PDF 1.7标准验证PDF文件结构，提供可视化分析、问题检测、安全风险评估等功能。支持拖拽上传，实时分析PDF文档完整性。">
+    <meta name="keywords" content="PDF验证,PDF格式校验,PDF结构分析,PDF文件检查,PDF标准验证,PDF Inspector Pro,PDF文档分析,PDF完整性检查,PDF安全检测">
+    <meta name="author" content="PDF Inspector Pro">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="zh-CN">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pdf.camscanner.top/">
+    <meta property="og:title" content="PDF Inspector Pro - 专业PDF格式校验工具">
+    <meta property="og:description" content="基于PDF 1.7标准的专业PDF格式校验工具，提供可视化结构分析、问题检测、安全风险评估等功能。">
+    <meta property="og:image" content="https://pdf.camscanner.top/assets/images/og-image.png">
+    <meta property="og:site_name" content="PDF Inspector Pro">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pdf.camscanner.top/">
+    <meta property="twitter:title" content="PDF Inspector Pro - 专业PDF格式校验工具">
+    <meta property="twitter:description" content="基于PDF 1.7标准的专业PDF格式校验工具，提供可视化结构分析、问题检测、安全风险评估等功能。">
+    <meta property="twitter:image" content="https://pdf.camscanner.top/assets/images/twitter-image.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pdf.camscanner.top/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Performance optimization -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#667eea">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="js/libs/d3.min.js"></script>
-    <!-- Vis.js 网络图库 -->
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PDF Inspector Pro",
+        "description": "专业的PDF格式校验工具，基于PDF 1.7标准验证PDF文件结构",
+        "url": "https://pdf.camscanner.top/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web Browser",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "PDF Inspector Pro Team"
+        },
+        "featureList": [
+            "PDF结构解析",
+            "格式标准验证", 
+            "问题检测",
+            "安全风险评估",
+            "可视化分析",
+            "拖拽上传"
+        ],
+        "screenshot": "https://pdf.camscanner.top/assets/images/screenshot.png",
+        "softwareVersion": "1.0.0",
+        "datePublished": "2024-01-01",
+        "inLanguage": "zh-CN"
+    }
+    </script>
+    
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "PDF Inspector Pro",
+        "url": "https://pdf.camscanner.top/",
+        "logo": "https://pdf.camscanner.top/assets/images/logo.png",
+        "description": "专业的PDF格式校验工具开发团队",
+        "sameAs": [
+            "https://github.com/pdf-inspector-pro"
+        ]
+    }
+    </script>
     <script>
         // 检查库是否正确加载
         window.addEventListener('load', function() {
@@ -17,39 +109,35 @@
                 console.error('D3.js加载失败');
                 document.body.innerHTML += '<div style="position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;text-align:center;z-index:9999;">D3.js库加载失败，请检查网络连接</div>';
             }
-            if (typeof vis === 'undefined') {
-                console.error('Vis.js加载失败');
-                document.body.innerHTML += '<div style="position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;text-align:center;z-index:9999;">Vis.js库加载失败，请检查网络连接</div>';
-            }
         });
     </script>
 </head>
 <body>
     <div class="app-container">
         <!-- 顶部导航栏 -->
-        <header class="app-header">
+        <header class="app-header" role="banner">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-file-pdf"></i>
+                    <i class="fas fa-file-pdf" aria-hidden="true"></i>
                     <h1>PDF Inspector Pro</h1>
                 </div>
                 <div class="header-status">
                     <div class="status-info">
-                        <span id="currentFile">未选择文件</span>
-                        <span id="processingStatus">就绪</span>
+                        <span id="currentFile"></span>
+                        <span id="processingStatus"></span>
                     </div>
                     <div class="header-actions">
-                        <button class="btn btn-secondary" id="clearBtn" title="清空结果">
+                        <button class="btn btn-primary" id="clearBtn" title="清空结果">
                             <i class="fas fa-trash"></i>
-                            <span>清空</span>
+                            <span data-i18n="header.clear">清空</span>
                         </button>
                         <button class="btn btn-primary" id="exportBtn" title="导出结果">
                             <i class="fas fa-download"></i>
-                            <span>导出</span>
+                            <span data-i18n="header.export">导出</span>
                         </button>
                         <button class="btn btn-help" id="helpBtn" title="帮助">
                             <i class="fas fa-question"></i>
-                            <span>帮助</span>
+                            <span data-i18n="header.help">帮助</span>
                         </button>
                     </div>
                 </div>
@@ -57,20 +145,20 @@
         </header>
 
         <!-- 主要内容区域 -->
-        <main class="main-content">
+        <main class="main-content" role="main">
             <!-- 文件上传区域 -->
-            <section class="upload-section" id="uploadSection">
+            <section class="upload-section" id="uploadSection" aria-labelledby="upload-title">
                 <div class="upload-container">
-                    <div class="upload-area" id="uploadArea">
+                    <div class="upload-area" id="uploadArea" role="button" tabindex="0" aria-label="上传PDF文件区域">
                         <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
+                            <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
                         </div>
-                        <h3>拖拽PDF文件到此处或点击选择</h3>
-                        <p>支持单个文件上传</p>
+                        <h3 id="upload-title" data-i18n="upload.title">拖拽PDF文件到此处或点击选择</h3>
+                        <p data-i18n="upload.subtitle">支持单个文件上传</p>
                         <div class="upload-actions">
                             <button class="btn btn-primary" id="selectFileBtn">
                                 <i class="fas fa-folder-open"></i>
-                                选择文件
+                                <span data-i18n="upload.selectFile">选择文件</span>
                             </button>
                         </div>
                         <input type="file" id="fileInput" accept=".pdf" hidden>
@@ -79,29 +167,29 @@
             </section>
 
             <!-- 处理进度区域 -->
-            <section class="progress-section" id="progressSection" style="display: none;">
+            <section class="progress-section" id="progressSection" style="display: none;" aria-labelledby="progress-title" aria-live="polite">
                 <div class="progress-container">
                     <div class="progress-header">
-                        <h3><i class="fas fa-spinner fa-spin"></i> 正在处理PDF文件</h3>
-                        <p id="progressText">解析中...</p>
+                        <h3 id="progress-title" data-i18n="progress.processing"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> 正在处理PDF文件</h3>
+                        <p id="progressText" data-i18n="progress.parsing">解析中...</p>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
                     <div class="progress-stats">
-                        <span id="processedCount">0</span> / <span id="totalCount">0</span> 文件
+                        <span id="processedCount">0</span> / <span id="totalCount">0</span> <span data-i18n="stats.files">文件</span>
                     </div>
                 </div>
             </section>
 
             <!-- 结果展示区域 -->
-            <section class="results-section" id="resultsSection" style="display: none;">
+            <section class="results-section" id="resultsSection" style="display: none;" aria-labelledby="results-title">
                 <!-- 文件信息仪表板 -->
                 <div class="file-info-dashboard">
                     <div class="dashboard-header">
                         <div class="dashboard-title">
-                            <i class="fas fa-file-pdf"></i>
-                            <h2>文件信息</h2>
+                            <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                            <h2 id="results-title" data-i18n="fileInfo.title">文件信息</h2>
                         </div>
                     </div>
                     
@@ -111,27 +199,27 @@
                             <div class="info-panel basic-info">
                                 <div class="panel-header">
                                     <i class="fas fa-info-circle"></i>
-                                    <h3>基本信息</h3>
+                                    <h3 data-i18n="fileInfo.basicInfo">基本信息</h3>
                                 </div>
                                 <div class="panel-content">
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-file"></i>
-                                            <span>文件名</span>
+                                            <span data-i18n="fileInfo.fileName">文件名</span>
                                         </div>
                                         <div class="info-value" id="fileName">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-weight-hanging"></i>
-                                            <span>文件大小</span>
+                                            <span data-i18n="fileInfo.fileSize">文件大小</span>
                                         </div>
                                         <div class="info-value" id="fileSize">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-code-branch"></i>
-                                            <span>PDF版本</span>
+                                            <span data-i18n="fileInfo.pdfVersion">PDF版本</span>
                                         </div>
                                         <div class="info-value" id="pdfVersion">-</div>
                                     </div>
@@ -142,27 +230,27 @@
                             <div class="info-panel structure-info">
                                 <div class="panel-header">
                                     <i class="fas fa-sitemap"></i>
-                                    <h3>结构信息</h3>
+                                    <h3 data-i18n="fileInfo.structureInfo">结构信息</h3>
                                 </div>
                                 <div class="panel-content">
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-cubes"></i>
-                                            <span>对象数量</span>
+                                            <span data-i18n="fileInfo.objectCount">对象数量</span>
                                         </div>
                                         <div class="info-value" id="objectCount">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-file-alt"></i>
-                                            <span>页面数量</span>
+                                            <span data-i18n="fileInfo.pageCount">页面数量</span>
                                         </div>
                                         <div class="info-value" id="pageCount">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-lock"></i>
-                                            <span>加密状态</span>
+                                            <span data-i18n="fileInfo.encryptionStatus">加密状态</span>
                                         </div>
                                         <div class="info-value" id="isEncrypted">-</div>
                                     </div>
@@ -173,27 +261,27 @@
                             <div class="info-panel security-info">
                                 <div class="panel-header">
                                     <i class="fas fa-shield-alt"></i>
-                                    <h3>安全信息</h3>
+                                    <h3 data-i18n="fileInfo.securityInfo">安全信息</h3>
                                 </div>
                                 <div class="panel-content">
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-javascript"></i>
-                                            <span>JavaScript</span>
+                                            <span data-i18n="fileInfo.hasJavaScript">JavaScript</span>
                                         </div>
                                         <div class="info-value" id="hasJavaScript">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-external-link-alt"></i>
-                                            <span>外部链接</span>
+                                            <span data-i18n="fileInfo.hasExternalLinks">外部链接</span>
                                         </div>
                                         <div class="info-value" id="hasExternalLinks">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-paperclip"></i>
-                                            <span>嵌入文件</span>
+                                            <span data-i18n="fileInfo.hasEmbeddedFiles">嵌入文件</span>
                                         </div>
                                         <div class="info-value" id="hasEmbeddedFiles">-</div>
                                     </div>
@@ -204,27 +292,27 @@
                             <div class="info-panel validation-info">
                                 <div class="panel-header">
                                     <i class="fas fa-clipboard-check"></i>
-                                    <h3>验证结果</h3>
+                                    <h3 data-i18n="fileInfo.validationInfo">验证结果</h3>
                                 </div>
                                 <div class="panel-content">
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-check"></i>
-                                            <span>验证状态</span>
+                                            <span data-i18n="fileInfo.validationStatus">验证状态</span>
                                         </div>
                                         <div class="info-value" id="validationStatus">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-exclamation-triangle"></i>
-                                            <span>错误数量</span>
+                                            <span data-i18n="fileInfo.errorCount">错误数量</span>
                                         </div>
                                         <div class="info-value" id="errorCount">-</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">
                                             <i class="fas fa-exclamation-circle"></i>
-                                            <span>警告数量</span>
+                                            <span data-i18n="fileInfo.warningCount">警告数量</span>
                                         </div>
                                         <div class="info-value" id="warningCount">-</div>
                                     </div>
@@ -240,7 +328,7 @@
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-value" id="avgObjectSize">-</div>
-                                    <div class="stat-label">平均对象大小</div>
+                                    <div class="stat-label" data-i18n="stats.avgObjectSize">平均对象大小</div>
                                 </div>
                             </div>
                             <div class="stat-card">
@@ -249,7 +337,7 @@
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-value" id="objectTypes">-</div>
-                                    <div class="stat-label">对象类型数</div>
+                                    <div class="stat-label" data-i18n="stats.objectTypes">对象类型数</div>
                                 </div>
                             </div>
                             <div class="stat-card">
@@ -258,7 +346,7 @@
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-value" id="compressionRatio">-</div>
-                                    <div class="stat-label">压缩率</div>
+                                    <div class="stat-label" data-i18n="stats.compressionRatio">压缩率</div>
                                 </div>
                             </div>
                         </div>
@@ -269,17 +357,17 @@
                 <div class="tabs-container">
                     <div class="tabs">
                         <button class="tab-btn active" data-tab="structure">
-                            <i class="fas fa-sitemap"></i> PDF结构
+                            <i class="fas fa-sitemap"></i> <span data-i18n="tabs.structure">PDF结构</span>
                         </button>
                         <button class="tab-btn" data-tab="graph">
-                            <i class="fas fa-project-diagram"></i> 关系图
+                            <i class="fas fa-project-diagram"></i> <span data-i18n="tabs.graph">关系图</span>
                         </button>
                         <button class="tab-btn" data-tab="issues">
-                            <i class="fas fa-exclamation-triangle"></i> 问题列表
+                            <i class="fas fa-exclamation-triangle"></i> <span data-i18n="tabs.issues">问题列表</span>
                         </button>
 
                         <button class="tab-btn" data-tab="raw">
-                            <i class="fas fa-code"></i> 原始数据
+                            <i class="fas fa-code"></i> <span data-i18n="tabs.raw">原始数据</span>
                         </button>
                     </div>
 
@@ -290,14 +378,14 @@
                             <div class="structure-container">
                                 <div class="structure-toolbar">
                                     <div class="search-box">
-                                        <input type="text" id="structureSearch" placeholder="搜索对象...">
+                                        <input type="text" id="structureSearch" data-i18n-placeholder="structure.search" placeholder="搜索对象...">
                                         <i class="fas fa-search"></i>
                                     </div>
                                     <div class="filter-buttons">
-                                        <button class="filter-btn active" data-filter="all">全部</button>
-                                        <button class="filter-btn" data-filter="error">错误</button>
-                                        <button class="filter-btn" data-filter="warning">警告</button>
-                                        <button class="filter-btn" data-filter="success">正常</button>
+                                        <button class="filter-btn active" data-filter="all" data-i18n="filters.all">全部</button>
+                                        <button class="filter-btn" data-filter="error" data-i18n="filters.error">错误</button>
+                                        <button class="filter-btn" data-filter="warning" data-i18n="filters.warning">警告</button>
+                                        <button class="filter-btn" data-filter="success" data-i18n="filters.success">正常</button>
                                     </div>
 
                                 </div>
@@ -311,18 +399,22 @@
                         <div class="tab-pane" id="graph-tab">
                             <div class="graph-container">
                                 <div class="graph-toolbar">
-                                    <button class="btn btn-secondary" id="zoomInBtn">
-                                        <i class="fas fa-search-plus"></i>
-                                    </button>
-                                    <button class="btn btn-secondary" id="zoomOutBtn">
-                                        <i class="fas fa-search-minus"></i>
-                                    </button>
-                                    <button class="btn btn-secondary" id="resetZoomBtn">
-                                        <i class="fas fa-expand-arrows-alt"></i>
-                                    </button>
-                                    <button class="btn btn-primary" id="exportGraphBtn">
-                                        <i class="fas fa-download"></i> 导出图片
-                                    </button>
+                                    <div class="toolbar-left">
+                                        <button class="btn btn-secondary" id="zoomInBtn" data-i18n-title="toolbar.zoomIn">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" id="zoomOutBtn" data-i18n-title="toolbar.zoomOut">
+                                            <i class="fas fa-search-minus"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" id="resetZoomBtn" data-i18n-title="toolbar.resetZoom">
+                                            <i class="fas fa-expand-arrows-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="toolbar-right">
+                                        <button class="btn btn-primary" id="exportGraphBtn">
+                                            <i class="fas fa-download"></i> <span data-i18n="toolbar.exportImage">导出图片</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="graph-viewport" id="relationshipGraph">
                                     <!-- D3.js关系图将在这里渲染 -->
@@ -334,9 +426,16 @@
                         <div class="tab-pane" id="issues-tab">
                             <div class="issues-container">
                                 <div class="issues-toolbar">
-                                    <button class="btn btn-primary" id="exportIssuesBtn">
-                                        <i class="fas fa-download"></i> 导出报告
-                                    </button>
+                                    <div class="toolbar-left">
+                                        <button class="btn btn-secondary" id="filterIssuesBtn">
+                                            <i class="fas fa-filter"></i> <span data-i18n="toolbar.filter">筛选</span>
+                                        </button>
+                                    </div>
+                                    <div class="toolbar-right">
+                                        <button class="btn btn-primary" id="exportIssuesBtn">
+                                            <i class="fas fa-download"></i> <span data-i18n="toolbar.exportReport">导出报告</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="issues-list" id="issuesList">
                                     <!-- 验证问题将在这里显示 -->
@@ -350,15 +449,19 @@
                         <div class="tab-pane" id="raw-tab">
                             <div class="raw-data-container">
                                 <div class="raw-toolbar">
-                                    <button class="btn btn-secondary" id="copyRawBtn">
-                                        <i class="fas fa-copy"></i> 复制
-                                    </button>
-                                    <button class="btn btn-secondary" id="downloadRawBtn">
-                                        <i class="fas fa-download"></i> 下载
-                                    </button>
-                                    <button class="btn btn-secondary" id="formatRawBtn">
-                                        <i class="fas fa-code"></i> 格式化
-                                    </button>
+                                    <div class="toolbar-left">
+                                        <button class="btn btn-secondary" id="copyRawBtn">
+                                            <i class="fas fa-copy"></i> <span data-i18n="toolbar.copy">复制</span>
+                                        </button>
+                                        <button class="btn btn-secondary" id="formatRawBtn">
+                                            <i class="fas fa-code"></i> <span data-i18n="toolbar.format">格式化</span>
+                                        </button>
+                                    </div>
+                                    <div class="toolbar-right">
+                                        <button class="btn btn-primary" id="downloadRawBtn">
+                                            <i class="fas fa-download"></i> <span data-i18n="toolbar.download">下载</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="raw-data">
                                     <pre id="rawData"></pre>
@@ -380,7 +483,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="help-grid">
+                <div class="help-grid" style="display: flex !important; flex-direction: column !important; grid-template-columns: none !important;">
                     <div class="help-section">
                         <div class="help-icon">
                             <i class="fas fa-upload"></i>
@@ -428,6 +531,126 @@
                             </ul>
                         </div>
                     </div>
+                    
+                    <div class="help-section">
+                        <div class="help-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="help-content">
+                            <h4>PDF检测规则</h4>
+                            <p>本工具基于PDF 1.7标准(ISO 32000-1)进行验证，包含以下12个主要检测类别：</p>
+                            
+                            <div class="validation-rules">
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-file-alt"></i> 1. PDF头部验证</h5>
+                                    <ul>
+                                        <li>检查%PDF标识符是否存在</li>
+                                        <li>验证版本号格式(1.0-1.7)</li>
+                                        <li>检查文件类型标识</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-sitemap"></i> 2. Catalog对象验证</h5>
+                                    <ul>
+                                        <li>验证Type属性必须为"Catalog"</li>
+                                        <li>检查必需条目：Pages</li>
+                                        <li>验证对象引用有效性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-layer-group"></i> 3. Pages对象验证</h5>
+                                    <ul>
+                                        <li>验证Type属性必须为"Pages"</li>
+                                        <li>检查必需条目：Kids, Count</li>
+                                        <li>验证页面树结构完整性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-file"></i> 4. Page对象验证</h5>
+                                    <ul>
+                                        <li>验证Type属性必须为"Page"</li>
+                                        <li>检查必需条目：Parent, MediaBox</li>
+                                        <li>验证页面边界框有效性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-font"></i> 5. Font对象验证</h5>
+                                    <ul>
+                                        <li>验证Type属性必须为"Font"</li>
+                                        <li>检查必需条目：Subtype, BaseFont</li>
+                                        <li>验证字体类型和编码</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-image"></i> 6. XObject对象验证</h5>
+                                    <ul>
+                                        <li>验证Type属性必须为"XObject"</li>
+                                        <li>检查必需条目：Subtype</li>
+                                        <li>验证图像或表单对象属性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-stream"></i> 7. Stream对象验证</h5>
+                                    <ul>
+                                        <li>检查Length属性</li>
+                                        <li>验证Filter属性有效性</li>
+                                        <li>检查压缩数据完整性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-table"></i> 8. XRef表验证</h5>
+                                    <ul>
+                                        <li>检查XRef表完整性</li>
+                                        <li>验证对象偏移量正确性</li>
+                                        <li>检查生成号有效性</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-file-archive"></i> 9. Trailer验证</h5>
+                                    <ul>
+                                        <li>检查必需属性：Root, Size</li>
+                                        <li>验证Root引用有效性</li>
+                                        <li>检查加密状态信息</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-link"></i> 10. 引用关系验证</h5>
+                                    <ul>
+                                        <li>检查间接引用有效性</li>
+                                        <li>验证对象编号范围</li>
+                                        <li>检测循环引用关系</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-shield-alt"></i> 11. 安全验证</h5>
+                                    <ul>
+                                        <li>检查加密状态</li>
+                                        <li>验证权限设置</li>
+                                        <li>检测安全风险</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="rule-category">
+                                    <h5><i class="fas fa-tachometer-alt"></i> 12. 性能验证</h5>
+                                    <ul>
+                                        <li>检查对象数量合理性</li>
+                                        <li>验证文件大小</li>
+                                        <li>检测内存使用</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -437,7 +660,7 @@
     <div class="modal" id="objectDetailModal">
         <div class="modal-content large">
             <div class="modal-header">
-                <h3 id="objectDetailTitle">对象详情</h3>
+                <h3 id="objectDetailTitle" data-i18n="modal.objectDetail">对象详情</h3>
                 <button class="modal-close" id="closeObjectModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -450,6 +673,43 @@
         </div>
     </div>
 
+    <!-- 页脚 -->
+    <footer class="app-footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>PDF Inspector Pro</h3>
+                <p data-i18n="footer.description">专业的PDF格式校验工具，基于PDF 1.7标准验证PDF文件结构</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.features">功能特性</h4>
+                <ul>
+                    <li data-i18n="footer.pdfStructureAnalysis">PDF结构解析</li>
+                    <li data-i18n="footer.formatValidation">格式标准验证</li>
+                    <li data-i18n="footer.issueDetection">问题检测</li>
+                    <li data-i18n="footer.securityAssessment">安全风险评估</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.support">技术支持</h4>
+                <ul>
+                    <li><a href="/help" aria-label="帮助文档" data-i18n="footer.helpDocs">帮助文档</a></li>
+                    <li><a href="/about" aria-label="关于我们" data-i18n="footer.aboutUs">关于我们</a></li>
+                    <li><a href="/privacy" aria-label="隐私政策" data-i18n="footer.privacyPolicy">隐私政策</a></li>
+                    <li><a href="/terms" aria-label="使用条款" data-i18n="footer.termsOfService">使用条款</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.contact">联系我们</h4>
+                <ul>
+                    <li><a href="mailto:yhj2433488839@gmail.com" aria-label="邮件支持" data-i18n="footer.emailSupport">邮件支持</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n="footer.copyright">&copy; 2024 PDF Inspector Pro. 保留所有权利。</p>
+        </div>
+    </footer>
+
     <!-- 引入脚本 -->
     <script src="js/pdf-struct.js"></script>
     <script src="js/pdf-parser.js"></script>
@@ -457,22 +717,30 @@
     <script src="js/visualizer.js"></script>
     <script src="js/ui-controller.js"></script>
     <script src="js/pdf-inspector.js"></script>
-    <script>
-        // 等待所有库加载完成后再初始化应用
-        window.addEventListener('load', function() {
-            // 检查必要的库是否加载
-            if (typeof d3 === 'undefined' || typeof Chart === 'undefined') {
-                console.error('必要的库未加载，延迟初始化');
-                setTimeout(function() {
-                    if (typeof d3 !== 'undefined' && typeof Chart !== 'undefined') {
-                        console.log('库加载完成，初始化应用');
-                        // 这里可以重新初始化应用
-                    } else {
-                        console.error('库加载失败');
-                    }
-                }, 2000);
+    
+    <!-- 多语言支持脚本 -->
+    <script type="module">
+        // 动态导入多语言支持
+        import languageManager from './js/language-manager.js';
+        
+        // 等待DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 等待语言管理器初始化
+                await languageManager.init();
+                
+                // 初始化语言管理器
+                window.languageManager = languageManager;
+                
+                console.log('多语言支持初始化完成');
+            } catch (error) {
+                console.error('多语言支持初始化失败:', error);
             }
         });
     </script>
+    
+    <!-- 语言切换器和UI更新器脚本 -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/ui-updater.js"></script>
 </body>
 </html> 

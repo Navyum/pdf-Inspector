@@ -136,6 +136,13 @@ class PDFInspector {
     async handleFileSelect(files) {
         if (files.length === 0) return;
         
+        // 新文件前彻底清理pdfStructure
+        if (this.pdfStructure && typeof this.pdfStructure.clear === 'function') {
+            this.pdfStructure.clear();
+        } else {
+            this.pdfStructure = null;
+        }
+        
         // 只处理第一个文件
         const file = files[0];
         if (file.type !== 'application/pdf') {
@@ -182,6 +189,12 @@ class PDFInspector {
      * 处理单个文件
      */
     async processFile(file) {
+        // 新文件前彻底清理pdfStructure
+        if (this.pdfStructure && typeof this.pdfStructure.clear === 'function') {
+            this.pdfStructure.clear();
+        } else {
+            this.pdfStructure = null;
+        }
         console.log(`开始处理文件: ${file.name}`);
         
         try {
@@ -404,7 +417,9 @@ class PDFInspector {
      * 显示对象详情模态框
      */
     showObjectModal(object) {
-        document.getElementById('objectDetailTitle').textContent = `对象 ${object.objectNumber} ${object.generation} R`;
+        const titleText = window.languageManager ? 
+            window.languageManager.get('modal.objectDetail') : '对象详情';
+        document.getElementById('objectDetailTitle').textContent = `${titleText} ${object.objectNumber} ${object.generation} R`;
         document.getElementById('objectDetailContent').innerHTML = this.formatObjectDetails(object);
         document.getElementById('objectDetailModal').classList.add('show');
     }

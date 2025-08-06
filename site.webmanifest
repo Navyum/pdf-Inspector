@@ -1,0 +1,25 @@
+{
+    "name": "PDF Inspector Pro",
+    "short_name": "PDF Inspector",
+    "description": "专业的PDF格式校验工具，基于PDF 1.7标准验证PDF文件结构",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#667eea",
+    "theme_color": "#667eea",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/assets/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "categories": ["developer", "utilities", "productivity"],
+    "lang": "zh-CN",
+    "dir": "ltr"
+} 

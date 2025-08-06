@@ -34,15 +34,20 @@ class PDFParser {
             
             // 按顺序解析 PDF 结构
             console.log('按顺序解析 PDF 结构...');
-            this.pdfStructure = await this.parsePDFSequentially(new Uint8Array(this.arrayBuffer));
+            const result = await this.parsePDFSequentially(new Uint8Array(this.arrayBuffer));
             console.log('PDF 结构解析完成');
+            
+            // 检查解析结果
+            if (!result.success) {
+                throw new Error(result.error || 'PDF解析失败');
+            }
             
             // 获取文件信息
             const fileInfo = this.extractFileInfo(file);
             
             return {
                 success: true,
-                structure: this.pdfStructure,
+                structure: result.structure,
                 fileInfo: fileInfo
             };
         } catch (error) {
@@ -81,6 +86,12 @@ class PDFParser {
             // 确保bytes是Uint8Array
             if (!(bytes instanceof Uint8Array)) {
                 throw new Error('parsePDFSequentially期望接收Uint8Array参数');
+            }
+            
+            // 新文件解析前彻底清理pdfStructure
+            if (this.pdfStructure && typeof this.pdfStructure.clear === 'function') {
+                this.pdfStructure.clear();
+                console.log('已清理上次的PDF结构数据');
             }
             
             // 设置arrayBuffer用于文件大小计算
@@ -168,11 +179,21 @@ class PDFParser {
             
             console.log(`PDF 结构解析完成，共找到 ${this.pdfStructure.stats.total} 个对象`);
             
-            // 6. 返回PDFStructure实例，不进行分析
-            return this.pdfStructure;
+            return {
+                success: true,
+                structure: this.pdfStructure,
+                fileInfo: {
+                    size: this.arrayBuffer.byteLength,
+                    version: header.version
+                }
+            };
+            
         } catch (error) {
-            console.error('按顺序解析 PDF 结构失败:', error);
-            throw error;
+            console.error('PDF解析失败:', error);
+            return {
+                success: false,
+                error: error.message
+            };
         }
     }
 

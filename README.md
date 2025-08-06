@@ -1,6 +1,10 @@
-# PDF 格式校验工具
+# PDF Inspector Pro - 专业PDF格式校验工具
 
-一个基于 Web 的 PDF 格式校验工具，用于验证 PDF 文件是否符合 PDF 1.7 标准 (ISO 32000-1)。该项目提供了完整的 PDF 结构解析、验证和分析功能。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/pdf-inspector-pro)
+[![Language](https://img.shields.io/badge/language-JavaScript-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+一个基于 Web 的专业 PDF 格式校验工具，用于验证 PDF 文件是否符合 PDF 1.7 标准 (ISO 32000-1)。该项目提供了完整的 PDF 结构解析、验证和分析功能，帮助开发者、文档管理员和PDF用户确保PDF文件的完整性和合规性。
 
 ## 🚀 功能特性
 
