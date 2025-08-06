@@ -1,0 +1,26 @@
+{
+  "name": "pdf-validator",
+  "version": "1.0.0",
+  "description": "PDF 格式验证工具 - 纯二进制解析版本",
+  "main": "js/pdf-parser.js",
+  "scripts": {
+    "test": "node run-tests.js",
+    "test:unit": "node test-pdf-parser.js",
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "pdf",
+    "validator",
+    "parser",
+    "binary",
+    "javascript"
+  ],
+  "author": "PDF Validator Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+} 
