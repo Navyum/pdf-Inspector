@@ -2961,6 +2961,78 @@ body {
     .terms-section {
         padding: var(--spacing-sm);
     }
+    
+    /* 其他页面移动端头部优化 */
+    .header-content {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .logo {
+        gap: var(--spacing-sm);
+    }
+    
+    .logo i {
+        font-size: 1.25rem;
+    }
+    
+    .logo h1 {
+        font-size: 1rem;
+    }
+    
+    .header-actions {
+        gap: var(--spacing-xs);
+    }
+    
+    .btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.75rem;
+        min-width: auto;
+    }
+    
+    .btn i {
+        font-size: 0.75rem;
+    }
+    
+    .btn span {
+        display: none;
+    }
+    
+    /* 选择文件按钮在移动设备上显示文案 */
+    #selectFileBtn span {
+        display: inline;
+    }
+    
+    .btn-language {
+        padding: var(--spacing-xs);
+        font-size: 0.75rem;
+    }
+    
+    .btn-language span {
+        display: none;
+    }
+    
+    /* 页面内容移动端优化 */
+    .help-section h3,
+    .about-section h3,
+    .privacy-section h3,
+    .terms-section h3 {
+        font-size: 1rem;
+    }
+    
+    .help-section p,
+    .about-section p,
+    .privacy-section p,
+    .terms-section p {
+        font-size: 0.875rem;
+    }
+    
+    .help-section li,
+    .about-section li,
+    .privacy-section li,
+    .terms-section li {
+        font-size: 0.875rem;
+        padding: var(--spacing-xs) 0;
+    }
 }
 
 /* 页面动效 */
@@ -3473,6 +3545,117 @@ body {
     .stat-card {
         animation-delay: 0.3s !important;
     }
+    
+    /* 移动端头部优化 */
+    .logo i {
+        font-size: 1.5rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.25rem;
+    }
+    
+    .header-actions {
+        gap: var(--spacing-sm);
+    }
+    
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.875rem;
+    }
+    
+    .btn i {
+        font-size: 0.875rem;
+    }
+    
+    .btn span {
+        display: none;
+    }
+    
+    /* 选择文件按钮在移动设备上显示文案 */
+    #selectFileBtn span {
+        display: inline;
+    }
+    
+    .btn-language {
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+    
+    .btn-language span {
+        display: none;
+    }
+    
+    /* 其他页面移动端头部优化 */
+    .header-content {
+        padding: 0 var(--spacing-lg);
+    }
+    
+    .logo {
+        gap: var(--spacing-md);
+    }
+    
+    .logo i {
+        font-size: 1.5rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.25rem;
+    }
+    
+    .header-actions {
+        gap: var(--spacing-sm);
+    }
+    
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.875rem;
+    }
+    
+    .btn i {
+        font-size: 0.875rem;
+    }
+    
+    .btn span {
+        display: none;
+    }
+    
+    /* 选择文件按钮在移动设备上显示文案 */
+    #selectFileBtn span {
+        display: inline;
+    }
+    
+    .btn-language {
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+    
+    .btn-language span {
+        display: none;
+    }
+    
+    /* 页面内容移动端优化 */
+    .help-section h3,
+    .about-section h3,
+    .privacy-section h3,
+    .terms-section h3 {
+        font-size: 1.125rem;
+    }
+    
+    .help-section p,
+    .about-section p,
+    .privacy-section p,
+    .terms-section p {
+        font-size: 0.9rem;
+    }
+    
+    .help-section li,
+    .about-section li,
+    .privacy-section li,
+    .terms-section li {
+        font-size: 0.9rem;
+        padding: var(--spacing-sm) 0;
+    }
 }
 
 @media (max-width: 480px) {
@@ -3483,5 +3666,191 @@ body {
     .info-panel {
         animation: slideInFromBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         animation-delay: 0.1s !important;
+    }
+    
+    /* 小屏幕头部进一步优化 */
+    .header-content {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .logo {
+        gap: var(--spacing-sm);
+    }
+    
+    .logo i {
+        font-size: 1.25rem;
+    }
+    
+    .logo h1 {
+        font-size: 1rem;
+    }
+    
+    .header-actions {
+        gap: var(--spacing-xs);
+    }
+    
+    .btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.75rem;
+        min-width: auto;
+    }
+    
+    .btn i {
+        font-size: 0.75rem;
+    }
+    
+    .btn span {
+        display: none;
+    }
+    
+    /* 选择文件按钮在移动设备上显示文案 */
+    #selectFileBtn span {
+        display: inline;
+    }
+    
+    .btn-language {
+        padding: var(--spacing-xs);
+        font-size: 0.75rem;
+    }
+    
+    /* 信息面板移动端优化 */
+    .info-panel {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .panel-header {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .panel-header h3 {
+        font-size: 1rem;
+    }
+    
+    .panel-header i {
+        font-size: 1rem;
+    }
+    
+    .info-row {
+        padding: var(--spacing-sm) 0;
+    }
+    
+    .info-label {
+        font-size: 0.875rem;
+    }
+    
+    .info-value {
+        font-size: 0.875rem;
+    }
+    
+    /* 统计卡片移动端优化 */
+    .stats-overview {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .stat-card {
+        padding: var(--spacing-md);
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.875rem;
+    }
+    
+    /* 标签页移动端优化 */
+    .tabs {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .tab-btn {
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    /* 工具栏移动端优化 */
+    .structure-toolbar,
+    .graph-toolbar,
+    .issues-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+    
+    .toolbar-left,
+    .toolbar-right {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .search-box input {
+        font-size: 0.875rem;
+        padding: var(--spacing-sm);
+    }
+    
+    /* 上传区域移动端优化 */
+    .upload-area {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .upload-area h3 {
+        font-size: 1.25rem;
+    }
+    
+    .upload-icon i {
+        font-size: 3rem;
+    }
+    
+    .upload-area p {
+        font-size: 0.875rem;
+    }
+    
+    /* 进度条移动端优化 */
+    .progress-section {
+        padding: var(--spacing-md);
+    }
+    
+    .progress-header h3 {
+        font-size: 1rem;
+    }
+    
+    .progress-header p {
+        font-size: 0.875rem;
+    }
+    
+    /* 页脚移动端优化 */
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .footer-section {
+        text-align: center;
+    }
+    
+    .footer-section h3,
+    .footer-section h4 {
+        font-size: 1rem;
+    }
+    
+    .footer-section p,
+    .footer-section li {
+        font-size: 0.875rem;
     }
 } 
