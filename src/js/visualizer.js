@@ -302,14 +302,7 @@ class PDFVisualizer {
                     groupNode.querySelector('.tree-node-content').appendChild(childNode);
                     
                     // 调试XObject的DOM结构
-                    if (obj.type === 'XObject') {
-                        console.log(`XObject ${obj.objectNumber} DOM结构:`, {
-                            className: childNode.className,
-                            dataset: childNode.dataset,
-                            nodeLabel: childNode.querySelector('.node-label')?.textContent,
-                            nodeLabelClass: childNode.querySelector('.node-label')?.className
-                        });
-                        
+                    if (obj.type === 'XObject') {                        
                         // 强制应用正确的样式
                         this.forceApplyNodeStyles(childNode, objectStatus);
                         
@@ -384,17 +377,36 @@ class PDFVisualizer {
      * 检查错误信息是否匹配指定对象
      */
     errorMatchesObject(errorMessage, objectNumber) {
-        // 使用更精确的匹配模式，确保匹配的是完整的对象编号
-        // 匹配格式：对象 数字 或 对象数字
-        const objectPattern = new RegExp(`对象\\s*${objectNumber}\\b`, 'i');
-        const matches = objectPattern.test(errorMessage);
-        
-        // 调试信息
-        if (matches) {
-            console.log(`匹配到对象 ${objectNumber} 的错误:`, errorMessage);
+        // 处理结构化消息格式
+        if (typeof errorMessage === 'object' && errorMessage.msg) {
+            const msg = errorMessage.msg;
+            const detail = errorMessage.detail || '';
+            
+            // 检查消息和详情中是否包含对象编号
+            const objectPattern = new RegExp(`对象\\s*${objectNumber}\\b`, 'i');
+            const matchesMsg = objectPattern.test(msg);
+            const matchesDetail = objectPattern.test(detail);
+            
+            if (matchesMsg || matchesDetail) {
+                console.log(`匹配到对象 ${objectNumber} 的错误:`, errorMessage);
+                return true;
+            }
+            return false;
         }
         
-        return matches;
+        // 处理字符串消息格式（向后兼容）
+        if (typeof errorMessage === 'string') {
+            const objectPattern = new RegExp(`对象\\s*${objectNumber}\\b`, 'i');
+            const matches = objectPattern.test(errorMessage);
+            
+            if (matches) {
+                console.log(`匹配到对象 ${objectNumber} 的错误:`, errorMessage);
+            }
+            
+            return matches;
+        }
+        
+        return false;
     }
     
     /**
@@ -472,7 +484,14 @@ class PDFVisualizer {
         if (validation.errors && Array.isArray(validation.errors)) {
             for (const error of validation.errors) {
                 if (this.errorMatchesObject(error, objectNumber)) {
-                    errors.push(error);
+                    // 使用结构化消息的msg字段
+                    if (typeof error === 'object' && error.msg) {
+                        errors.push(error.msg);
+                    } else if (typeof error === 'string') {
+                        errors.push(error);
+                    } else {
+                        errors.push('未知错误');
+                    }
                 }
             }
         }
@@ -481,7 +500,14 @@ class PDFVisualizer {
         if (validation.warnings && Array.isArray(validation.warnings)) {
             for (const warning of validation.warnings) {
                 if (this.errorMatchesObject(warning, objectNumber)) {
-                    errors.push(`警告: ${warning}`);
+                    // 使用结构化消息的msg字段
+                    if (typeof warning === 'object' && warning.msg) {
+                        errors.push(`警告: ${warning.msg}`);
+                    } else if (typeof warning === 'string') {
+                        errors.push(`警告: ${warning}`);
+                    } else {
+                        errors.push('警告: 未知警告');
+                    }
                 }
             }
         }
@@ -920,11 +946,14 @@ class PDFVisualizer {
         // 处理错误
         if (validation.errors && validation.errors.length > 0) {
             validation.errors.forEach((error, index) => {
+                const issueData = this.parseIssueMessage(error);
                 const issueElement = this.createIssueElement({
-                    title: `错误 ${index + 1}`,
-                    description: error,
+                    title: issueData.title || `错误 ${index + 1}`,
+                    description: issueData.description,
                     severity: 'error',
-                    location: null
+                    location: issueData.location,
+                    code: issueData.code,
+                    detail: issueData.detail
                 });
                 container.appendChild(issueElement);
             });
@@ -933,11 +962,14 @@ class PDFVisualizer {
         // 处理警告
         if (validation.warnings && validation.warnings.length > 0) {
             validation.warnings.forEach((warning, index) => {
+                const issueData = this.parseIssueMessage(warning);
                 const issueElement = this.createIssueElement({
-                    title: `警告 ${index + 1}`,
-                    description: warning,
+                    title: issueData.title || `警告 ${index + 1}`,
+                    description: issueData.description,
                     severity: 'warning',
-                    location: null
+                    location: issueData.location,
+                    code: issueData.code,
+                    detail: issueData.detail
                 });
                 container.appendChild(issueElement);
             });
@@ -950,12 +982,90 @@ class PDFVisualizer {
                 title: '验证通过',
                 description: 'PDF文件验证通过，未发现任何问题。',
                 severity: 'success',
-                location: null
+                location: null,
+                code: 'VALIDATION_SUCCESS',
+                detail: '所有验证项目均通过检查'
             });
             container.appendChild(successElement);
         }
+    }
+    
+    /**
+     * 解析问题消息
+     */
+    parseIssueMessage(message) {
+        // 如果是结构化消息（包含code、msg、detail）
+        if (typeof message === 'object' && message.code && message.msg) {
+            return {
+                code: message.code,
+                title: message.code,
+                description: message.msg,
+                detail: message.detail || '',
+                location: this.extractLocationFromMessage(message.msg, message.detail)
+            };
+        }
         
-
+        // 如果是字符串消息，尝试解析
+        if (typeof message === 'string') {
+            return {
+                code: 'UNKNOWN_ERROR',
+                title: '未知错误',
+                description: message,
+                detail: '',
+                location: this.extractLocationFromString(message)
+            };
+        }
+        
+        // 默认返回
+        return {
+            code: 'UNKNOWN_ERROR',
+            title: '未知错误',
+            description: '无法解析的错误消息',
+            detail: '',
+            location: null
+        };
+    }
+    
+    /**
+     * 从消息中提取位置信息
+     */
+    extractLocationFromMessage(msg, detail) {
+        // 尝试从消息中提取对象编号
+        const objectMatch = msg.match(/对象\s*(\d+)/);
+        if (objectMatch) {
+            return {
+                objectNumber: parseInt(objectMatch[1]),
+                type: 'object'
+            };
+        }
+        
+        // 尝试从详情中提取位置信息
+        if (detail) {
+            const detailObjectMatch = detail.match(/对象\s*(\d+)/);
+            if (detailObjectMatch) {
+                return {
+                    objectNumber: parseInt(detailObjectMatch[1]),
+                    type: 'object'
+                };
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 从字符串中提取位置信息
+     */
+    extractLocationFromString(message) {
+        const objectMatch = message.match(/对象\s*(\d+)/);
+        if (objectMatch) {
+            return {
+                objectNumber: parseInt(objectMatch[1]),
+                type: 'object'
+            };
+        }
+        
+        return null;
     }
     
     /**
@@ -965,15 +1075,32 @@ class PDFVisualizer {
         const element = document.createElement('div');
         element.className = `issue-item ${issue.severity}`;
         
-        element.innerHTML = `
+        // 构建HTML内容
+        let html = `
             <div class="issue-header">
                 <i class="fas ${this.getIssueIcon(issue.severity)}"></i>
                 <span class="issue-title">${issue.title}</span>
                 <span class="issue-severity">${issue.severity.toUpperCase()}</span>
             </div>
-            <div class="issue-description">${issue.description}</div>
-            ${issue.location ? `<div class="issue-location">位置: ${this.formatLocation(issue.location)}</div>` : ''}
         `;
+        
+        // 合并 description、detail、location 信息
+        let combinedDescription = issue.description;
+        
+        // 添加详细信息
+        if (issue.detail) {
+            combinedDescription += `\n\n详情: ${issue.detail}`;
+        }
+        
+        // 添加位置信息
+        if (issue.location) {
+            combinedDescription += `\n\n位置: ${this.formatLocation(issue.location)}`;
+        }
+        
+        // 显示合并后的描述
+        html += `<div class="issue-description">${combinedDescription.replace(/\n\n/g, '<br><br>')}</div>`;
+        
+        element.innerHTML = html;
         
         return element;
     }
@@ -997,6 +1124,9 @@ class PDFVisualizer {
      * 格式化位置信息
      */
     formatLocation(location) {
+        if (!location) {
+            return '';
+        }
         if (location.objectNumber !== undefined) {
             return `对象 ${location.objectNumber} ${location.generation || 0} R`;
         }

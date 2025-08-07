@@ -32,7 +32,7 @@ class MockFileReader {
 global.FileReader = MockFileReader;
 
 // 导入 PDF 解析器
-const PDFParser = require('../js/pdf-parser.js');
+const PDFParser = require('../../src/js/pdf-parser.js');
 
 /**
  * PDF 对象类型测试类

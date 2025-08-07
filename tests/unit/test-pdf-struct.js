@@ -1,4 +1,4 @@
-const PDFStructure = require('../js/pdf-struct.js');
+const PDFStructure = require('../../src/js/pdf-struct.js');
 
 class PDFStructureTest {
     constructor() {

@@ -1211,12 +1211,17 @@ body {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
     background: white;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-xs);
 }
 
 .issue-item {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.3s ease;
+    margin-bottom: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 .issue-item:hover {
@@ -1249,6 +1254,8 @@ body {
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-xs);
     font-weight: 600;
+    font-size: 0.9rem;
+    padding: var(--spacing-xs) 0;
 }
 
 .issue-item.error .issue-header {
@@ -1273,13 +1280,43 @@ body {
 
 .issue-description {
     color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4;
+    white-space: pre-line;
+    font-size: 0.875rem;
+    padding: var(--spacing-sm);
+    background: rgba(248, 249, 255, 0.6);
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--border-color);
+    margin-top: var(--spacing-xs);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.issue-location {
-    font-size: 0.875rem;
+.issue-description br {
+    margin: var(--spacing-xs) 0;
+    content: "";
+    display: block;
+}
+
+/* 优化问题描述中的不同部分 */
+.issue-description .detail-section {
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xs);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
     color: var(--text-secondary);
+}
+
+.issue-description .location-section {
+    margin-top: var(--spacing-xs);
     font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px var(--spacing-xs);
+    border-radius: 2px;
+    display: inline-block;
 }
 
 /* 分析报告 */

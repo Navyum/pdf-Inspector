@@ -157,7 +157,17 @@ class PDFParser {
                                 obj.type = type;
                                 if (!obj.properties) obj.properties = {};
                                 obj.properties.Type = type;
-                                obj.properties.description = PDFStructure.TYPE_MAP[type]?.description || '';
+                                // 获取PDFStructure类
+                                let PDFStructureClass;
+                                if (typeof window !== 'undefined') {
+                                    PDFStructureClass = window.PDFStructure;
+                                } else if (typeof require !== 'undefined') {
+                                    PDFStructureClass = require('./pdf-struct.js');
+                                } else {
+                                    PDFStructureClass = PDFStructure;
+                                }
+                                
+                                obj.properties.description = PDFStructureClass.TYPE_MAP[type]?.description || '';
                             }
                         }
                     }
@@ -1103,12 +1113,34 @@ class PDFParser {
             return 'Unknown';
         }
         const type = properties.Type;
-        return PDFStructure.TYPE_MAP[type]?.type || 'Unknown';
+        
+        // 获取PDFStructure类
+        let PDFStructureClass;
+        if (typeof window !== 'undefined') {
+            PDFStructureClass = window.PDFStructure;
+        } else if (typeof require !== 'undefined') {
+            PDFStructureClass = require('./pdf-struct.js');
+        } else {
+            PDFStructureClass = PDFStructure;
+        }
+        
+        return PDFStructureClass.TYPE_MAP[type]?.type || 'Unknown';
     }
 
     parseObjectByType(properties, objectType) {
         const result = { ...properties };
-        const typeInfo = PDFStructure.TYPE_MAP[objectType];
+        
+        // 获取PDFStructure类
+        let PDFStructureClass;
+        if (typeof window !== 'undefined') {
+            PDFStructureClass = window.PDFStructure;
+        } else if (typeof require !== 'undefined') {
+            PDFStructureClass = require('./pdf-struct.js');
+        } else {
+            PDFStructureClass = PDFStructure;
+        }
+        
+        const typeInfo = PDFStructureClass.TYPE_MAP[objectType];
         if (typeInfo) {
             result.description = typeInfo.description;
             // 根据类型添加特定属性

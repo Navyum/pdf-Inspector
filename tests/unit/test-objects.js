@@ -1,11 +1,17 @@
 const fs = require('fs');
-const PDFParser = require('../js/pdf-parser.js');
+const PDFParser = require('../../src/js/pdf-parser.js');
 
 async function testObjects() {
     try {
-        const bytes = fs.readFileSync('testpdf/badcase3.pdf');
+        const bytes = fs.readFileSync('../pdf/badcase3.pdf');
         const parser = new PDFParser();
-        const structure = parser.parsePDFSequentially(bytes);
+        const result = parser.parsePDFSequentially(bytes);
+        
+        if (!result.success) {
+            throw new Error(result.error || 'PDF解析失败');
+        }
+        
+        const structure = result.structure;
         
         // 只查看对象47
         const objNum = 47;
@@ -33,6 +39,9 @@ async function testObjects() {
             }
         } else {
             console.log(`\n对象 ${objNum} 不存在`);
+            // 尝试查找其他对象
+            const availableObjects = structure.physical.objects.slice(0, 5);
+            console.log('可用的对象:', availableObjects.map(o => `${o.objectNumber} (${o.type})`));
         }
         
     } catch (error) {

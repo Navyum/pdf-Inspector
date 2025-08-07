@@ -778,7 +778,6 @@ class UIController {
         
         const totalSize = pdfStructure.physical.objects.reduce((sum, obj, index) => {
             const contentLength = obj.content?.length || 0;
-            console.log(`对象 ${index + 1} (${obj.type || 'Unknown'}): content长度 = ${contentLength} 字节`);
             return sum + contentLength;
         }, 0);
         
@@ -857,19 +856,6 @@ class UIController {
             
             console.log(`  📊 解压后大小: ${decompressedSize} 字节`);
             console.log(`  📊 压缩后大小: ${compressedSize} 字节`);
-            
-            // 显示压缩后大小的来源
-            if (obj.properties.Length) {
-                console.log(`  📋 使用Length属性: ${obj.properties.Length}`);
-            } else if (obj.streamData?.length) {
-                console.log(`  📋 使用streamData长度: ${obj.streamData.length}`);
-            } else if (obj.content?.length) {
-                console.log(`  📋 使用content长度: ${obj.content.length}`);
-            } else if (obj.stream?.length) {
-                console.log(`  📋 使用stream长度: ${obj.stream.length}`);
-            } else {
-                console.log(`  📋 未找到压缩数据大小`);
-            }
         });
         
         console.log(`📊 压缩统计:`);

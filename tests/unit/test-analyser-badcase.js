@@ -1,6 +1,6 @@
-const PDFParser = require('../js/pdf-parser.js');
-const PDFStructure = require('../js/pdf-struct.js');
-const PDFAnalyser = require('../js/pdf-analyser.js');
+const PDFParser = require('../../src/js/pdf-parser.js');
+const PDFStructure = require('../../src/js/pdf-struct.js');
+const PDFAnalyser = require('../../src/js/pdf-analyser.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -31,7 +31,7 @@ class PDFAnalyserBadcaseTest {
         
         try {
             // 读取 badcase.pdf 文件
-            const pdfPath = path.join(__dirname, 'testpdf', 'badcase3.pdf');
+            const pdfPath = path.join(__dirname, '..', 'pdf', 'badcase.pdf');
             if (!fs.existsSync(pdfPath)) {
                 throw new Error(`文件不存在: ${pdfPath}`);
             }

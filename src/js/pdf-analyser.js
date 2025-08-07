@@ -7,6 +7,21 @@ class PDFAnalyser {
     }
 
     /**
+     * 创建标准化的消息结构体
+     * @param {string} code - 错误码
+     * @param {string} msg - 错误消息
+     * @param {string} detail - 错误详情
+     * @returns {Object} 消息结构体
+     */
+    createMessage(code, msg, detail = '') {
+        return {
+            code: code,
+            msg: msg,
+            detail: detail
+        };
+    }
+
+    /**
      * 执行完整分析
      * @returns {Object} 分析结果
      */
@@ -624,7 +639,7 @@ class PDFAnalyser {
             if (header.version && /^\d+\.\d+$/.test(header.version)) {
                 result.header.isValid = true;
             } else {
-                result.header.errors.push('Header版本格式不正确');
+                result.header.errors.push(this.createMessage('HEADER_VERSION_INVALID', 'Header版本格式不正确', `当前版本: ${header.version || 'undefined'}`));
                 result.header.isValid = false;
             }
             
@@ -632,11 +647,11 @@ class PDFAnalyser {
             if (header.rawContent && header.rawContent.includes('%PDF')) {
                 result.header.isValid = result.header.isValid && true;
             } else {
-                result.header.errors.push('Header缺少%PDF标识');
+                result.header.errors.push(this.createMessage('HEADER_PDF_MISSING', 'Header缺少%PDF标识', 'PDF文件必须以%PDF标识开头'));
                 result.header.isValid = false;
             }
         } else {
-            result.header.errors.push('缺少PDF Header');
+            result.header.errors.push(this.createMessage('HEADER_MISSING', '缺少PDF Header', 'PDF文件结构不完整，缺少头部信息'));
             result.header.isValid = false;
         }
 
@@ -653,7 +668,7 @@ class PDFAnalyser {
             );
             
             if (invalidObjectNumbers.length > 0) {
-                result.body.errors.push(`Body中存在无效的对象编号: ${invalidObjectNumbers.map(obj => obj.objectNumber).join(', ')}`);
+                result.body.errors.push(this.createMessage('BODY_INVALID_OBJECT_NUMBERS', 'Body中存在无效的对象编号', `无效编号: ${invalidObjectNumbers.map(obj => obj.objectNumber).join(', ')}`));
                 result.body.isValid = false;
             }
             
@@ -663,11 +678,11 @@ class PDFAnalyser {
             const uniqueDuplicates = [...new Set(duplicateNumbers)];
             
             if (uniqueDuplicates.length > 0) {
-                result.body.errors.push(`Body中存在重复的对象编号: ${uniqueDuplicates.join(', ')}`);
+                result.body.errors.push(this.createMessage('BODY_DUPLICATE_OBJECT_NUMBERS', 'Body中存在重复的对象编号', `重复编号: ${uniqueDuplicates.join(', ')}`));
                 result.body.isValid = false;
             }
         } else {
-            result.body.errors.push('Body中没有找到对象');
+            result.body.errors.push(this.createMessage('BODY_NO_OBJECTS', 'Body中没有找到对象', 'PDF文件必须包含至少一个对象'));
             result.body.isValid = false;
         }
 
@@ -691,7 +706,7 @@ class PDFAnalyser {
                     );
                     
                     if (invalidEntries.length > 0) {
-                        result.xref.errors.push(`XRef中存在${invalidEntries.length}个无效条目格式`);
+                        result.xref.errors.push(this.createMessage('XREF_INVALID_ENTRIES', `XRef中存在${invalidEntries.length}个无效条目格式`, 'XRef条目必须包含有效的对象编号、生成号和偏移量'));
                         result.xref.isValid = false;
                     }
                     
@@ -701,16 +716,16 @@ class PDFAnalyser {
                     const uniqueDuplicates = [...new Set(duplicateNumbers)];
                     
                     if (uniqueDuplicates.length > 0) {
-                        result.xref.errors.push(`XRef中存在重复的对象编号: ${uniqueDuplicates.join(', ')}`);
+                        result.xref.errors.push(this.createMessage('XREF_DUPLICATE_OBJECT_NUMBERS', 'XRef中存在重复的对象编号', `重复编号: ${uniqueDuplicates.join(', ')}`));
                         result.xref.isValid = false;
                     }
                 }
             } else {
-                result.xref.errors.push('XRef格式不正确');
+                result.xref.errors.push(this.createMessage('XREF_INVALID_FORMAT', 'XRef格式不正确', 'XRef表必须包含有效的条目格式'));
                 result.xref.isValid = false;
             }
         } else {
-            result.xref.errors.push('缺少XRef表');
+            result.xref.errors.push(this.createMessage('XREF_MISSING', '缺少XRef表', 'PDF文件必须包含交叉引用表'));
             result.xref.isValid = false;
         }
 
@@ -726,7 +741,7 @@ class PDFAnalyser {
                 const requiredProps = ['Root', 'Size'];
                 requiredProps.forEach(prop => {
                     if (!trailer.properties || !trailer.properties[prop]) {
-                        result.trailer.errors.push(`Trailer缺少必需属性: ${prop}`);
+                        result.trailer.errors.push(this.createMessage('TRAILER_MISSING_REQUIRED_PROP', `Trailer缺少必需属性: ${prop}`, `Trailer必须包含${prop}属性`));
                         result.trailer.isValid = false;
                     }
                 });
@@ -739,7 +754,7 @@ class PDFAnalyser {
                         if (refMatch) {
                             const rootObj = this.structure.getObject(parseInt(refMatch[1]), parseInt(refMatch[2]));
                             if (!rootObj) {
-                                result.trailer.errors.push('Trailer中的Root引用指向不存在的对象');
+                                result.trailer.errors.push(this.createMessage('TRAILER_ROOT_REF_INVALID', 'Trailer中的Root引用指向不存在的对象', `Root引用: ${rootRef}`));
                                 result.trailer.isValid = false;
                             }
                         }
@@ -755,11 +770,11 @@ class PDFAnalyser {
                         const expectedSize = maxObjectNumber + 1;
                         
                         if (size !== expectedSize) {
-                            result.trailer.errors.push(`Trailer中的Size值(${size})不正确，应该是最大对象编号+1(${expectedSize})`);
+                            result.trailer.errors.push(this.createMessage('TRAILER_SIZE_INCORRECT', `Trailer中的Size值(${size})不正确，应该是最大对象编号+1(${expectedSize})`, `当前Size: ${size}, 期望Size: ${expectedSize}`));
                             result.trailer.isValid = false;
                         }
                     } else {
-                        result.trailer.errors.push('Trailer中的Size值类型不正确（应为数字）');
+                        result.trailer.errors.push(this.createMessage('TRAILER_SIZE_TYPE_INVALID', 'Trailer中的Size值类型不正确（应为数字）', `当前类型: ${typeof size}`));
                         result.trailer.isValid = false;
                     }
                 }
@@ -783,7 +798,7 @@ class PDFAnalyser {
                             startxref = hexValue;
                             console.log(`startxref按16进制解析: ${trailer.startxref} -> ${startxref}`);
                         } else {
-                            result.trailer.errors.push(`Trailer中的startxref值(${trailer.startxref})超出文件大小(${this.structure.physical.fileSize})`);
+                            result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_OUT_OF_RANGE', `Trailer中的startxref值(${trailer.startxref})超出文件大小(${this.structure.physical.fileSize})`, `startxref: ${trailer.startxref}, 文件大小: ${this.structure.physical.fileSize}`));
                             result.trailer.isValid = false;
                             return result;
                         }
@@ -791,7 +806,7 @@ class PDFAnalyser {
                         // 已经是数字格式
                         startxref = startxref;
                     } else {
-                        result.trailer.errors.push('Trailer中的startxref值格式不正确');
+                        result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_FORMAT_INVALID', 'Trailer中的startxref值格式不正确', `当前值: ${trailer.startxref}`));
                         result.trailer.isValid = false;
                         return result;
                     }
@@ -800,22 +815,22 @@ class PDFAnalyser {
                         // 检查startxref是否指向xref的起始位置
                         if (this.structure.physical.xref && this.structure.physical.xref.startPosition !== null) {
                             const xrefStartPos = this.structure.physical.xref.startPosition;
-                            if (startxref !== xrefStartPos) {
-                                result.trailer.errors.push(`Trailer中的startxref值(${trailer.startxref})不正确，应该指向xref的起始位置(${xrefStartPos})`);
-                                result.trailer.isValid = false;
-                            }
-                        } else {
-                            result.trailer.errors.push('无法获取xref的起始位置，无法验证startxref值');
+                                                    if (startxref !== xrefStartPos) {
+                            result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_MISMATCH', `Trailer中的startxref值(${trailer.startxref})不正确，应该指向xref的起始位置(${xrefStartPos})`, `当前startxref: ${startxref}, 期望startxref: ${xrefStartPos}`));
                             result.trailer.isValid = false;
                         }
                     } else {
-                        result.trailer.errors.push('Trailer中的startxref值无效（必须是非负整数）');
+                        result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_NO_XREF_POS', '无法获取xref的起始位置，无法验证startxref值', 'XRef表位置信息缺失'));
                         result.trailer.isValid = false;
                     }
                 } else {
-                    result.trailer.errors.push('Trailer中缺少startxref值');
+                    result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_NEGATIVE', 'Trailer中的startxref值无效（必须是非负整数）', `当前值: ${startxref}`));
                     result.trailer.isValid = false;
                 }
+            } else {
+                result.trailer.errors.push(this.createMessage('TRAILER_STARTXREF_MISSING', 'Trailer中缺少startxref值', 'Trailer必须包含startxref属性'));
+                result.trailer.isValid = false;
+            }
                 
                 // 检查Info引用（如果存在）
                 if (trailer.properties?.Info) {
@@ -825,7 +840,7 @@ class PDFAnalyser {
                         if (refMatch) {
                             const infoObj = this.structure.getObject(parseInt(refMatch[1]), parseInt(refMatch[2]));
                             if (!infoObj) {
-                                result.trailer.errors.push('Trailer中的Info引用指向不存在的对象');
+                                result.trailer.errors.push(this.createMessage('TRAILER_INFO_REF_INVALID', 'Trailer中的Info引用指向不存在的对象', `Info引用: ${infoRef}`));
                                 result.trailer.isValid = false;
                             }
                         }
@@ -844,11 +859,11 @@ class PDFAnalyser {
                         };
                         
                         if (!isValidElement(id[0]) || !isValidElement(id[1])) {
-                            result.trailer.errors.push('Trailer中的ID属性格式不正确（应为两个字符串的数组）');
+                            result.trailer.errors.push(this.createMessage('TRAILER_ID_FORMAT_INVALID', 'Trailer中的ID属性格式不正确（应为两个字符串的数组）', `当前ID: ${JSON.stringify(id)}`));
                             result.trailer.isValid = false;
                         }
                     } else {
-                        result.trailer.errors.push('Trailer中的ID属性格式不正确（应为PDF数组格式）');
+                        result.trailer.errors.push(this.createMessage('TRAILER_ID_TYPE_INVALID', 'Trailer中的ID属性格式不正确（应为PDF数组格式）', `当前类型: ${typeof id}, 值: ${JSON.stringify(id)}`));
                         result.trailer.isValid = false;
                     }
                 }
@@ -861,7 +876,7 @@ class PDFAnalyser {
                         if (refMatch) {
                             const encryptObj = this.structure.getObject(parseInt(refMatch[1]), parseInt(refMatch[2]));
                             if (!encryptObj) {
-                                result.trailer.errors.push('Trailer中的Encrypt引用指向不存在的对象');
+                                result.trailer.errors.push(this.createMessage('TRAILER_ENCRYPT_REF_INVALID', 'Trailer中的Encrypt引用指向不存在的对象', `Encrypt引用: ${encryptRef}`));
                                 result.trailer.isValid = false;
                             }
                         }
@@ -869,16 +884,16 @@ class PDFAnalyser {
                     
                     // === 新增：当Encrypt存在时，ID必须存在 ===
                     if (!trailer.properties?.ID) {
-                        result.trailer.errors.push('当Trailer中存在Encrypt属性时，ID属性也必须存在');
+                        result.trailer.errors.push(this.createMessage('TRAILER_ENCRYPT_NO_ID', '当Trailer中存在Encrypt属性时，ID属性也必须存在', '加密PDF必须包含ID属性'));
                         result.trailer.isValid = false;
                     }
                 }
             } else {
-                result.trailer.errors.push('Trailer格式不正确');
+                result.trailer.errors.push(this.createMessage('TRAILER_FORMAT_INVALID', 'Trailer格式不正确', 'Trailer必须包含有效的PDF字典格式'));
                 result.trailer.isValid = false;
             }
         } else {
-            result.trailer.errors.push('缺少Trailer');
+            result.trailer.errors.push(this.createMessage('TRAILER_MISSING', '缺少Trailer', 'PDF文件必须包含Trailer部分'));
             result.trailer.isValid = false;
         }
 
@@ -888,7 +903,11 @@ class PDFAnalyser {
         // 收集所有错误和警告
         [result.header, result.body, result.xref, result.trailer].forEach(section => {
             section.errors.forEach(error => {
-                result.errors.push(`${section.constructor.name}: ${error}`);
+                if (typeof error === 'string') {
+                    result.errors.push(this.createMessage('STRUCTURE_ERROR', error, `${section.constructor.name} 结构错误`));
+                } else {
+                    result.errors.push(error);
+                }
             });
         });
 
@@ -919,8 +938,18 @@ class PDFAnalyser {
             errors: []
         };
 
+        // 获取PDFStructure类
+        let PDFStructureClass;
+        if (typeof window !== 'undefined') {
+            PDFStructureClass = window.PDFStructure;
+        } else if (typeof require !== 'undefined') {
+            PDFStructureClass = require('./pdf-struct.js');
+        } else {
+            PDFStructureClass = PDFStructure;
+        }
+        
         // 获取对象类型的必需属性配置
-        const requirements = PDFStructure.OBJECT_REQUIREMENTS[obj.type];
+        const requirements = PDFStructureClass.OBJECT_REQUIREMENTS[obj.type];
         
         if (!requirements) {
             result.unknownType = true;
@@ -930,7 +959,7 @@ class PDFAnalyser {
                 // 语法检查：确保属性是有效的PDF对象结构
                 for (const [key, value] of Object.entries(obj.properties)) {
                     if (typeof key !== 'string' || key.length === 0) {
-                        result.errors.push(`无效的属性名: ${key}`);
+                        result.errors.push(this.createMessage('OBJECT_INVALID_PROPERTY_NAME', `无效的属性名: ${key}`, `对象 ${obj.objectNumber} 包含无效属性名`));
                         result.isValid = false;
                     }
                 }
@@ -939,8 +968,8 @@ class PDFAnalyser {
         }
 
         // 检查是否有Subtype，如果有则进行Subtype特定验证
-        if (obj.properties?.Subtype && PDFStructure.SUB_TYPE_MAP[obj.type]) {
-            const subtypeInfo = PDFStructure.SUB_TYPE_MAP[obj.type][obj.properties.Subtype];
+        if (obj.properties?.Subtype && PDFStructureClass.SUB_TYPE_MAP[obj.type]) {
+            const subtypeInfo = PDFStructureClass.SUB_TYPE_MAP[obj.type][obj.properties.Subtype];
             
             if (subtypeInfo) {
                 // 使用Subtype特定的必需属性
@@ -956,7 +985,7 @@ class PDFAnalyser {
             } else {
                 // Subtype未知
                 result.unknownSubtype = true;
-                result.errors.push(`未知Subtype: ${obj.type}/${obj.properties.Subtype}`);
+                result.errors.push(this.createMessage('OBJECT_UNKNOWN_SUBTYPE', `未知Subtype: ${obj.type}/${obj.properties.Subtype}`, `对象 ${obj.objectNumber} 包含未知的Subtype`));
             }
         } else {
             // 没有Subtype或该类型没有Subtype定义，使用通用验证
@@ -969,7 +998,7 @@ class PDFAnalyser {
         }
 
         if (result.missingRequired.length > 0) {
-            result.errors.push(`缺少必需属性: ${result.missingRequired.join(', ')}`);
+            result.errors.push(this.createMessage('OBJECT_MISSING_REQUIRED_PROPS', `缺少必需属性: ${result.missingRequired.join(', ')}`, `对象 ${obj.objectNumber} 缺少必需属性`));
         }
 
         return result;
@@ -1036,7 +1065,11 @@ class PDFAnalyser {
 
             // 收集错误
             validation.errors.forEach(error => {
-                results.errors.push(`对象 ${obj.objectNumber}: ${error}`);
+                if (typeof error === 'string') {
+                    results.errors.push(this.createMessage('OBJECT_VALIDATION_ERROR', `对象 ${obj.objectNumber}: ${error}`, `对象 ${obj.objectNumber} 验证失败`));
+                } else {
+                    results.errors.push(error);
+                }
             });
         });
 
@@ -1065,7 +1098,7 @@ class PDFAnalyser {
         
         // 检查是否有xref信息
         if (!this.structure.physical.xref || !this.structure.physical.xref.entries) {
-            result.errors.push('Cross-reference table不存在或无效');
+            result.errors.push(this.createMessage('XREF_MISSING_OR_INVALID', 'Cross-reference table不存在或无效', 'PDF文件必须包含有效的交叉引用表'));
             result.isValid = false;
             return result;
         }
@@ -1096,7 +1129,7 @@ class PDFAnalyser {
         
         if (duplicates.length > 0) {
             result.duplicateEntries = duplicates;
-            result.errors.push(`${duplicates.length}个对象编号有重复条目`);
+            result.errors.push(this.createMessage('XREF_DUPLICATE_ENTRIES', `${duplicates.length}个对象编号有重复条目`, `重复的对象编号: ${duplicates.map(d => d.objectNumber).join(', ')}`));
             result.isValid = false;
         }
         
@@ -1106,7 +1139,7 @@ class PDFAnalyser {
         
         if (freeEntryChainErrors.length > 0) {
             result.freeEntryChainErrors = freeEntryChainErrors;
-            result.errors.push(`${freeEntryChainErrors.length}个free entry链表错误`);
+            result.errors.push(this.createMessage('XREF_FREE_ENTRY_CHAIN_ERRORS', `${freeEntryChainErrors.length}个free entry链表错误`, 'Free entry链表结构不正确'));
             result.isValid = false;
         }
         
@@ -1191,15 +1224,15 @@ class PDFAnalyser {
         
         // 生成汇总信息
         if (result.missingObjects.length > 0) {
-            result.errors.push(`${result.missingObjects.length}个对象在xref中存在但实际不存在`);
+            result.errors.push(this.createMessage('XREF_MISSING_OBJECTS', `${result.missingObjects.length}个对象在xref中存在但实际不存在`, `缺失的对象编号: ${result.missingObjects.join(', ')}`));
         }
         
         if (result.offsetMismatches.length > 0) {
-            result.errors.push(`${result.offsetMismatches.length}个对象的offset不匹配`);
+            result.errors.push(this.createMessage('XREF_OFFSET_MISMATCHES', `${result.offsetMismatches.length}个对象的offset不匹配`, `Offset不匹配的对象: ${result.offsetMismatches.map(m => m.objectNumber).join(', ')}`));
         }
         
         if (result.generationMismatches.length > 0) {
-            result.errors.push(`${result.generationMismatches.length}个对象的generation不匹配`);
+            result.errors.push(this.createMessage('XREF_GENERATION_MISMATCHES', `${result.generationMismatches.length}个对象的generation不匹配`, `Generation不匹配的对象: ${result.generationMismatches.map(m => m.objectNumber).join(', ')}`));
         }
         
         // 检查是否有对象在xref中缺失
@@ -1214,7 +1247,7 @@ class PDFAnalyser {
         });
         
         if (missingInXref.length > 0) {
-            result.warnings.push(`${missingInXref.length}个对象在xref中缺失: ${missingInXref.join(', ')}`);
+            result.warnings.push(this.createMessage('XREF_MISSING_IN_XREF', `${missingInXref.length}个对象在xref中缺失: ${missingInXref.join(', ')}`, '某些对象在XRef表中缺失'));
         }
         
         console.log(`XRef验证完成: ${result.validEntries}/${result.totalEntries} 个条目有效`);
@@ -1315,16 +1348,16 @@ class PDFAnalyser {
         // 检查对象0是否为空闲状态且生成号为65535
         const object0Entry = allEntries.find(entry => entry.objectNumber === 0);
         if (!object0Entry) {
-            errors.push('对象0在xref中不存在');
+            errors.push(this.createMessage('FREE_ENTRY_OBJECT0_MISSING', '对象0在xref中不存在', '对象0必须存在于XRef表中作为free entry链表的头节点'));
             return errors;
         }
         
         if (object0Entry.inUse) {
-            errors.push('对象0应该是空闲状态');
+            errors.push(this.createMessage('FREE_ENTRY_OBJECT0_IN_USE', '对象0应该是空闲状态', '对象0必须标记为未使用状态'));
         }
         
         if (object0Entry.generation !== 65535) {
-            errors.push('对象0的生成号应该是65535');
+            errors.push(this.createMessage('FREE_ENTRY_OBJECT0_GENERATION', '对象0的生成号应该是65535', `当前生成号: ${object0Entry.generation}`));
         }
         
         // 对象0的生成号65535表示已被删除且不再重用，这是正常的
@@ -1339,7 +1372,7 @@ class PDFAnalyser {
         while (currentObject !== null && chainLength < maxChainLength) {
             if (visited.has(currentObject)) {
                 if (currentObject !== 0) {
-                    errors.push(`free entry链表形成循环，在对象${currentObject}处循环`);
+                    errors.push(this.createMessage('FREE_ENTRY_CIRCULAR_CHAIN', `free entry链表形成循环，在对象${currentObject}处循环`, `循环路径: ${Array.from(visited).join(' -> ')} -> ${currentObject}`));
                 }
                 break;
             }
@@ -1348,23 +1381,23 @@ class PDFAnalyser {
             const currentEntry = allEntries.find(entry => entry.objectNumber === currentObject);
             
             if (!currentEntry) {
-                errors.push(`对象${currentObject}在xref中不存在`);
+                errors.push(this.createMessage('FREE_ENTRY_OBJECT_MISSING', `对象${currentObject}在xref中不存在`, `对象${currentObject}在free entry链表中但不在XRef表中`));
                 break;
             }
             
             if (currentEntry.inUse) {
-                errors.push(`对象${currentObject}应该是空闲状态，但标记为使用中`);
+                errors.push(this.createMessage('FREE_ENTRY_OBJECT_IN_USE', `对象${currentObject}应该是空闲状态，但标记为使用中`, `对象${currentObject}的状态不正确`));
                 break;
             }
             
             // 检查生成号规则
             if (currentObject === 0) {
                 if (currentEntry.generation !== 65535) {
-                    errors.push('对象0的生成号应该是65535');
+                    errors.push(this.createMessage('FREE_ENTRY_OBJECT0_GENERATION_IN_CHAIN', '对象0的生成号应该是65535', `当前生成号: ${currentEntry.generation}`));
                 }
             } else {
                 if (currentEntry.generation < 0 || currentEntry.generation > 65535) {
-                    errors.push(`对象${currentObject}的生成号${currentEntry.generation}超出有效范围(0-65535)`);
+                    errors.push(this.createMessage('FREE_ENTRY_GENERATION_OUT_OF_RANGE', `对象${currentObject}的生成号${currentEntry.generation}超出有效范围(0-65535)`, `对象${currentObject}的生成号无效`));
                 }
             }
             
@@ -1374,7 +1407,7 @@ class PDFAnalyser {
         }
         
         if (chainLength >= maxChainLength) {
-            errors.push('free entry链表可能形成无限循环');
+            errors.push(this.createMessage('FREE_ENTRY_INFINITE_LOOP', 'free entry链表可能形成无限循环', `链表长度: ${chainLength}, 最大允许长度: ${maxChainLength}`));
         }
         
         // 检查所有free entry是否都在链表中或链接回对象0
@@ -1384,7 +1417,7 @@ class PDFAnalyser {
             if (!visited.has(entry.objectNumber)) {
                 // 检查是否链接回对象0且生成号为65535
                 if (entry.nextFreeObject !== 0 || entry.generation !== 65535) {
-                    errors.push(`对象${entry.objectNumber}不在free entry链表中，且未正确链接回对象0`);
+                    errors.push(this.createMessage('FREE_ENTRY_NOT_IN_CHAIN', `对象${entry.objectNumber}不在free entry链表中，且未正确链接回对象0`, `对象${entry.objectNumber}的nextFreeObject: ${entry.nextFreeObject}, generation: ${entry.generation}`));
                 }
             }
         });
@@ -1415,7 +1448,7 @@ class PDFAnalyser {
         
         // 如果结构验证失败，记录警告
         if (!structureValidation.isValid) {
-            this.structure.validation.warnings.push('PDF文件结构存在问题');
+            this.structure.validation.warnings.push(this.createMessage('STRUCTURE_VALIDATION_FAILED', 'PDF文件结构存在问题', 'PDF文件的基本结构验证失败'));
         }
         
         // 2. 验证所有对象的必需属性
@@ -1428,24 +1461,19 @@ class PDFAnalyser {
             this.structure.validation.errors.push(error);
         });
         
-        // 添加对象验证警告
-        if (objectValidation.invalid > 0) {
-            this.structure.validation.warnings.push(`${objectValidation.invalid}个对象缺少必需属性`);
-        }
-        
         if (objectValidation.unknownTypes > 0) {
-            this.structure.validation.warnings.push(`${objectValidation.unknownTypes}个对象类型未知`);
+            this.structure.validation.warnings.push(this.createMessage('UNKNOWN_OBJECT_TYPES', `${objectValidation.unknownTypes}个对象类型未知`, '某些对象包含未知的类型信息'));
         }
         
         // 2. 使用PDFStructure的基础功能检查必需对象
         const requiredCheck = this.structure.checkRequiredObjects();
         
         if (!requiredCheck.hasCatalog) {
-            this.structure.validation.errors.push('缺少Catalog对象');
+            this.structure.validation.errors.push(this.createMessage('MISSING_CATALOG', '缺少Catalog对象', 'PDF文件必须包含Catalog对象作为文档根'));
         }
         
         if (!requiredCheck.hasPages) {
-            this.structure.validation.errors.push('缺少Pages对象');
+            this.structure.validation.errors.push(this.createMessage('MISSING_PAGES', '缺少Pages对象', 'PDF文件必须包含Pages对象来管理页面'));
         }
         
         // 3. 检查无效引用
@@ -1453,14 +1481,14 @@ class PDFAnalyser {
         console.log("检查无效引用...")
         const invalidRefs = this.structure.relations.references.filter(ref => !ref.valid);
         if (invalidRefs.length > 0) {
-            this.structure.validation.warnings.push(`发现${invalidRefs.length}个无效引用`);
+            this.structure.validation.warnings.push(this.createMessage('INVALID_REFERENCES', `发现${invalidRefs.length}个无效引用`, `无效引用数量: ${invalidRefs.length}`));
         }
 
         // 4. 检查循环引用
         console.log("")
         console.log("检查循环引用...")
         if (this.structure.stats.references.circular > 0) {
-            this.structure.validation.warnings.push(`发现${this.structure.stats.references.circular}个循环引用`);
+            this.structure.validation.warnings.push(this.createMessage('CIRCULAR_REFERENCES', `发现${this.structure.stats.references.circular}个循环引用`, 'PDF文件中存在循环引用关系'));
             
             // 打印循环引用详情
             console.log('\n==== 循环引用详情 ====');
@@ -1481,7 +1509,7 @@ class PDFAnalyser {
         console.log("")
         console.log("检查页面对象...")
         if (!requiredCheck.hasPageObjects) {
-            this.structure.validation.warnings.push('没有找到页面对象');
+            this.structure.validation.warnings.push(this.createMessage('NO_PAGE_OBJECTS', '没有找到页面对象', 'PDF文件可能不包含页面内容'));
         }
         
         // 6. 检查字体对象
@@ -1489,7 +1517,7 @@ class PDFAnalyser {
         console.log("检查字体对象...")
         const contentStats = this.structure.getContentStats();
         if (contentStats.fonts === 0) {
-            this.structure.validation.warnings.push('没有找到字体对象');
+            this.structure.validation.warnings.push(this.createMessage('NO_FONT_OBJECTS', '没有找到字体对象', 'PDF文件可能不包含文本内容'));
         }
         
         // 7. 设置验证结果
@@ -1503,12 +1531,20 @@ class PDFAnalyser {
         
         // 添加xref验证错误和警告
         xrefValidation.errors.forEach(error => {
-            this.structure.validation.errors.push(`XRef: ${error}`);
+            if (typeof error === 'string') {
+                this.structure.validation.errors.push(this.createMessage('XREF_ERROR', `XRef: ${error}`, 'XRef表验证错误'));
+            } else {
+                this.structure.validation.errors.push(error);
+            }
         });
         
         if (xrefValidation.warnings.length > 0) {
             xrefValidation.warnings.forEach(warning => {
-                this.structure.validation.warnings.push(`XRef: ${warning}`);
+                if (typeof warning === 'string') {
+                    this.structure.validation.warnings.push(this.createMessage('XREF_WARNING', `XRef: ${warning}`, 'XRef表验证警告'));
+                } else {
+                    this.structure.validation.warnings.push(warning);
+                }
             });
         }
         

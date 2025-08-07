@@ -1,4 +1,4 @@
-const PDFParser = require('../js/pdf-parser.js');
+const PDFParser = require('../../src/js/pdf-parser.js');
 
 // Mock File 类
 class MockFile {
@@ -117,7 +117,7 @@ class PDFFileTest {
         console.log('====测试 2: 自定义PDF测试集====');
         const fs = require('fs');
         const path = require('path');
-        const testpdfPath = path.join(__dirname, 'testpdf');
+        const testpdfPath = path.join(__dirname, '../pdf');
         
         try {
             const files = fs.readdirSync(testpdfPath);

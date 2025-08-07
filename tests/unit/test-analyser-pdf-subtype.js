@@ -1,6 +1,6 @@
-const PDFStructure = require('../js/pdf-struct.js');
-const PDFParser = require('../js/pdf-parser.js');
-const PDFAnalyser = require('../js/pdf-analyser.js');
+const PDFStructure = require('../../src/js/pdf-struct.js');
+const PDFParser = require('../../src/js/pdf-parser.js');
+const PDFAnalyser = require('../../src/js/pdf-analyser.js');
 
 class SubtypeMapTest {
     constructor() {
