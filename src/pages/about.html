@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>隐私政策 - PDF Inspector Pro</title>
-    <meta name="description" content="PDF Inspector Pro 隐私政策">
-    <link rel="stylesheet" href="css/style.css">
+    <title>关于我们 - PDF Inspector Pro</title>
+    <meta name="description" content="PDF Inspector Pro 项目介绍和团队信息">
+    <link rel="stylesheet" href="src/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -26,42 +26,41 @@
         </header>
 
         <main class="main-content">
-            <div class="privacy-container">
-                <h2><i class="fas fa-user-shield"></i> <span data-i18n="privacy.title">隐私政策</span></h2>
+            <div class="about-container">
+                <h2><i class="fas fa-info-circle"></i> <span data-i18n="about.title">关于我们</span></h2>
                 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-info-circle"></i> <span data-i18n="privacy.collectionTitle">信息收集</span></h3>
-                    <p data-i18n="privacy.collectionDesc">PDF Inspector Pro 不会收集或存储您的个人信息。所有文件处理都在您的浏览器本地进行，不会上传到服务器。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-rocket"></i> <span data-i18n="about.introTitle">项目介绍</span></h3>
+                    <p data-i18n="about.introDesc">PDF Inspector Pro 是一款专业的PDF格式校验工具，基于PDF 1.7标准开发，提供全面的PDF文件分析和验证功能。</p>
                 </section>
 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-lock"></i> <span data-i18n="privacy.securityTitle">数据安全</span></h3>
-                    <p data-i18n="privacy.securityDesc">您的PDF文件仅在本地处理，不会传输到任何外部服务器。我们采用纯前端技术，确保您的文件安全。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-cogs"></i> <span data-i18n="about.featuresTitle">核心功能</span></h3>
+                    <ul id="features-list">
+                        <!-- Features items will be populated by JavaScript -->
+                    </ul>
                 </section>
 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-cookie-bite"></i> <span data-i18n="privacy.cookieTitle">Cookie使用</span></h3>
-                    <p data-i18n="privacy.cookieDesc">本网站可能使用必要的Cookie来改善用户体验，但不会用于跟踪或收集个人信息。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-shield-alt"></i> <span data-i18n="about.techTitle">技术特点</span></h3>
+                    <ul id="tech-list">
+                        <!-- Tech items will be populated by JavaScript -->
+                    </ul>
                 </section>
 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-external-link-alt"></i> <span data-i18n="privacy.linksTitle">外部链接</span></h3>
-                    <p data-i18n="privacy.linksDesc">本网站可能包含指向外部网站的链接，我们不对这些网站的隐私政策负责。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-code"></i> <span data-i18n="about.stackTitle">技术栈</span></h3>
+                    <p data-i18n="about.stackDesc">HTML5, CSS3, JavaScript, D3.js, Font Awesome</p>
                 </section>
 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-calendar-alt"></i> <span data-i18n="privacy.updateTitle">政策更新</span></h3>
-                    <p data-i18n="privacy.updateDesc">本隐私政策可能会更新，更新后的政策将在此页面发布。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-users"></i> <span data-i18n="about.teamTitle">开发团队</span></h3>
+                    <p data-i18n="about.teamDesc">PDF Inspector Pro 由专业的PDF格式验证团队开发，致力于为用户提供高质量的PDF分析工具。</p>
                 </section>
 
-                <section class="privacy-section">
-                    <h3><i class="fas fa-shield-virus"></i> <span data-i18n="privacy.protectionTitle">数据保护</span></h3>
-                    <p data-i18n="privacy.protectionDesc">我们采用行业标准的安全措施保护您的数据，包括加密传输和安全的存储实践。</p>
-                </section>
-
-                <section class="privacy-section">
-                    <h3><i class="fas fa-handshake"></i> <span data-i18n="privacy.thirdPartyTitle">第三方服务</span></h3>
-                    <p data-i18n="privacy.thirdPartyDesc">我们不会与第三方分享您的个人信息，除非法律要求或获得您的明确同意。</p>
+                <section class="about-section">
+                    <h3><i class="fas fa-heart"></i> <span data-i18n="about.contributeTitle">开源贡献</span></h3>
+                    <p data-i18n="about.contributeDesc">我们欢迎社区贡献，如果您发现bug或有改进建议，欢迎联系我们。</p>
                 </section>
             </div>
         </main>
@@ -85,10 +84,10 @@
                 <div class="footer-section">
                     <h4 data-i18n="footer.support">技术支持</h4>
                     <ul>
-                        <li><a href="/help.html" aria-label="帮助文档" data-i18n="footer.helpDocs">帮助文档</a></li>
-                        <li><a href="/about.html" aria-label="关于我们" data-i18n="footer.aboutUs">关于我们</a></li>
-                        <li><a href="/privacy.html" aria-label="隐私政策" data-i18n="footer.privacyPolicy">隐私政策</a></li>
-                        <li><a href="/terms.html" aria-label="使用条款" data-i18n="footer.termsOfService">使用条款</a></li>
+                        <li><a href="/src/pages/help.html" aria-label="帮助文档" data-i18n="footer.helpDocs">帮助文档</a></li>
+                        <li><a href="/src/pages/about.html" aria-label="关于我们" data-i18n="footer.aboutUs">关于我们</a></li>
+                        <li><a href="/src/pages/privacy.html" aria-label="隐私政策" data-i18n="footer.privacyPolicy">隐私政策</a></li>
+                        <li><a href="/src/pages/terms.html" aria-label="使用条款" data-i18n="footer.termsOfService">使用条款</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -107,7 +106,7 @@
     <!-- 多语言支持脚本 -->
     <script type="module">
         // 动态导入多语言支持
-        import languageManager from './js/language-manager.js';
+        import languageManager from './src/js/language-manager.js';
         
         // 等待DOM加载完成后初始化
         document.addEventListener('DOMContentLoaded', async () => {
@@ -140,6 +139,30 @@
                     element.textContent = translation;
                 }
             });
+
+            // 更新功能列表
+            updateFeaturesList();
+            
+            // 更新技术特点列表
+            updateTechList();
+        }
+
+        // 更新功能列表
+        function updateFeaturesList() {
+            const featuresList = document.getElementById('features-list');
+            if (featuresList) {
+                const featuresItems = window.languageManager.get('about.featuresItems') || [];
+                featuresList.innerHTML = featuresItems.map(item => `<li>${item}</li>`).join('');
+            }
+        }
+
+        // 更新技术特点列表
+        function updateTechList() {
+            const techList = document.getElementById('tech-list');
+            if (techList) {
+                const techItems = window.languageManager.get('about.techItems') || [];
+                techList.innerHTML = techItems.map(item => `<li>${item}</li>`).join('');
+            }
         }
 
         // 设置语言切换器

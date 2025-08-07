@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>服务条款 - PDF Inspector Pro</title>
     <meta name="description" content="PDF Inspector Pro 服务条款">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -89,10 +89,10 @@
                 <div class="footer-section">
                     <h4 data-i18n="footer.support">技术支持</h4>
                     <ul>
-                        <li><a href="/help.html" aria-label="帮助文档" data-i18n="footer.helpDocs">帮助文档</a></li>
-                        <li><a href="/about.html" aria-label="关于我们" data-i18n="footer.aboutUs">关于我们</a></li>
-                        <li><a href="/privacy.html" aria-label="隐私政策" data-i18n="footer.privacyPolicy">隐私政策</a></li>
-                        <li><a href="/terms.html" aria-label="使用条款" data-i18n="footer.termsOfService">使用条款</a></li>
+                        <li><a href="/src/pages/help.html" aria-label="帮助文档" data-i18n="footer.helpDocs">帮助文档</a></li>
+                        <li><a href="/src/pages/about.html" aria-label="关于我们" data-i18n="footer.aboutUs">关于我们</a></li>
+                        <li><a href="/src/pages/privacy.html" aria-label="隐私政策" data-i18n="footer.privacyPolicy">隐私政策</a></li>
+                        <li><a href="/src/pages/terms.html" aria-label="使用条款" data-i18n="footer.termsOfService">使用条款</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -111,7 +111,7 @@
     <!-- 多语言支持脚本 -->
     <script type="module">
         // 动态导入多语言支持
-        import languageManager from './js/language-manager.js';
+        import languageManager from './src/js/language-manager.js';
         
         // 等待DOM加载完成后初始化
         document.addEventListener('DOMContentLoaded', async () => {
