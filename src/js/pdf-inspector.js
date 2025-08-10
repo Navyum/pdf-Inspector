@@ -74,7 +74,8 @@ class PDFInspector {
      */
     bindEvents() {
         // 文件上传事件
-        document.getElementById('selectFileBtn').addEventListener('click', () => {
+        document.getElementById('selectFileBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // 阻止事件冒泡
             document.getElementById('fileInput').click();
         });
         
@@ -84,6 +85,15 @@ class PDFInspector {
         
         // 拖拽上传
         const uploadArea = document.getElementById('uploadArea');
+        
+        // 整个上传区域点击事件
+        uploadArea.addEventListener('click', (e) => {
+            // 如果点击的不是按钮，则触发文件选择
+            if (!e.target.closest('#selectFileBtn')) {
+                document.getElementById('fileInput').click();
+            }
+        });
+        
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadArea.classList.add('dragover');
