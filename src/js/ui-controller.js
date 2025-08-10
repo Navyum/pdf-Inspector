@@ -489,6 +489,7 @@ class UIController {
      */
     clearResults() {
         const uploadSection = document.getElementById('uploadSection');
+        const featuresSection = document.getElementById('featuresSection');
         const resultsSection = document.getElementById('resultsSection');
         
         // 添加结果区域隐藏动画
@@ -521,9 +522,12 @@ class UIController {
         this.pdfInspector.pdfStructure = null;
         this.pdfInspector.validationResults = null;
         
-        // 显示上传区域并移除动画类
+        // 显示上传区域和特性区域并移除动画类
         setTimeout(() => {
             uploadSection.style.display = 'block';
+            if (featuresSection) {
+                featuresSection.style.display = 'block';
+            }
             resultsSection.style.display = 'none';
             resultsSection.classList.remove('hiding');
         }, 500);

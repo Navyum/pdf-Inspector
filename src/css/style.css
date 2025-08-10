@@ -149,9 +149,8 @@ body {
 .main-content {
     flex: 1;
     max-width: 1400px;
-    margin: 0 auto;
-    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
-    padding-top: calc(var(--spacing-lg) * 2);
+    margin: 4rem auto 0;
+    padding: var(--spacing-md) var(--spacing-lg);
     width: 100%;
 }
 
@@ -220,8 +219,8 @@ body {
 
 /* 文件上传区域 */
 .upload-section {
-    margin-bottom: var(--spacing-xl);
-    margin-top: calc(var(--spacing-xl) * 3);
+    margin-bottom: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
 }
 
 .upload-container {
@@ -232,7 +231,7 @@ body {
 }
 
 .upload-area {
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-lg);
     text-align: center;
     border: 3px dashed var(--border-color);
     border-radius: var(--border-radius-xl);
@@ -257,12 +256,12 @@ body {
 }
 
 .upload-icon i {
-    font-size: 4rem;
+    font-size: 3rem;
     color: var(--primary-color);
 }
 
 .upload-area h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-bottom: var(--spacing-sm);
     color: var(--text-primary);
 }
@@ -3976,5 +3975,184 @@ body {
     .footer-section p,
     .footer-section li {
         font-size: 0.875rem;
+    }
+} 
+
+/* 特性展示区域 */
+.features-section {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md) 0;
+}
+
+.features-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.features-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    min-width: 120px;
+    text-align: center;
+}
+
+.feature-icon {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+}
+
+.feature-icon .fas.fa-ban {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 3rem;
+    color: #8f3931;
+    z-index: 1;
+    line-height: 1;
+}
+
+.feature-icon .fas:not(.fa-ban) {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 1.2rem;
+    color: #0e1114df;
+    z-index: 2;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    text-align: center;
+    font-weight: normal;
+    transform: translate(0, 0);
+}
+
+/* 特定图标放大 */
+.feature-icon .fa-user,
+.feature-icon .fa-dollar-sign,
+.feature-icon .fa-envelope,
+.feature-icon .fa-ad {
+    font-size: 1.4rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    top: 13px;
+    left: 13px;
+}
+
+.feature-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.features-notice {
+    margin-top: var(--spacing-md);
+}
+
+.features-notice p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .features-grid {
+        gap: var(--spacing-lg);
+    }
+    
+    .feature-item {
+        min-width: 100px;
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .feature-icon .fas.fa-ban {
+        font-size: 2.5rem;
+    }
+    
+    .feature-icon .fas:not(.fa-ban) {
+        top: 10px;
+        left: 10px;
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+        line-height: 1;
+    }
+    
+    /* 特定图标放大 - 平板端 */
+    .feature-icon .fa-user,
+    .feature-icon .fa-dollar-sign,
+    .feature-icon .fa-envelope,
+    .feature-icon .fa-ad {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        top: 8px;
+        left: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-grid {
+        gap: var(--spacing-md);
+    }
+    
+    .feature-item {
+        min-width: 80px;
+    }
+    
+    .feature-icon {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .feature-icon .fas.fa-ban {
+        font-size: 2.25rem;
+    }
+    
+    .feature-icon .fas:not(.fa-ban) {
+        top: 8px;
+        left: 8px;
+        font-size: 1.50rem;
+        width: 1.50rem;
+        height: 1.5rem;
+        line-height: 1;
+    }
+    
+    /* 特定图标放大 - 手机端 */
+    .feature-icon .fa-user,
+    .feature-icon .fa-dollar-sign,
+    .feature-icon .fa-envelope,
+    .feature-icon .fa-ad {
+        font-size: 1.50rem;
+        width: 1.50rem;
+        height: 1.5rem;
+        top: 6px;
+        left: 6px;
+    }
+    
+    .feature-text {
+        font-size: 0.8rem;
     }
 } 

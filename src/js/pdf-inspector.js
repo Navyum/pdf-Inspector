@@ -354,11 +354,17 @@ class PDFInspector {
      */
     showProgress() {
         const uploadSection = document.getElementById('uploadSection');
+        const featuresSection = document.getElementById('featuresSection');
         const progressSection = document.getElementById('progressSection');
         const resultsSection = document.getElementById('resultsSection');
         
         // 添加上传区域隐藏动画
         uploadSection.classList.add('hiding');
+        
+        // 隐藏特性区域
+        if (featuresSection) {
+            featuresSection.style.display = 'none';
+        }
         
         // 显示进度区域
         progressSection.style.display = 'block';
