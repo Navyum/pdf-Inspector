@@ -1110,9 +1110,9 @@ class PDFVisualizer {
      */
     getIssueIcon(severity) {
         const iconMap = {
-            'critical': 'fa-exclamation-circle',
+            'critical': 'fa-ad-circle',
             'error': 'fa-times-circle',
-            'warning': 'fa-exclamation-triangle',
+            'warning': 'fa-ad-triangle',
             'info': 'fa-info-circle',
             'success': 'fa-check-circle'
         };

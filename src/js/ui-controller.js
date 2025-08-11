@@ -197,7 +197,7 @@ class UIController {
                 </div>
                 <div class="filter-option" data-value="error">
                     <div class="filter-option-icon error">
-                        <i class="fas fa-exclamation-circle"></i>
+                        <i class="fas fa-ad-circle"></i>
                     </div>
                     <span class="filter-option-text">错误</span>
                     <div class="filter-option-check">
@@ -206,7 +206,7 @@ class UIController {
                 </div>
                 <div class="filter-option" data-value="warning">
                     <div class="filter-option-icon warning">
-                        <i class="fas fa-exclamation-triangle"></i>
+                        <i class="fas fa-ad-triangle"></i>
                     </div>
                     <span class="filter-option-text">警告</span>
                     <div class="filter-option-check">

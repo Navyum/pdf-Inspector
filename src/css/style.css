@@ -4023,13 +4023,15 @@ body {
     color: #8f3931;
     z-index: 1;
     line-height: 1;
+    align-items: center;
+    justify-content: center;
 }
 
 .feature-icon .fas:not(.fa-ban) {
     position: absolute;
     top: 15px;
     left: 15px;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     color: #0e1114df;
     z-index: 2;
     width: 1.2rem;
@@ -4045,19 +4047,19 @@ body {
 
 /* 特定图标放大 */
 .feature-icon .fa-user,
-.feature-icon .fa-dollar-sign,
+.feature-icon .fa-hdd,
 .feature-icon .fa-envelope,
-.feature-icon .fa-ad {
-    font-size: 1.4rem;
-    width: 1.4rem;
-    height: 1.4rem;
-    top: 13px;
-    left: 13px;
+.feature-icon .fa-bell {
+    font-weight: 10;
+    width: 1.3rem;
+    height: 1.3rem;
+    top: 12px;
+    left: 12px;
 }
 
 .feature-text {
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 800;
     color: var(--text-primary);
     text-align: center;
 }
@@ -4102,14 +4104,17 @@ body {
     
     /* 特定图标放大 - 平板端 */
     .feature-icon .fa-user,
-    .feature-icon .fa-dollar-sign,
+    .feature-icon .fa-hdd,
     .feature-icon .fa-envelope,
-    .feature-icon .fa-ad {
-        font-size: 1.2rem;
-        width: 1.2rem;
-        height: 1.2rem;
-        top: 8px;
-        left: 8px;
+    .feature-icon .fa-bell {
+        font-size: 1.1rem;
+        width: 1.1rem;
+        height: 1.1rem;
+        top: 7px;
+        left: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -4142,14 +4147,17 @@ body {
     
     /* 特定图标放大 - 手机端 */
     .feature-icon .fa-user,
-    .feature-icon .fa-dollar-sign,
+    .feature-icon .fa-hdd,
     .feature-icon .fa-envelope,
-    .feature-icon .fa-ad {
-        font-size: 1.50rem;
-        width: 1.50rem;
-        height: 1.5rem;
-        top: 6px;
-        left: 6px;
+    .feature-icon .fa-bell {
+        font-size: 1.4rem;
+        width: 1.4rem;
+        height: 1.4rem;
+        top: 5px;
+        left: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .feature-text {

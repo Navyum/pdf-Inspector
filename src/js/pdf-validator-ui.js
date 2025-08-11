@@ -174,7 +174,7 @@ class PDFValidatorUI {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.innerHTML = `
-            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-ad-circle"></i>
             <span>${message}</span>
             <button onclick="this.parentElement.remove()">×</button>
         `;
@@ -527,7 +527,7 @@ class PDFValidatorUI {
 
         const iconMap = {
             error: 'fas fa-times-circle',
-            warning: 'fas fa-exclamation-triangle',
+            warning: 'fas fa-ad-triangle',
             info: 'fas fa-info-circle'
         };
 

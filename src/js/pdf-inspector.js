@@ -358,10 +358,8 @@ class PDFInspector {
         const progressSection = document.getElementById('progressSection');
         const resultsSection = document.getElementById('resultsSection');
         
-        // 添加上传区域隐藏动画
-        uploadSection.classList.add('hiding');
-        
-        // 隐藏特性区域
+        // 立即隐藏上传区域和特性区域
+        uploadSection.style.display = 'none';
         if (featuresSection) {
             featuresSection.style.display = 'none';
         }
@@ -369,12 +367,6 @@ class PDFInspector {
         // 显示进度区域
         progressSection.style.display = 'block';
         resultsSection.style.display = 'none';
-        
-        // 移除动画类
-        setTimeout(() => {
-            uploadSection.style.display = 'none';
-            uploadSection.classList.remove('hiding');
-        }, 500);
     }
     
     /**
@@ -428,7 +420,7 @@ class PDFInspector {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.innerHTML = `
-            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-ad-circle"></i>
             <span>${message}</span>
             <button onclick="this.parentElement.remove()">
                 <i class="fas fa-times"></i>
