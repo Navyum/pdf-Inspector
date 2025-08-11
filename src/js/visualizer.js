@@ -287,7 +287,7 @@ class PDFVisualizer {
                     
                     // 调试XObject状态
                     if (obj.type === 'XObject') {
-                        console.log(`创建XObject ${obj.objectNumber} 子节点，计算状态: ${objectStatus}`);
+                        //console.log(`创建XObject ${obj.objectNumber} 子节点，计算状态: ${objectStatus}`);
                     }
                     
                     const childNode = this.createTreeNode({

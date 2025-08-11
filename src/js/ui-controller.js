@@ -831,16 +831,16 @@ class UIController {
         let processedStreams = 0;
         
         pdfStructure.physical.objects.forEach((obj, index) => {
-            console.log(`对象 ${index + 1} (${obj.type || 'Unknown'}):`);
-            console.log(`  - 对象属性:`, obj.properties);
+            //console.log(`对象 ${index + 1} (${obj.type || 'Unknown'}):`);
+            //console.log(`  - 对象属性:`, obj.properties);
             
             // 1. 判断属性properties中是否含有filter，没有则跳过
             if (!obj.properties?.Filter) {
-                console.log(`  ⏭️ 跳过：没有Filter属性`);
+                //console.log(`  ⏭️ 跳过：没有Filter属性`);
                 return;
             }
             
-            console.log(`  ✅ 找到Filter属性: ${obj.properties.Filter}`);
+            //console.log(`  ✅ 找到Filter属性: ${obj.properties.Filter}`);
             
             // 2. 有则按照filter的压缩方法，对streamData进行解压,计算出size
             const decompressedSize = this.decompressStreamData(obj);
@@ -858,8 +858,8 @@ class UIController {
             
             processedStreams++;
             
-            console.log(`  📊 解压后大小: ${decompressedSize} 字节`);
-            console.log(`  📊 压缩后大小: ${compressedSize} 字节`);
+            //console.log(`  📊 解压后大小: ${decompressedSize} 字节`);
+            //console.log(`  📊 压缩后大小: ${compressedSize} 字节`);
         });
         
         console.log(`📊 压缩统计:`);
@@ -897,7 +897,7 @@ class UIController {
                 return null;
             }
             
-            console.log(`    🔍 解压Filter: ${filter}, Length: ${length}`);
+            //console.log(`    🔍 解压Filter: ${filter}, Length: ${length}`);
             
             // 压缩比映射表
             const compressionRatios = {
@@ -925,11 +925,11 @@ class UIController {
             
             const ratio = compressionRatios[filter];
             if (ratio !== undefined) {
-                console.log(`    📊 ${filter}估算解压大小 (1:${ratio})`);
+                //console.log(`    📊 ${filter}估算解压大小 (1:${ratio})`);
                 return length * ratio;
             } else {
                 // 其他未知压缩方法，使用默认估算
-                console.log(`    📊 未知压缩方法 ${filter}，使用默认估算 (1:2)`);
+                //console.log(`    📊 未知压缩方法 ${filter}，使用默认估算 (1:2)`);
                 return length * 2;
             }
         } catch (error) {

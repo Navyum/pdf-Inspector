@@ -1157,10 +1157,10 @@ class PDFAnalyser {
             const obj = this.structure.getObject(entry.objectNumber, entry.generation);
             
             // 特殊处理对象0：如果生成号是65535，表示已被删除且不再重用
-            if (entry.objectNumber === 0 && entry.generation === 65535) {
+            if (entry.generation === 65535) {
                 if (obj) {
                     detail.isValid = false;
-                    detail.issues.push('对象0已被删除(生成号65535)但实际存在');
+                    detail.issues.push('对象' + entry.objectNumber + '已被删除(生成号65535)但实际存在');
                     result.missingObjects.push(entry.objectNumber);
                     result.invalidEntries++;
                 } else {
@@ -1412,6 +1412,7 @@ class PDFAnalyser {
         
         // 检查所有free entry是否都在链表中或链接回对象0
         freeEntries.forEach(entry => {
+            // console.log("FREE  EnTRY INFO:" + entry.objectNumber + " " + entry.generation + " " + entry.nextFreeObject)
             if (entry.objectNumber === 0) return; // 对象0是头节点
             
             if (!visited.has(entry.objectNumber)) {

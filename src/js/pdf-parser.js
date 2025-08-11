@@ -334,7 +334,7 @@ class PDFParser {
             
             // 查找 trailer 标记
             const fileString = new TextDecoder('latin1').decode(bytes);
-            const trailerMatch = fileString.match(/trailer\s*\n([\s\S]*?)(?=startxref|%%EOF)/);
+            const trailerMatch = fileString.match(/trailer\s*([\s\S]*?)(?=startxref|%%EOF)/);
             
             if (!trailerMatch) {
                 console.warn('未找到 Trailer');
