@@ -513,7 +513,7 @@
     <div class="modal" id="helpModal">
         <div class="modal-content help-modal">
             <div class="modal-header">
-                <h3><i class="fas fa-question-circle"></i> 帮助中心</h3>
+                <h3><i class="fas fa-question-circle"></i> <span data-i18n="help.title">帮助中心</span></h3>
                 <button class="modal-close" id="closeHelpModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -525,11 +525,9 @@
                             <i class="fas fa-upload"></i>
                         </div>
                         <div class="help-content">
-                            <h4>文件上传</h4>
+                            <h4 data-i18n="help.uploadTitle">文件上传</h4>
                             <ul>
-                                <li>点击"选择文件"按钮选择PDF文件</li>
-                                <li>直接拖拽PDF文件到上传区域</li>
-                                <li>支持的文件大小：最大50MB</li>
+                                <li data-i18n="help.uploadDesc">点击"选择文件"按钮选择PDF文件，或直接拖拽PDF文件到上传区域。支持的文件大小：最大50MB</li>
                             </ul>
                         </div>
                     </div>
@@ -539,13 +537,13 @@
                             <i class="fas fa-sitemap"></i>
                         </div>
                         <div class="help-content">
-                            <h4>功能说明</h4>
+                            <h4 data-i18n="help.features.title">功能说明</h4>
                             <ul>
-                                <li><strong>结构树</strong>：显示PDF文档的完整对象结构</li>
-                                <li><strong>关系图</strong>：可视化对象之间的引用关系</li>
-                                <li><strong>问题列表</strong>：显示验证发现的问题和警告</li>
-                                <li><strong>分析报告</strong>：详细的PDF分析和统计信息</li>
-                                <li><strong>原始数据</strong>：查看PDF的原始解析数据</li>
+                                                            <li><span data-i18n="help.features.structure">显示PDF文档的完整对象结构</span></li>
+                            <li><span data-i18n="help.features.graph">可视化对象之间的引用关系</span></li>
+                            <li><span data-i18n="help.features.issues">显示验证发现的问题和警告</span></li>
+                            <li><span data-i18n="help.features.analysis">详细的PDF分析和统计信息</span></li>
+                            <li><span data-i18n="help.features.raw">查看PDF的原始解析数据</span></li>
                             </ul>
                         </div>
                     </div>
@@ -555,15 +553,15 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                         <div class="help-content">
-                            <h4>关于工具</h4>
-                            <p>PDF Inspector Pro 是一个强大的PDF文档分析工具，可以帮助您深入了解PDF文件的结构、验证文件完整性、发现潜在问题。</p>
-                            <p>支持的功能包括：</p>
+                            <h4 data-i18n="help.about.title">关于工具</h4>
+                            <p data-i18n="help.about.description">PDF Inspector Pro 是一个强大的PDF文档分析工具，可以帮助您深入了解PDF文件的结构、验证文件完整性、发现潜在问题。</p>
+                            <p data-i18n="help.about.featuresTitle">支持的功能包括：</p>
                             <ul>
-                                <li>PDF结构解析和可视化</li>
-                                <li>文件完整性验证</li>
-                                <li>安全风险检测</li>
-                                <li>性能分析</li>
-                                <li>批量处理</li>
+                                <li data-i18n="help.about.featuresItems.0">PDF结构解析和可视化</li>
+                                <li data-i18n="help.about.featuresItems.1">文件完整性验证</li>
+                                <li data-i18n="help.about.featuresItems.2">安全风险检测</li>
+                                <li data-i18n="help.about.featuresItems.3">性能分析</li>
+                                <li data-i18n="help.about.featuresItems.4">批量处理</li>
                             </ul>
                         </div>
                     </div>
@@ -573,115 +571,115 @@
                             <i class="fas fa-clipboard-check"></i>
                         </div>
                         <div class="help-content">
-                            <h4>PDF检测规则</h4>
-                            <p>本工具基于PDF 1.7标准(ISO 32000-1)进行验证，包含以下12个主要检测类别：</p>
+                            <h4 data-i18n="help.rules.title">PDF检测规则</h4>
+                            <p data-i18n="help.rules.description">本工具基于PDF 1.7标准(ISO 32000-1)进行验证，包含以下12个主要检测类别：</p>
                             
                             <div class="validation-rules">
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-file-alt"></i> 1. PDF头部验证</h5>
+                                    <h5><i class="fas fa-file-alt"></i> 1. <span data-i18n="validationRules.header">PDF头部验证</span></h5>
                                     <ul>
-                                        <li>检查%PDF标识符是否存在</li>
-                                        <li>验证版本号格式(1.0-1.7)</li>
-                                        <li>检查文件类型标识</li>
+                                        <li data-i18n="validationRules.headerDesc.0">检查%PDF标识符是否存在</li>
+                                        <li data-i18n="validationRules.headerDesc.1">验证版本号格式(1.0-1.7)</li>
+                                        <li data-i18n="validationRules.headerDesc.2">检查文件类型标识</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-sitemap"></i> 2. Catalog对象验证</h5>
+                                    <h5><i class="fas fa-sitemap"></i> 2. <span data-i18n="validationRules.catalog">Catalog对象验证</span></h5>
                                     <ul>
-                                        <li>验证Type属性必须为"Catalog"</li>
-                                        <li>检查必需条目：Pages</li>
-                                        <li>验证对象引用有效性</li>
+                                        <li data-i18n="validationRules.catalogDesc.0">验证Type属性必须为"Catalog"</li>
+                                        <li data-i18n="validationRules.catalogDesc.1">检查必需条目：Pages</li>
+                                        <li data-i18n="validationRules.catalogDesc.2">验证对象引用有效性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-layer-group"></i> 3. Pages对象验证</h5>
+                                    <h5><i class="fas fa-layer-group"></i> 3. <span data-i18n="validationRules.pages">Pages对象验证</span></h5>
                                     <ul>
-                                        <li>验证Type属性必须为"Pages"</li>
-                                        <li>检查必需条目：Kids, Count</li>
-                                        <li>验证页面树结构完整性</li>
+                                        <li data-i18n="validationRules.pagesDesc.0">验证Type属性必须为"Pages"</li>
+                                        <li data-i18n="validationRules.pagesDesc.1">检查必需条目：Kids, Count</li>
+                                        <li data-i18n="validationRules.pagesDesc.2">验证页面树结构完整性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-file"></i> 4. Page对象验证</h5>
+                                    <h5><i class="fas fa-file"></i> 4. <span data-i18n="validationRules.page">Page对象验证</span></h5>
                                     <ul>
-                                        <li>验证Type属性必须为"Page"</li>
-                                        <li>检查必需条目：Parent, MediaBox</li>
-                                        <li>验证页面边界框有效性</li>
+                                        <li data-i18n="validationRules.pageDesc.0">验证Type属性必须为"Page"</li>
+                                        <li data-i18n="validationRules.pageDesc.1">检查必需条目：Parent, MediaBox</li>
+                                        <li data-i18n="validationRules.pageDesc.2">验证页面边界框有效性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-font"></i> 5. Font对象验证</h5>
+                                    <h5><i class="fas fa-font"></i> 5. <span data-i18n="validationRules.font">Font对象验证</span></h5>
                                     <ul>
-                                        <li>验证Type属性必须为"Font"</li>
-                                        <li>检查必需条目：Subtype, BaseFont</li>
-                                        <li>验证字体类型和编码</li>
+                                        <li data-i18n="validationRules.fontDesc.0">验证Type属性必须为"Font"</li>
+                                        <li data-i18n="validationRules.fontDesc.1">检查必需条目：Subtype, BaseFont</li>
+                                        <li data-i18n="validationRules.fontDesc.2">验证字体类型和编码</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-image"></i> 6. XObject对象验证</h5>
+                                    <h5><i class="fas fa-image"></i> 6. <span data-i18n="validationRules.xobject">XObject对象验证</span></h5>
                                     <ul>
-                                        <li>验证Type属性必须为"XObject"</li>
-                                        <li>检查必需条目：Subtype</li>
-                                        <li>验证图像或表单对象属性</li>
+                                        <li data-i18n="validationRules.xobjectDesc.0">验证Type属性必须为"XObject"</li>
+                                        <li data-i18n="validationRules.xobjectDesc.1">检查必需条目：Subtype</li>
+                                        <li data-i18n="validationRules.xobjectDesc.2">验证图像或表单对象属性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-stream"></i> 7. Stream对象验证</h5>
+                                    <h5><i class="fas fa-stream"></i> 7. <span data-i18n="validationRules.stream">Stream对象验证</span></h5>
                                     <ul>
-                                        <li>检查Length属性</li>
-                                        <li>验证Filter属性有效性</li>
-                                        <li>检查压缩数据完整性</li>
+                                        <li data-i18n="validationRules.streamDesc.0">检查Length属性</li>
+                                        <li data-i18n="validationRules.streamDesc.1">验证Filter属性有效性</li>
+                                        <li data-i18n="validationRules.streamDesc.2">检查压缩数据完整性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-table"></i> 8. XRef表验证</h5>
+                                    <h5><i class="fas fa-table"></i> 8. <span data-i18n="validationRules.xref">XRef表验证</span></h5>
                                     <ul>
-                                        <li>检查XRef表完整性</li>
-                                        <li>验证对象偏移量正确性</li>
-                                        <li>检查生成号有效性</li>
+                                        <li data-i18n="validationRules.xrefDesc.0">检查XRef表完整性</li>
+                                        <li data-i18n="validationRules.xrefDesc.1">验证对象偏移量正确性</li>
+                                        <li data-i18n="validationRules.xrefDesc.2">检查生成号有效性</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-file-archive"></i> 9. Trailer验证</h5>
+                                    <h5><i class="fas fa-file-archive"></i> 9. <span data-i18n="validationRules.trailer">Trailer验证</span></h5>
                                     <ul>
-                                        <li>检查必需属性：Root, Size</li>
-                                        <li>验证Root引用有效性</li>
-                                        <li>检查加密状态信息</li>
+                                        <li data-i18n="validationRules.trailerDesc.0">检查必需属性：Root, Size</li>
+                                        <li data-i18n="validationRules.trailerDesc.1">验证Root引用有效性</li>
+                                        <li data-i18n="validationRules.trailerDesc.2">检查加密状态信息</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-link"></i> 10. 引用关系验证</h5>
+                                    <h5><i class="fas fa-link"></i> 10. <span data-i18n="validationRules.reference">引用关系验证</span></h5>
                                     <ul>
-                                        <li>检查间接引用有效性</li>
-                                        <li>验证对象编号范围</li>
-                                        <li>检测循环引用关系</li>
+                                        <li data-i18n="validationRules.referenceDesc.0">检查间接引用有效性</li>
+                                        <li data-i18n="validationRules.referenceDesc.1">验证对象编号范围</li>
+                                        <li data-i18n="validationRules.referenceDesc.2">检测循环引用关系</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-shield-alt"></i> 11. 安全验证</h5>
+                                    <h5><i class="fas fa-shield-alt"></i> 11. <span data-i18n="validationRules.security">安全验证</span></h5>
                                     <ul>
-                                        <li>检查加密状态</li>
-                                        <li>验证权限设置</li>
-                                        <li>检测安全风险</li>
+                                        <li data-i18n="validationRules.securityDesc.0">检查加密状态</li>
+                                        <li data-i18n="validationRules.securityDesc.1">验证权限设置</li>
+                                        <li data-i18n="validationRules.securityDesc.2">检测安全风险</li>
                                     </ul>
                                 </div>
                                 
                                 <div class="rule-category">
-                                    <h5><i class="fas fa-tachometer-alt"></i> 12. 性能验证</h5>
+                                    <h5><i class="fas fa-tachometer-alt"></i> 12. <span data-i18n="validationRules.performance">性能验证</span></h5>
                                     <ul>
-                                        <li>检查对象数量合理性</li>
-                                        <li>验证文件大小</li>
-                                        <li>检测内存使用</li>
+                                        <li data-i18n="validationRules.performanceDesc.0">检查对象数量合理性</li>
+                                        <li data-i18n="validationRules.performanceDesc.1">验证文件大小</li>
+                                        <li data-i18n="validationRules.performanceDesc.2">检测内存使用</li>
                                     </ul>
                                 </div>
                             </div>

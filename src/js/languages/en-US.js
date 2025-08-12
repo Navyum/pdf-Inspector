@@ -177,45 +177,82 @@ const enUS = {
         rawData: "Raw Data"
     },
 
-    // Help content
-    help: {
-        title: "Help Center",
-        upload: {
-            title: "File Upload",
-            description: "Support drag and drop upload and click to select PDF files"
-        },
-        features: {
-            title: "Feature Description",
-            structure: "Structure Tree: Display the complete object structure of PDF documents",
-            graph: "Relationship Graph: Visualize reference relationships between objects",
-            issues: "Issue List: Display validation issues and warnings",
-            analysis: "Analysis Report: Detailed PDF analysis and statistical information",
-            raw: "Raw Data: View the original parsed data of PDF"
-        },
-        about: {
-            title: "About Tool",
-            description: "PDF Inspector Pro is a powerful PDF document analysis tool that helps you deeply understand PDF file structure, verify file integrity, and discover potential issues."
-        },
-        rules: {
-            title: "PDF Validation Rules",
-            description: "This tool validates based on PDF 1.7 standard (ISO 32000-1) and includes the following 12 main validation categories:"
-        }
-    },
+
 
     // Validation rules
     validationRules: {
         header: "PDF Header Validation",
+        headerDesc: [
+            "Check if %PDF identifier exists",
+            "Validate version number format (1.0-1.7)",
+            "Check file type identifier"
+        ],
         catalog: "Catalog Object Validation",
+        catalogDesc: [
+            "Verify Type property must be \"Catalog\"",
+            "Check required entries: Pages",
+            "Validate object reference validity"
+        ],
         pages: "Pages Object Validation",
+        pagesDesc: [
+            "Verify Type property must be \"Pages\"",
+            "Check required entries: Kids, Count",
+            "Validate page tree structure integrity"
+        ],
         page: "Page Object Validation",
+        pageDesc: [
+            "Verify Type property must be \"Page\"",
+            "Check required entries: Parent, MediaBox",
+            "Validate page boundary box validity"
+        ],
         font: "Font Object Validation",
+        fontDesc: [
+            "Verify Type property must be \"Font\"",
+            "Check required entries: Subtype, BaseFont",
+            "Validate font type and encoding"
+        ],
         xobject: "XObject Object Validation",
+        xobjectDesc: [
+            "Verify Type property must be \"XObject\"",
+            "Check required entries: Subtype",
+            "Validate image or form object properties"
+        ],
         stream: "Stream Object Validation",
+        streamDesc: [
+            "Check Length property",
+            "Validate Filter property validity",
+            "Check compressed data integrity"
+        ],
         xref: "XRef Table Validation",
+        xrefDesc: [
+            "Check XRef table integrity",
+            "Validate object offset correctness",
+            "Check generation number validity"
+        ],
         trailer: "Trailer Validation",
+        trailerDesc: [
+            "Check required properties: Root, Size",
+            "Validate Root reference validity",
+            "Check encryption status information"
+        ],
         reference: "Reference Relationship Validation",
+        referenceDesc: [
+            "Check indirect reference validity",
+            "Validate object number range",
+            "Detect circular reference relationships"
+        ],
         security: "Security Validation",
-        performance: "Performance Validation"
+        securityDesc: [
+            "Check encryption status",
+            "Validate permission settings",
+            "Detect security risks"
+        ],
+        performance: "Performance Validation",
+        performanceDesc: [
+            "Check object count reasonableness",
+            "Validate file size",
+            "Detect memory usage"
+        ]
     },
 
     // Footer
@@ -294,9 +331,33 @@ const enUS = {
 
     // Help page
     help: {
-        title: "Help",
-        uploadTitle: "How to Upload Files",
-        uploadDesc: "Drag and drop PDF files to the upload area, or click the select file button to upload. Supports PDF files up to 50MB.",
+        title: "Help Center",
+        uploadTitle: "File Upload",
+        uploadDesc: "Click the \"Select File\" button to choose a PDF file, or drag and drop PDF files directly to the upload area. Supported file size: maximum 50MB",
+        features: {
+            title: "Feature Description",
+            structure: "Structure Tree: Display the complete object structure of PDF documents",
+            graph: "Relationship Graph: Visualize reference relationships between objects",
+            issues: "Issue List: Display validation issues and warnings",
+            analysis: "Analysis Report: Detailed PDF analysis and statistical information",
+            raw: "Raw Data: View the original parsed data of PDF"
+        },
+        about: {
+            title: "About Tool",
+            description: "PDF Inspector Pro is a powerful PDF document analysis tool that helps you deeply understand PDF file structure, verify file integrity, and discover potential issues.",
+            featuresTitle: "Supported features include:",
+            featuresItems: [
+                "PDF structure parsing and visualization",
+                "File integrity validation",
+                "Security risk detection",
+                "Performance analysis",
+                "Batch processing"
+            ]
+        },
+        rules: {
+            title: "PDF Validation Rules",
+            description: "This tool validates based on PDF 1.7 standard (ISO 32000-1) and includes the following 12 main validation categories:"
+        },
         analysisTitle: "View Analysis Results",
         analysisDesc: "After uploading, the system will automatically analyze the PDF structure, display file information, security status, and validation results.",
         exportTitle: "Export Results",

@@ -178,45 +178,82 @@ const zhCN = {
         rawData: "原始数据"
     },
 
-    // 帮助内容
-    help: {
-        title: "帮助中心",
-        upload: {
-            title: "文件上传",
-            description: "支持拖拽上传和点击选择PDF文件"
-        },
-        features: {
-            title: "功能说明",
-            structure: "结构树：显示PDF文档的完整对象结构",
-            graph: "关系图：可视化对象之间的引用关系",
-            issues: "问题列表：显示验证发现的问题和警告",
-            analysis: "分析报告：详细的PDF分析和统计信息",
-            raw: "原始数据：查看PDF的原始解析数据"
-        },
-        about: {
-            title: "关于工具",
-            description: "PDF Inspector Pro 是一个强大的PDF文档分析工具，可以帮助您深入了解PDF文件的结构、验证文件完整性、发现潜在问题。"
-        },
-        rules: {
-            title: "PDF检测规则",
-            description: "本工具基于PDF 1.7标准(ISO 32000-1)进行验证，包含以下12个主要检测类别："
-        }
-    },
+
 
     // 验证规则
     validationRules: {
         header: "PDF头部验证",
+        headerDesc: [
+            "检查%PDF标识符是否存在",
+            "验证版本号格式(1.0-1.7)",
+            "检查文件类型标识"
+        ],
         catalog: "Catalog对象验证",
+        catalogDesc: [
+            "验证Type属性必须为\"Catalog\"",
+            "检查必需条目：Pages",
+            "验证对象引用有效性"
+        ],
         pages: "Pages对象验证",
+        pagesDesc: [
+            "验证Type属性必须为\"Pages\"",
+            "检查必需条目：Kids, Count",
+            "验证页面树结构完整性"
+        ],
         page: "Page对象验证",
+        pageDesc: [
+            "验证Type属性必须为\"Page\"",
+            "检查必需条目：Parent, MediaBox",
+            "验证页面边界框有效性"
+        ],
         font: "Font对象验证",
+        fontDesc: [
+            "验证Type属性必须为\"Font\"",
+            "检查必需条目：Subtype, BaseFont",
+            "验证字体类型和编码"
+        ],
         xobject: "XObject对象验证",
+        xobjectDesc: [
+            "验证Type属性必须为\"XObject\"",
+            "检查必需条目：Subtype",
+            "验证图像或表单对象属性"
+        ],
         stream: "Stream对象验证",
+        streamDesc: [
+            "检查Length属性",
+            "验证Filter属性有效性",
+            "检查压缩数据完整性"
+        ],
         xref: "XRef表验证",
+        xrefDesc: [
+            "检查XRef表完整性",
+            "验证对象偏移量正确性",
+            "检查生成号有效性"
+        ],
         trailer: "Trailer验证",
+        trailerDesc: [
+            "检查必需属性：Root, Size",
+            "验证Root引用有效性",
+            "检查加密状态信息"
+        ],
         reference: "引用关系验证",
+        referenceDesc: [
+            "检查间接引用有效性",
+            "验证对象编号范围",
+            "检测循环引用关系"
+        ],
         security: "安全验证",
-        performance: "性能验证"
+        securityDesc: [
+            "检查加密状态",
+            "验证权限设置",
+            "检测安全风险"
+        ],
+        performance: "性能验证",
+        performanceDesc: [
+            "检查对象数量合理性",
+            "验证文件大小",
+            "检测内存使用"
+        ]
     },
 
     // 页脚
@@ -283,9 +320,33 @@ const zhCN = {
 
     // 帮助页面
     help: {
-        title: "使用帮助",
-        uploadTitle: "如何上传文件",
-        uploadDesc: "拖拽PDF文件到上传区域，或点击选择文件按钮上传。支持最大50MB的PDF文件。",
+        title: "帮助中心",
+        uploadTitle: "文件上传",
+        uploadDesc: "点击\"选择文件\"按钮选择PDF文件，或直接拖拽PDF文件到上传区域。支持的文件大小：最大50MB",
+        features: {
+            title: "功能说明",
+            structure: "结构树：显示PDF文档的完整对象结构",
+            graph: "关系图：可视化对象之间的引用关系",
+            issues: "问题列表：显示验证发现的问题和警告",
+            analysis: "分析报告：详细的PDF分析和统计信息",
+            raw: "原始数据：查看PDF的原始解析数据"
+        },
+        about: {
+            title: "关于工具",
+            description: "PDF Inspector Pro 是一个强大的PDF文档分析工具，可以帮助您深入了解PDF文件的结构、验证文件完整性、发现潜在问题。",
+            featuresTitle: "支持的功能包括：",
+            featuresItems: [
+                "PDF结构解析和可视化",
+                "文件完整性验证",
+                "安全风险检测",
+                "性能分析",
+                "批量处理"
+            ]
+        },
+        rules: {
+            title: "PDF检测规则",
+            description: "本工具基于PDF 1.7标准(ISO 32000-1)进行验证，包含以下12个主要检测类别："
+        },
         analysisTitle: "查看分析结果",
         analysisDesc: "上传后系统会自动分析PDF结构，显示文件信息、安全状态和验证结果。",
         exportTitle: "导出结果",

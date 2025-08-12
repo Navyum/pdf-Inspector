@@ -2605,12 +2605,14 @@ body {
 .help-content ul {
     margin: 0;
     padding-left: var(--spacing-lg);
+    text-align: left;
 }
 
 .help-content li {
     margin-bottom: var(--spacing-sm);
     color: var(--text-secondary);
     line-height: 1.6;
+    text-align: left;
 }
 
 .help-content strong {
@@ -2663,6 +2665,7 @@ body {
 .rule-category ul {
     margin: 0;
     padding-left: var(--spacing-md);
+    text-align: left;
 }
 
 .rule-category li {
@@ -2670,6 +2673,7 @@ body {
     color: var(--text-secondary);
     line-height: 1.5;
     font-size: 0.95rem;
+    text-align: left;
 }
 
 /* 响应式设计 */
@@ -2997,6 +3001,7 @@ body {
 .terms-section ul {
     list-style: none;
     padding-left: 0;
+    text-align: left;
 }
 
 .help-section li,
@@ -3008,6 +3013,7 @@ body {
     border-bottom: 1px solid var(--border-color);
     position: relative;
     padding-left: var(--spacing-lg);
+    text-align: left;
 }
 
 .help-section li:before,
@@ -3155,6 +3161,7 @@ body {
     .terms-section li {
         font-size: 0.875rem;
         padding: var(--spacing-xs) 0;
+        text-align: left;
     }
 }
 
@@ -3314,6 +3321,7 @@ body {
 .terms-section li {
     animation: slideInFromLeft 0.5s ease-out;
     animation-fill-mode: both;
+    text-align: left;
 }
 
 .help-section li:nth-child(1),
@@ -3400,6 +3408,7 @@ body {
     .privacy-section li,
     .terms-section li {
         animation-delay: 0.3s !important;
+        text-align: left;
     }
 }
 
@@ -3778,13 +3787,11 @@ body {
     .terms-section li {
         font-size: 0.9rem;
         padding: var(--spacing-sm) 0;
+        text-align: left;
     }
 }
 
 @media (max-width: 480px) {
-    .results-section {
-        animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
     
     .info-panel {
         animation: slideInFromBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -4096,9 +4103,9 @@ body {
     .feature-icon .fas:not(.fa-ban) {
         top: 10px;
         left: 10px;
-        font-size: 1rem;
-        width: 1rem;
-        height: 1rem;
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
         line-height: 1;
     }
     
@@ -4139,9 +4146,9 @@ body {
     .feature-icon .fas:not(.fa-ban) {
         top: 8px;
         left: 8px;
-        font-size: 1.50rem;
-        width: 1.50rem;
-        height: 1.5rem;
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
         line-height: 1;
     }
     

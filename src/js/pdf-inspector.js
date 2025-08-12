@@ -43,9 +43,6 @@ class PDFInspector {
         // 初始化UI控制器
         this.uiController.init(this);
         
-        // 绑定事件
-        this.bindEvents();
-        
         // 加载设置
         this.loadSettings();
         
@@ -69,76 +66,7 @@ class PDFInspector {
         }
     }
     
-    /**
-     * 绑定事件
-     */
-    bindEvents() {
-        // 文件上传事件
-        document.getElementById('selectFileBtn').addEventListener('click', (e) => {
-            e.stopPropagation(); // 阻止事件冒泡
-            document.getElementById('fileInput').click();
-        });
-        
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            this.handleFileSelect(e.target.files);
-        });
-        
-        // 拖拽上传
-        const uploadArea = document.getElementById('uploadArea');
-        
-        // 整个上传区域点击事件
-        uploadArea.addEventListener('click', (e) => {
-            // 如果点击的不是按钮，则触发文件选择
-            if (!e.target.closest('#selectFileBtn')) {
-                document.getElementById('fileInput').click();
-            }
-        });
-        
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            this.handleFileDrop(e.dataTransfer.files);
-        });
-        
-        // 标签页切换
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // 确保获取到按钮元素，而不是其子元素
-                const button = e.target.closest('.tab-btn');
-                if (button && button.dataset.tab) {
-                    this.switchTab(button.dataset.tab);
-                }
-            });
-        });
-        
-        // 帮助按钮
-        document.getElementById('helpBtn').addEventListener('click', () => {
-            this.showHelpModal();
-        });
-        
-        // 模态框关闭
-        document.getElementById('closeHelpModal').addEventListener('click', () => {
-            this.hideHelpModal();
-        });
-        
-        document.getElementById('closeObjectModal').addEventListener('click', () => {
-            this.hideObjectModal();
-        });
-        
-        // 键盘快捷键
-        document.addEventListener('keydown', (e) => {
-            // 移除快捷键处理
-        });
-    }
+
     
     /**
      * 处理文件选择
@@ -156,21 +84,20 @@ class PDFInspector {
         // 只处理第一个文件
         const file = files[0];
         if (file.type !== 'application/pdf') {
-            this.showError('请选择有效的PDF文件');
+            this.uiController.showError('请选择有效的PDF文件');
             return;
         }
         
-        this.showProgress();
-        this.updateProgress(1, 1, `处理文件: ${file.name}`);
+        this.uiController.showProgress();
+        this.uiController.updateProgress(1, 1, `处理文件: ${file.name}`);
         
         try {
             await this.processFile(file);
-            this.showResults();
+            this.uiController.showResults();
         } catch (error) {
             console.error('处理文件时出错:', error);
-            this.showError('处理文件时出错: ' + error.message);
+            this.uiController.showError('处理文件时出错: ' + error.message);
         } finally {
-            this.hideProgress();
             // 清空文件输入框，确保重新选择同一个文件时能触发change事件
             document.getElementById('fileInput').value = '';
         }
@@ -181,14 +108,14 @@ class PDFInspector {
      */
     async handleFileDrop(files) {
         if (files.length === 0) {
-            this.showError('请拖拽PDF文件');
+            this.uiController.showError('请拖拽PDF文件');
             return;
         }
         
         // 只处理第一个PDF文件
         const file = files[0];
         if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-            this.showError('请拖拽有效的PDF文件');
+            this.uiController.showError('请拖拽有效的PDF文件');
             return;
         }
         
@@ -318,239 +245,13 @@ class PDFInspector {
     
 
     
-    /**
-     * 切换标签页
-     */
-    switchTab(tabName) {
-        // 检查标签页是否存在
-        const tabButton = document.querySelector(`[data-tab="${tabName}"]`);
-        const tabPane = document.getElementById(`${tabName}-tab`);
-        
-        if (!tabButton || !tabPane) {
-            console.warn(`标签页 "${tabName}" 不存在`);
-            return;
-        }
-        
-        // 更新标签按钮状态
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        tabButton.classList.add('active');
-        
-        // 更新标签页内容
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-        });
-        tabPane.classList.add('active');
-        
-        // 触发特定标签页的渲染
-        if (tabName === 'graph') {
-            this.visualizer.renderRelationshipGraph(this.pdfStructure);
-        }
-    }
+
     
-    /**
-     * 显示进度
-     */
-    showProgress() {
-        const uploadSection = document.getElementById('uploadSection');
-        const featuresSection = document.getElementById('featuresSection');
-        const progressSection = document.getElementById('progressSection');
-        const resultsSection = document.getElementById('resultsSection');
-        
-        // 立即隐藏上传区域和特性区域
-        uploadSection.style.display = 'none';
-        if (featuresSection) {
-            featuresSection.style.display = 'none';
-        }
-        
-        // 显示进度区域
-        progressSection.style.display = 'block';
-        resultsSection.style.display = 'none';
-    }
+
     
-    /**
-     * 隐藏进度
-     */
-    hideProgress() {
-        document.getElementById('progressSection').style.display = 'none';
-    }
+
     
-    /**
-     * 更新进度
-     */
-    updateProgress(current, total, text) {
-        const percentage = (current / total) * 100;
-        document.getElementById('progressFill').style.width = `${percentage}%`;
-        document.getElementById('progressText').textContent = text;
-        document.getElementById('processedCount').textContent = current;
-        document.getElementById('totalCount').textContent = total;
-    }
-    
-    /**
-     * 显示结果
-     */
-    showResults() {
-        const uploadSection = document.getElementById('uploadSection');
-        const progressSection = document.getElementById('progressSection');
-        const resultsSection = document.getElementById('resultsSection');
-        
-        // 添加上传区域隐藏动画
-        uploadSection.classList.add('hiding');
-        
-        // 隐藏进度区域
-        progressSection.style.display = 'none';
-        
-        // 显示结果区域并添加动画
-        resultsSection.style.display = 'grid';
-        resultsSection.classList.add('showing');
-        
-        // 移除动画类
-        setTimeout(() => {
-            uploadSection.style.display = 'none';
-            uploadSection.classList.remove('hiding');
-            resultsSection.classList.remove('showing');
-        }, 500);
-    }
-    
-    /**
-     * 显示错误
-     */
-    showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.innerHTML = `
-            <i class="fas fa-ad-circle"></i>
-            <span>${message}</span>
-            <button onclick="this.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        
-        document.querySelector('.main-content').insertBefore(errorDiv, document.querySelector('.main-content').firstChild);
-        
-        // 自动移除错误消息
-        setTimeout(() => {
-            if (errorDiv.parentElement) {
-                errorDiv.remove();
-            }
-        }, 5000);
-    }
-    
-    /**
-     * 显示帮助模态框
-     */
-    showHelpModal() {
-        document.getElementById('helpModal').classList.add('show');
-    }
-    
-    /**
-     * 隐藏帮助模态框
-     */
-    hideHelpModal() {
-        document.getElementById('helpModal').classList.remove('show');
-    }
-    
-    /**
-     * 显示对象详情模态框
-     */
-    showObjectModal(object) {
-        const titleText = window.languageManager ? 
-            window.languageManager.get('modal.objectDetail') : '对象详情';
-        document.getElementById('objectDetailTitle').textContent = `${titleText} ${object.objectNumber} ${object.generation} R`;
-        document.getElementById('objectDetailContent').innerHTML = this.formatObjectDetails(object);
-        document.getElementById('objectDetailModal').classList.add('show');
-    }
-    
-    /**
-     * 隐藏对象详情模态框
-     */
-    hideObjectModal() {
-        document.getElementById('objectDetailModal').classList.remove('show');
-    }
-    
-    /**
-     * 格式化对象详情
-     */
-    formatObjectDetails(object) {
-        let html = `
-            <div class="object-detail-section">
-                <h4>基本信息</h4>
-                <div class="detail-grid">
-                    <div class="detail-item">
-                        <span class="label">对象编号:</span>
-                        <span class="value">${object.objectNumber}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">生成号:</span>
-                        <span class="value">${object.generation}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">类型:</span>
-                        <span class="value">${object.type || 'Unknown'}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">偏移量:</span>
-                        <span class="value">${object.offset || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        if (object.properties) {
-            html += `
-                <div class="object-detail-section">
-                    <h4>属性</h4>
-                    <div class="properties-list">
-            `;
-            
-            Object.entries(object.properties).forEach(([key, value]) => {
-                if (key !== 'streamData') { // 跳过stream数据，避免显示过多内容
-                    html += `
-                        <div class="property-item">
-                            <span class="property-name">${key}:</span>
-                            <span class="property-value">${this.formatPropertyValue(value)}</span>
-                        </div>
-                    `;
-                }
-            });
-            
-            html += `
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (object.rawContent) {
-            html += `
-                <div class="object-detail-section">
-                    <h4>原始内容</h4>
-                    <pre class="raw-content">${this.escapeHtml(object.rawContent.substring(0, 1000))}${object.rawContent.length > 1000 ? '...' : ''}</pre>
-                </div>
-            `;
-        }
-        
-        return html;
-    }
-    
-    /**
-     * 格式化属性值
-     */
-    formatPropertyValue(value) {
-        if (typeof value === 'object') {
-            return JSON.stringify(value);
-        }
-        return String(value);
-    }
-    
-    /**
-     * 转义HTML
-     */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+
     
     /**
      * 处理键盘快捷键
@@ -564,7 +265,7 @@ class PDFInspector {
      */
     exportResults() {
         if (!this.validationResults) {
-            this.showError('没有可导出的结果');
+            this.uiController.showError('没有可导出的结果');
             return;
         }
         

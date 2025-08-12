@@ -8,6 +8,8 @@ class UIController {
         this.currentTab = 'structure';
         this.modals = new Map();
         this.toasts = [];
+        this.progressStartTime = null;
+        this.progressMinDuration = 2000; // 最少展示时间2秒
     }
     
     /**
@@ -19,6 +21,7 @@ class UIController {
         this.initToolbars();
         this.initKeyboardShortcuts();
         this.initToastStyles();
+        this.bindEvents();
     }
     
     /**
@@ -303,6 +306,72 @@ class UIController {
     }
     
     /**
+     * 绑定事件
+     */
+    bindEvents() {
+        // 文件上传事件
+        document.getElementById('selectFileBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // 阻止事件冒泡
+            document.getElementById('fileInput').click();
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            this.pdfInspector.handleFileSelect(e.target.files);
+        });
+        
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        
+        // 整个上传区域点击事件
+        uploadArea.addEventListener('click', (e) => {
+            // 如果点击的不是按钮，则触发文件选择
+            if (!e.target.closest('#selectFileBtn')) {
+                document.getElementById('fileInput').click();
+            }
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            this.pdfInspector.handleFileDrop(e.dataTransfer.files);
+        });
+        
+        // 标签页切换
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // 确保获取到按钮元素，而不是其子元素
+                const button = e.target.closest('.tab-btn');
+                if (button && button.dataset.tab) {
+                    this.switchTab(button.dataset.tab);
+                }
+            });
+        });
+        
+        // 帮助按钮
+        document.getElementById('helpBtn').addEventListener('click', () => {
+            this.showHelpModal();
+        });
+        
+        // 模态框关闭
+        document.getElementById('closeHelpModal').addEventListener('click', () => {
+            this.hideHelpModal();
+        });
+        
+        document.getElementById('closeObjectModal').addEventListener('click', () => {
+            this.hideObjectModal();
+        });
+    }
+    
+    /**
      * 初始化Toast样式
      */
     initToastStyles() {
@@ -346,37 +415,7 @@ class UIController {
         }
     }
     
-    /**
-     * 切换标签页
-     */
-    switchTab(tabName) {
-        // 更新标签按钮状态
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-        }
-        
-        // 更新标签页内容
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-        });
-        
-        const activePane = document.getElementById(`${tabName}-tab`);
-        if (activePane) {
-            activePane.classList.add('active');
-        }
-        
-        this.currentTab = tabName;
-        
-        // 触发特定标签页的渲染
-        if (tabName === 'graph' && this.pdfInspector.pdfStructure) {
-            this.pdfInspector.visualizer.renderRelationshipGraph(this.pdfInspector.pdfStructure);
-        }
-    }
+
     
     /**
      * 聚焦搜索框
@@ -1010,6 +1049,11 @@ class UIController {
         const processedCount = document.getElementById('processedCount');
         const totalCount = document.getElementById('totalCount');
         
+        // 如果进度还没开始，记录开始时间
+        if (!this.progressStartTime) {
+            this.progressStartTime = Date.now();
+        }
+        
         if (progressFill) {
             const percentage = (current / total) * 100;
             progressFill.style.width = `${percentage}%`;
@@ -1033,28 +1077,51 @@ class UIController {
      */
     showProgress() {
         const uploadSection = document.getElementById('uploadSection');
+        const featuresSection = document.getElementById('featuresSection');
         const progressSection = document.getElementById('progressSection');
         const resultsSection = document.getElementById('resultsSection');
         
-        // 添加上传区域隐藏动画
-        uploadSection.classList.add('hiding');
+        // 记录进度开始时间
+        this.progressStartTime = Date.now();
+        
+        // 立即隐藏上传区域，避免闪烁
+        uploadSection.style.display = 'none';
+        uploadSection.classList.remove('hiding');
+        
+        // 隐藏特性区域（如果存在）
+        if (featuresSection) {
+            featuresSection.style.display = 'none';
+        }
         
         // 显示进度区域
         progressSection.style.display = 'block';
         resultsSection.style.display = 'none';
-        
-        // 移除动画类
-        setTimeout(() => {
-            uploadSection.style.display = 'none';
-            uploadSection.classList.remove('hiding');
-        }, 500);
     }
     
     /**
      * 隐藏进度区域
      */
     hideProgress() {
-        document.getElementById('progressSection').style.display = 'none';
+        if (!this.progressStartTime) {
+            // 如果没有开始时间，直接隐藏
+            document.getElementById('progressSection').style.display = 'none';
+            return;
+        }
+        
+        const elapsedTime = Date.now() - this.progressStartTime;
+        const remainingTime = this.progressMinDuration - elapsedTime;
+        
+        if (remainingTime > 0) {
+            // 如果还没到最少展示时间，延迟隐藏
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'none';
+                this.progressStartTime = null;
+            }, remainingTime);
+        } else {
+            // 已经超过最少展示时间，直接隐藏
+            document.getElementById('progressSection').style.display = 'none';
+            this.progressStartTime = null;
+        }
     }
     
     /**
@@ -1065,11 +1132,30 @@ class UIController {
         const progressSection = document.getElementById('progressSection');
         const resultsSection = document.getElementById('resultsSection');
         
-        // 添加上传区域隐藏动画
-        uploadSection.classList.add('hiding');
+        // 确保上传区域已隐藏
+        uploadSection.style.display = 'none';
+        uploadSection.classList.remove('hiding');
         
-        // 隐藏进度区域
-        progressSection.style.display = 'none';
+        // 检查是否需要延迟隐藏进度区域
+        if (this.progressStartTime) {
+            const elapsedTime = Date.now() - this.progressStartTime;
+            const remainingTime = this.progressMinDuration - elapsedTime;
+            
+            if (remainingTime > 0) {
+                // 如果还没到最少展示时间，延迟隐藏进度区域
+                setTimeout(() => {
+                    progressSection.style.display = 'none';
+                    this.progressStartTime = null;
+                }, remainingTime);
+            } else {
+                // 已经超过最少展示时间，立即隐藏
+                progressSection.style.display = 'none';
+                this.progressStartTime = null;
+            }
+        } else {
+            // 没有进度开始时间，直接隐藏
+            progressSection.style.display = 'none';
+        }
         
         // 显示结果区域并添加动画
         resultsSection.style.display = 'grid';
@@ -1077,8 +1163,6 @@ class UIController {
         
         // 移除动画类
         setTimeout(() => {
-            uploadSection.style.display = 'none';
-            uploadSection.classList.remove('hiding');
             resultsSection.classList.remove('showing');
         }, 500);
     }
@@ -1096,7 +1180,7 @@ class UIController {
                 if (objectNumber && this.pdfInspector.pdfStructure) {
                     const obj = this.pdfInspector.pdfStructure.getObject(parseInt(objectNumber), parseInt(generation));
                     if (obj) {
-                        this.pdfInspector.showObjectModal(obj);
+                        this.showObjectModal(obj);
                     }
                 }
             });
@@ -1108,6 +1192,152 @@ class UIController {
      */
     updateSettings() {
         // 移除设置更新逻辑
+    }
+    
+    /**
+     * 切换标签页
+     */
+    switchTab(tabName) {
+        // 检查标签页是否存在
+        const tabButton = document.querySelector(`[data-tab="${tabName}"]`);
+        const tabPane = document.getElementById(`${tabName}-tab`);
+        
+        if (!tabButton || !tabPane) {
+            console.warn(`标签页 "${tabName}" 不存在`);
+            return;
+        }
+        
+        // 更新标签按钮状态
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        tabButton.classList.add('active');
+        
+        // 更新标签页内容
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        tabPane.classList.add('active');
+        
+        // 触发特定标签页的渲染
+        if (tabName === 'graph' && this.pdfInspector && this.pdfInspector.visualizer) {
+            this.pdfInspector.visualizer.renderRelationshipGraph(this.pdfInspector.pdfStructure);
+        }
+    }
+    
+    /**
+     * 显示帮助模态框
+     */
+    showHelpModal() {
+        document.getElementById('helpModal').classList.add('show');
+    }
+    
+    /**
+     * 隐藏帮助模态框
+     */
+    hideHelpModal() {
+        document.getElementById('helpModal').classList.remove('show');
+    }
+    
+    /**
+     * 显示对象详情模态框
+     */
+    showObjectModal(object) {
+        const titleText = window.languageManager ? 
+            window.languageManager.get('modal.objectDetail') : '对象详情';
+        document.getElementById('objectDetailTitle').textContent = `${titleText} ${object.objectNumber} ${object.generation} R`;
+        document.getElementById('objectDetailContent').innerHTML = this.formatObjectDetails(object);
+        document.getElementById('objectDetailModal').classList.add('show');
+    }
+    
+    /**
+     * 隐藏对象详情模态框
+     */
+    hideObjectModal() {
+        document.getElementById('objectDetailModal').classList.remove('show');
+    }
+    
+    /**
+     * 格式化对象详情
+     */
+    formatObjectDetails(object) {
+        let html = `
+            <div class="object-detail-section">
+                <h4>基本信息</h4>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="label">对象编号:</span>
+                        <span class="value">${object.objectNumber}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">生成号:</span>
+                        <span class="value">${object.generation}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">类型:</span>
+                        <span class="value">${object.type || 'Unknown'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">偏移量:</span>
+                        <span class="value">${object.offset || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        if (object.properties) {
+            html += `
+                <div class="object-detail-section">
+                    <h4>属性</h4>
+                    <div class="properties-list">
+            `;
+            
+            Object.entries(object.properties).forEach(([key, value]) => {
+                if (key !== 'streamData') { // 跳过stream数据，避免显示过多内容
+                    html += `
+                        <div class="property-item">
+                            <span class="property-name">${key}:</span>
+                            <span class="property-value">${this.formatPropertyValue(value)}</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (object.rawContent) {
+            html += `
+                <div class="object-detail-section">
+                    <h4>原始内容</h4>
+                    <pre class="raw-content">${this.escapeHtml(object.rawContent.substring(0, 1000))}${object.rawContent.length > 1000 ? '...' : ''}</pre>
+                </div>
+            `;
+        }
+        
+        return html;
+    }
+    
+    /**
+     * 格式化属性值
+     */
+    formatPropertyValue(value) {
+        if (typeof value === 'object') {
+            return JSON.stringify(value);
+        }
+        return String(value);
+    }
+    
+    /**
+     * 转义HTML
+     */
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
     
     /**
